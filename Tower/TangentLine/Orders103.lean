@@ -267,6 +267,69 @@ theorem P4_nsmul_2_ne : (2 : ℕ) • P4 ≠ 0 := by
   rw [P4_m2]
   exact Point.some_ne_zero _
 
+/-! ## Exact orders -/
+
+/-- The point `P1` has exact order `120` in `E(𝔽_103)`. -/
+theorem P1_addOrderOf : addOrderOf P1 = 120 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P1_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 3 * 3 ^ 1 * 5 ^ 1 : ℕ) = 120 := by norm_num
+  have h : q ∣ 2 ^ 3 * 3 ^ 1 * 5 ^ 1 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h3a | h3b
+  · skip
+    rcases (Nat.Prime.dvd_mul hq).mp h3a with h2a | h2b
+    · skip
+      obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+      exact P1_nsmul_60_ne
+    · skip
+      obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+      exact P1_nsmul_40_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h3b)
+    exact P1_nsmul_24_ne
+
+/-- The point `P2` has exact order `40` in `E(𝔽_103)`. -/
+theorem P2_addOrderOf : addOrderOf P2 = 40 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P2_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 3 * 5 ^ 1 : ℕ) = 40 := by norm_num
+  have h : q ∣ 2 ^ 3 * 5 ^ 1 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P2_nsmul_20_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P2_nsmul_8_ne
+
+/-- The point `P3` has exact order `24` in `E(𝔽_103)`. -/
+theorem P3_addOrderOf : addOrderOf P3 = 24 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P3_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 3 * 3 ^ 1 : ℕ) = 24 := by norm_num
+  have h : q ∣ 2 ^ 3 * 3 ^ 1 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P3_nsmul_12_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P3_nsmul_8_ne
+
+/-- The point `P4` has exact order `6` in `E(𝔽_103)`. -/
+theorem P4_addOrderOf : addOrderOf P4 = 6 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P4_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 1 * 3 ^ 1 : ℕ) = 6 := by norm_num
+  have h : q ∣ 2 ^ 1 * 3 ^ 1 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P4_nsmul_3_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P4_nsmul_2_ne
+
 end P103
 
 end Tower.TangentLine
