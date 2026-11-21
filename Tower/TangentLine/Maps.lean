@@ -65,7 +65,7 @@ variable {K : Type*} [Field K]
 the curve `Y² = X³ + a₂ X² + X` with `4 a₂ = -7`. -/
 theorem equation_of_link (h2 : (2 : K) ≠ 0) {a₂ : K} (ha : 4 * a₂ = -7) {t y X Y : K}
     (hG : G t y = 0) (hX : X * (t * y) = -1) (hY : 2 * Y = (y - t) * X * (X - 1)) :
-    (⟨0, a₂, 0, 1, 0⟩ : WeierstrassCurve.Affine K).Equation X Y := by
+    WeierstrassCurve.Affine.Equation (⟨0, a₂, 0, 1, 0⟩ : WeierstrassCurve.Affine K) X Y := by
   rw [WeierstrassCurve.Affine.equation_iff]
   show Y ^ 2 + 0 * X * Y + 0 * Y = X ^ 3 + a₂ * X ^ 2 + 1 * X + 0
   have h4 : (4 : K) ≠ 0 := by
