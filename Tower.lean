@@ -1,5 +1,13 @@
 import Tower.TangentLine.Resultant
 import Tower.TangentLine.ModP
+import Tower.TangentLine.Maps
 import Tower.EC.Cert
+import Tower.EC.Reduction
 import Tower.TangentLine.Orders103
 import Tower.TangentLine.Orders373
+import Tower.TangentLine.Orders499
+import Tower.TangentLine.Red103
+import Tower.TangentLine.Red373
+import Tower.TangentLine.Red499
+import Tower.TangentLine.NonTorsion
+import Tower.Audit

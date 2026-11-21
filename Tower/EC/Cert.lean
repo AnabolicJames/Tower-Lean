@@ -61,6 +61,22 @@ theorem add_zero_cert {x₁ y₁ x₂ y₂ : F}
     Point.some x₁ y₁ h₁ + Point.some x₂ y₂ h₂ = 0 :=
   Point.add_of_Y_eq hx hy
 
+/-- Negation with an explicit second coordinate. -/
+theorem neg_cert {x y y' : F} (h : W.Nonsingular x y) (h' : W.Nonsingular x y')
+    (hy : W.negY x y = y') :
+    -Point.some x y h = Point.some x y' h' := by
+  subst hy
+  exact Point.neg_some h
+
+/-- Subtraction from an addition certificate for the negated point. -/
+theorem sub_cert {x₁ y₁ x₂ y₂ y₂' x₃ y₃ : F}
+    (h₁ : W.Nonsingular x₁ y₁) (h₂ : W.Nonsingular x₂ y₂) (h₂' : W.Nonsingular x₂ y₂')
+    (h₃ : W.Nonsingular x₃ y₃) (hy : W.negY x₂ y₂ = y₂')
+    (hadd : Point.some x₁ y₁ h₁ + Point.some x₂ y₂' h₂' = Point.some x₃ y₃ h₃) :
+    Point.some x₁ y₁ h₁ - Point.some x₂ y₂ h₂ = Point.some x₃ y₃ h₃ := by
+  rw [sub_eq_add_neg, neg_cert h₂ h₂' hy]
+  exact hadd
+
 end
 
 /-- One step of an addition chain for multiples. -/

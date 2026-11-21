@@ -1,6 +1,6 @@
 import Mathlib
 import Tower.EC.Cert
-import Tower.TangentLine.Resultant
+import Tower.TangentLine.Maps
 
 /-!
 # The points over the roots of `Q₄` in `E(𝔽_373)`
@@ -8,8 +8,9 @@ import Tower.TangentLine.Resultant
 This file is generated (the generator computes the slopes; Lean checks every step).
 `E : Y² = X³ - (7/4) X² + X` over `𝔽_373`, where `-7/4 = 278`; cube root of unity `z = 284`.
 For each root `t` of `Q₄`: the point `(t, y)` of the curve `G = 0` with `F = 0`, its image
-`(X, Y)` under `X = -1/(t y)`, `Y = (y - t) X (X - 1)/2`, and the exact multiples that
-determine its order in Mathlib's group `E(𝔽_p)`.
+`(X, Y)` under `X = -1/(t y)`, `Y = (y - t) X (X - 1)/2`, the exact multiples that
+determine its order in Mathlib's group `E(𝔽_p)`, and the fact that `(X, Y)` is determined by
+`t`.
 -/
 
 namespace Tower.TangentLine
@@ -23,6 +24,13 @@ instance : Fact (Nat.Prime 373) := ⟨by norm_num⟩
 /-- The curve `Y² = X³ + 278 X² + X` over `𝔽_373`. -/
 def E : WeierstrassCurve.Affine (ZMod 373) := ⟨0, 278, 0, 1, 0⟩
 
+/-- `284` is a primitive cube root of unity in `𝔽_373`. -/
+theorem cubeRoot : (284 : ZMod 373) ^ 2 + 284 + 1 = 0 := by decide
+
+/-- Over `𝔽_373` with `w = 284`, the quartic `Q₄` has exactly the four roots `108, 200, 336, 367`. -/
+theorem Q4_roots : ∀ t : ZMod 373, Q4 t 284 = 0 ↔ (t = 108 ∨ t = 200 ∨ t = 336 ∨ t = 367) := by
+  decide +kernel
+
 
 /-! ## Root `t = 108`: `y = 276`, `(X, Y) = (35, 369)`, order `400` -/
 
@@ -30,6 +38,25 @@ def E : WeierstrassCurve.Affine (ZMod 373) := ⟨0, 278, 0, 1, 0⟩
 theorem link1 : G (108 : ZMod 373) 276 = 0 ∧ F (108 : ZMod 373) 276 284 = 0 ∧
     (35 : ZMod 373) * (108 * 276) = -1 ∧ 2 * (369 : ZMod 373) = (276 - 108) * 35 * (35 - 1) := by
   decide
+
+theorem uniq_y1 : ∀ y : ZMod 373, G 108 y = 0 → F 108 y 284 = 0 → y = 276 := by
+  decide +kernel
+theorem uniq_X1 : ∀ X : ZMod 373, X * (108 * 276) = -1 → X = 35 := by
+  decide +kernel
+theorem uniq_Y1 : ∀ Y : ZMod 373, 2 * Y = (276 - 108) * 35 * (35 - 1) → Y = 369 := by
+  decide +kernel
+
+/-- Over the root `t = 108` the point `(X, Y)` is determined. -/
+theorem coords1 (y X Y : ZMod 373) (hG : G 108 y = 0) (hF : F 108 y 284 = 0)
+    (hX : X * (108 * y) = -1) (hY : 2 * Y = (y - 108) * X * (X - 1)) : X = 35 ∧ Y = 369 := by
+  have hy : y = 276 := uniq_y1 y hG hF
+  subst hy
+  have hX' : X = 35 := uniq_X1 X hX
+  subst hX'
+  exact ⟨rfl, uniq_Y1 Y hY⟩
+
+/-- `t = 108` is a simple root of `Q₄`. -/
+theorem diag1 : dQ4 (108 : ZMod 373) 108 284 ≠ 0 := by decide
 
 theorem ns_35_369 : E.Nonsingular (35 : ZMod 373) 369 := nonsingular_of (by decide) (by decide)
 /-- The point of `E(𝔽_373)` over the root `t = 108`. -/
@@ -114,12 +141,45 @@ theorem P1_nsmul_80_ne : (80 : ℕ) • P1 ≠ 0 := by
   rw [P1_m80]
   exact Point.some_ne_zero _
 
+/-- `P1` has exact order `400` in `E(𝔽_373)`. -/
+theorem P1_addOrderOf : addOrderOf P1 = 400 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P1_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
+  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P1_nsmul_200_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P1_nsmul_80_ne
+
 /-! ## Root `t = 200`: `y = 282`, `(X, Y) = (155, 291)`, order `400` -/
 
 /-- `(t, y) = (200, 282)` lies on `G = 0` and `F = 0`, and `(X, Y) = (155, 291)` is its image. -/
 theorem link2 : G (200 : ZMod 373) 282 = 0 ∧ F (200 : ZMod 373) 282 284 = 0 ∧
     (155 : ZMod 373) * (200 * 282) = -1 ∧ 2 * (291 : ZMod 373) = (282 - 200) * 155 * (155 - 1) := by
   decide
+
+theorem uniq_y2 : ∀ y : ZMod 373, G 200 y = 0 → F 200 y 284 = 0 → y = 282 := by
+  decide +kernel
+theorem uniq_X2 : ∀ X : ZMod 373, X * (200 * 282) = -1 → X = 155 := by
+  decide +kernel
+theorem uniq_Y2 : ∀ Y : ZMod 373, 2 * Y = (282 - 200) * 155 * (155 - 1) → Y = 291 := by
+  decide +kernel
+
+/-- Over the root `t = 200` the point `(X, Y)` is determined. -/
+theorem coords2 (y X Y : ZMod 373) (hG : G 200 y = 0) (hF : F 200 y 284 = 0)
+    (hX : X * (200 * y) = -1) (hY : 2 * Y = (y - 200) * X * (X - 1)) : X = 155 ∧ Y = 291 := by
+  have hy : y = 282 := uniq_y2 y hG hF
+  subst hy
+  have hX' : X = 155 := uniq_X2 X hX
+  subst hX'
+  exact ⟨rfl, uniq_Y2 Y hY⟩
+
+/-- `t = 200` is a simple root of `Q₄`. -/
+theorem diag2 : dQ4 (200 : ZMod 373) 200 284 ≠ 0 := by decide
 
 theorem ns_155_291 : E.Nonsingular (155 : ZMod 373) 291 := nonsingular_of (by decide) (by decide)
 /-- The point of `E(𝔽_373)` over the root `t = 200`. -/
@@ -201,12 +261,45 @@ theorem P2_nsmul_80_ne : (80 : ℕ) • P2 ≠ 0 := by
   rw [P2_m80]
   exact Point.some_ne_zero _
 
+/-- `P2` has exact order `400` in `E(𝔽_373)`. -/
+theorem P2_addOrderOf : addOrderOf P2 = 400 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P2_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
+  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P2_nsmul_200_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P2_nsmul_80_ne
+
 /-! ## Root `t = 336`: `y = 275`, `(X, Y) = (269, 29)`, order `400` -/
 
 /-- `(t, y) = (336, 275)` lies on `G = 0` and `F = 0`, and `(X, Y) = (269, 29)` is its image. -/
 theorem link3 : G (336 : ZMod 373) 275 = 0 ∧ F (336 : ZMod 373) 275 284 = 0 ∧
     (269 : ZMod 373) * (336 * 275) = -1 ∧ 2 * (29 : ZMod 373) = (275 - 336) * 269 * (269 - 1) := by
   decide
+
+theorem uniq_y3 : ∀ y : ZMod 373, G 336 y = 0 → F 336 y 284 = 0 → y = 275 := by
+  decide +kernel
+theorem uniq_X3 : ∀ X : ZMod 373, X * (336 * 275) = -1 → X = 269 := by
+  decide +kernel
+theorem uniq_Y3 : ∀ Y : ZMod 373, 2 * Y = (275 - 336) * 269 * (269 - 1) → Y = 29 := by
+  decide +kernel
+
+/-- Over the root `t = 336` the point `(X, Y)` is determined. -/
+theorem coords3 (y X Y : ZMod 373) (hG : G 336 y = 0) (hF : F 336 y 284 = 0)
+    (hX : X * (336 * y) = -1) (hY : 2 * Y = (y - 336) * X * (X - 1)) : X = 269 ∧ Y = 29 := by
+  have hy : y = 275 := uniq_y3 y hG hF
+  subst hy
+  have hX' : X = 269 := uniq_X3 X hX
+  subst hX'
+  exact ⟨rfl, uniq_Y3 Y hY⟩
+
+/-- `t = 336` is a simple root of `Q₄`. -/
+theorem diag3 : dQ4 (336 : ZMod 373) 336 284 ≠ 0 := by decide
 
 theorem ns_269_29 : E.Nonsingular (269 : ZMod 373) 29 := nonsingular_of (by decide) (by decide)
 /-- The point of `E(𝔽_373)` over the root `t = 336`. -/
@@ -288,12 +381,45 @@ theorem P3_nsmul_80_ne : (80 : ℕ) • P3 ≠ 0 := by
   rw [P3_m80]
   exact Point.some_ne_zero _
 
+/-- `P3` has exact order `400` in `E(𝔽_373)`. -/
+theorem P3_addOrderOf : addOrderOf P3 = 400 := by
+  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P3_nsmul_order ?_
+  intro q hq hdvd
+  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
+  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
+  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
+    exact P3_nsmul_200_ne
+  · skip
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
+    exact P3_nsmul_80_ne
+
 /-! ## Root `t = 367`: `y = 286`, `(X, Y) = (5, 309)`, order `80` -/
 
 /-- `(t, y) = (367, 286)` lies on `G = 0` and `F = 0`, and `(X, Y) = (5, 309)` is its image. -/
 theorem link4 : G (367 : ZMod 373) 286 = 0 ∧ F (367 : ZMod 373) 286 284 = 0 ∧
     (5 : ZMod 373) * (367 * 286) = -1 ∧ 2 * (309 : ZMod 373) = (286 - 367) * 5 * (5 - 1) := by
   decide
+
+theorem uniq_y4 : ∀ y : ZMod 373, G 367 y = 0 → F 367 y 284 = 0 → y = 286 := by
+  decide +kernel
+theorem uniq_X4 : ∀ X : ZMod 373, X * (367 * 286) = -1 → X = 5 := by
+  decide +kernel
+theorem uniq_Y4 : ∀ Y : ZMod 373, 2 * Y = (286 - 367) * 5 * (5 - 1) → Y = 309 := by
+  decide +kernel
+
+/-- Over the root `t = 367` the point `(X, Y)` is determined. -/
+theorem coords4 (y X Y : ZMod 373) (hG : G 367 y = 0) (hF : F 367 y 284 = 0)
+    (hX : X * (367 * y) = -1) (hY : 2 * Y = (y - 367) * X * (X - 1)) : X = 5 ∧ Y = 309 := by
+  have hy : y = 286 := uniq_y4 y hG hF
+  subst hy
+  have hX' : X = 5 := uniq_X4 X hX
+  subst hX'
+  exact ⟨rfl, uniq_Y4 Y hY⟩
+
+/-- `t = 367` is a simple root of `Q₄`. -/
+theorem diag4 : dQ4 (367 : ZMod 373) 367 284 ≠ 0 := by decide
 
 theorem ns_5_309 : E.Nonsingular (5 : ZMod 373) 309 := nonsingular_of (by decide) (by decide)
 /-- The point of `E(𝔽_373)` over the root `t = 367`. -/
@@ -350,51 +476,7 @@ theorem P4_nsmul_16_ne : (16 : ℕ) • P4 ≠ 0 := by
   rw [P4_m16]
   exact Point.some_ne_zero _
 
-/-! ## Exact orders -/
-
-/-- The point `P1` has exact order `400` in `E(𝔽_373)`. -/
-theorem P1_addOrderOf : addOrderOf P1 = 400 := by
-  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P1_nsmul_order ?_
-  intro q hq hdvd
-  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
-  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
-  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
-    exact P1_nsmul_200_ne
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
-    exact P1_nsmul_80_ne
-
-/-- The point `P2` has exact order `400` in `E(𝔽_373)`. -/
-theorem P2_addOrderOf : addOrderOf P2 = 400 := by
-  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P2_nsmul_order ?_
-  intro q hq hdvd
-  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
-  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
-  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
-    exact P2_nsmul_200_ne
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
-    exact P2_nsmul_80_ne
-
-/-- The point `P3` has exact order `400` in `E(𝔽_373)`. -/
-theorem P3_addOrderOf : addOrderOf P3 = 400 := by
-  refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P3_nsmul_order ?_
-  intro q hq hdvd
-  have e : (2 ^ 4 * 5 ^ 2 : ℕ) = 400 := by norm_num
-  have h : q ∣ 2 ^ 4 * 5 ^ 2 := by rw [e]; exact hdvd
-  rcases (Nat.Prime.dvd_mul hq).mp h with h2a | h2b
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2a)
-    exact P3_nsmul_200_ne
-  · skip
-    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq (by norm_num)).mp (hq.dvd_of_dvd_pow h2b)
-    exact P3_nsmul_80_ne
-
-/-- The point `P4` has exact order `80` in `E(𝔽_373)`. -/
+/-- `P4` has exact order `80` in `E(𝔽_373)`. -/
 theorem P4_addOrderOf : addOrderOf P4 = 80 := by
   refine addOrderOf_eq_of_nsmul_and_div_prime_nsmul P4_nsmul_order ?_
   intro q hq hdvd
