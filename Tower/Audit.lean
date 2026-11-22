@@ -27,6 +27,9 @@ import Tower.RV6.Ser
 import Tower.RV6.Level6
 import Tower.RV6.Ramanujan
 import Tower.RV6.EtaRec
+import Tower.RV6.BesselI
+import Tower.RV6.BesselK
+import Tower.RV6.BesselW
 
 /-!
 # Axiom audit
@@ -150,3 +153,10 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rec_HN
 #print axioms Tower.RV6.rungEW
 #print axioms Tower.RV6.rv6_of_bessel
+#print axioms Tower.RV6.hasDerivAt_besselI0
+#print axioms Tower.RV6.hasDerivAt_mul_besselI1
+#print axioms Tower.RV6.hasDerivAt_besselK0
+#print axioms Tower.RV6.hasDerivAt_mul_besselK1
+#print axioms Tower.RV6.mul_besselK1_le_one
+#print axioms Tower.RV6.exp_neg_le_mul_besselK1
+#print axioms Tower.RV6.wronskian
