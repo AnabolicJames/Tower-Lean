@@ -10,12 +10,12 @@ needs no substitution.
 
 * `expE_sub_besselK0_nonneg`, `expE_sub_besselK0_le`: `0 ≤ E(t/2) - K₀(t) ≤ t/2` for `t > 0`.
 * `hasDerivAt_expE`: `E'(x) = -e^{-x}/x`.
-* `cW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w` and `expE_add_log`: `E(x) + log x - cW = ∫₀^x (1 - e^{-w}) dw/w`,
+* `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w` and `expE_add_log`: `E(x) + log x - eulerW = ∫₀^x (1 - e^{-w}) dw/w`,
   which lies in `[0, x]`.
-* **`abs_besselK0_add_log_le`**: `|K₀(t) + log(t/2) - cW| ≤ t/2` for `t > 0`.
+* **`abs_besselK0_add_log_le`**: `|K₀(t) + log(t/2) - eulerW| ≤ t/2` for `t > 0`.
 * `expE_one`: `E(1) = ∫₁^∞ e^{-w} dw/w`.
 
-`cW` is minus Euler's constant; that is neither used nor proved.
+`eulerW` is minus Euler's constant; that is neither used nor proved.
 -/
 
 namespace Tower.RV6
@@ -318,8 +318,8 @@ theorem intervalIntegrable_psiE {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     IntervalIntegrable psiE volume a b :=
   ⟨integrableOn_psiE ha, integrableOn_psiE hb⟩
 
-/-- `cW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`. -/
-noncomputable def cW : ℝ := expE 1 - ∫ w in (0 : ℝ)..1, psiE w
+/-- `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`. -/
+noncomputable def eulerW : ℝ := expE 1 - ∫ w in (0 : ℝ)..1, psiE w
 
 theorem hasDerivAt_expE_add_log {x : ℝ} (hx : 0 < x) :
     HasDerivAt (fun y : ℝ => expE y + Real.log y) (psiE x) x := by
@@ -332,9 +332,9 @@ theorem hasDerivAt_expE_add_log {x : ℝ} (hx : 0 < x) :
   rw [div_eq_mul_inv, div_eq_mul_inv]
   ring
 
-/-- `E(x) + log x - cW = ∫₀^x (1 - e^{-w}) dw/w` for `x > 0`. -/
+/-- `E(x) + log x - eulerW = ∫₀^x (1 - e^{-w}) dw/w` for `x > 0`. -/
 theorem expE_add_log {x : ℝ} (hx : 0 < x) :
-    expE x + Real.log x - cW = ∫ w in (0 : ℝ)..x, psiE w := by
+    expE x + Real.log x - eulerW = ∫ w in (0 : ℝ)..x, psiE w := by
   have hderiv : ∀ w ∈ Set.uIcc (1 : ℝ) x,
       HasDerivAt (fun y : ℝ => expE y + Real.log y) (psiE w) w := by
     intro w hw
@@ -353,7 +353,7 @@ theorem expE_add_log {x : ℝ} (hx : 0 < x) :
       (intervalIntegrable_psiE (le_refl (0 : ℝ)) hx.le)
       (intervalIntegrable_psiE (le_refl (0 : ℝ)) zero_le_one)
   rw [Real.log_one, add_zero] at hftc
-  unfold cW
+  unfold eulerW
   linarith
 
 theorem integral_psiE_nonneg {x : ℝ} (hx : 0 ≤ x) : 0 ≤ ∫ w in (0 : ℝ)..x, psiE w :=
@@ -372,9 +372,9 @@ theorem integral_psiE_le {x : ℝ} (hx : 0 ≤ x) : ∫ w in (0 : ℝ)..x, psiE 
 
 /-! ## `K₀` at zero -/
 
-/-- **`K₀(t) = -log(t/2) + cW + O(t)`**: `|K₀(t) + log(t/2) - cW| ≤ t/2` for `t > 0`. -/
+/-- **`K₀(t) = -log(t/2) + eulerW + O(t)`**: `|K₀(t) + log(t/2) - eulerW| ≤ t/2` for `t > 0`. -/
 theorem abs_besselK0_add_log_le {t : ℝ} (ht : 0 < t) :
-    |besselK0 t + Real.log (t / 2) - cW| ≤ t / 2 := by
+    |besselK0 t + Real.log (t / 2) - eulerW| ≤ t / 2 := by
   have ht2 : 0 < t / 2 := half_pos ht
   have h1 := expE_sub_besselK0_nonneg ht
   have h2 := expE_sub_besselK0_le ht
