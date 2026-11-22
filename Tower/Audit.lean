@@ -51,6 +51,8 @@ import Tower.RV6.CJSeries
 import Tower.RV6.CKZero
 import Tower.RV6.HAgree
 import Tower.RV6.GPoly
+import Tower.RV6.RotRect
+import Tower.RV6.RotSides
 
 /-!
 # Axiom audit
@@ -290,3 +292,20 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.exists_besselIK_exp_le
 #print axioms Tower.RV6.sidePhi_exp_le
 #print axioms Tower.RV6.sidePhi_side_le
+#print axioms Tower.RV6.re_add_mul_I
+#print axioms Tower.RV6.im_add_mul_I
+#print axioms Tower.RV6.cexp_add_mul_I_re
+#print axioms Tower.RV6.cexp_add_mul_I_im
+#print axioms Tower.RV6.differentiableAt_gpoly_mul
+#print axioms Tower.RV6.differentiableAt_rotE
+#print axioms Tower.RV6.differentiableAt_rotK
+#print axioms Tower.RV6.rotE_eq_rotK
+#print axioms Tower.RV6.rect_rotE
+#print axioms Tower.RV6.rect_rotK
+#print axioms Tower.RV6.rect_rot
+#print axioms Tower.RV6.exists_norm_rotK_side_le
+#print axioms Tower.RV6.norm_side_integral_le
+#print axioms Tower.RV6.exists_norm_sideInt_le
+#print axioms Tower.RV6.tendsto_zero_of_norm_le_exp
+#print axioms Tower.RV6.tendsto_sideInt_atTop
+#print axioms Tower.RV6.tendsto_sideInt_neg
