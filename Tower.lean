@@ -26,4 +26,5 @@ import Tower.RV6.Dirichlet
 import Tower.RV6.Fricke6
 import Tower.RV6.PhiKernel
 import Tower.RV6.Interchange
+import Tower.RV6.Eichler
 import Tower.Audit
