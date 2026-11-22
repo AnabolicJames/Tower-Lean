@@ -32,7 +32,7 @@ noncomputable def gCoeff (n : ℕ) : ℝ :=
 /-- Coefficients of `Ψ`. -/
 noncomputable def psiCoeff (n : ℕ) : ℝ :=
   7 / 2 * sig 3 n + 14 * sigDiv 3 2 n - 11 / 6 * sigDiv 3 3 n - 22 / 3 * sigDiv 3 6 n
-    - 5 / 2 * gCoeff n - 45 * ∑ p ∈ Finset.antidiagonal n, gCoeff p.1 * gCoeff p.2
+    - 5 / 2 * gCoeff n - 45 * ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, gCoeff p.1 * gCoeff p.2
 
 /-- `Ψ(iy) = ∑_{n ≥ 1} psiCoeff(n) e^{-2πny}`. -/
 noncomputable def PsiIm (y : ℝ) : ℝ :=
@@ -138,14 +138,14 @@ theorem gCoeff_abs_le (n : ℕ) : |gCoeff n| ≤ 4 * sig 1 n := by
   constructor <;> linarith
 
 theorem conv_abs_le (n : ℕ) (B : ℝ) (hB : ∀ i ≤ n, |gCoeff i| ≤ B) :
-    |∑ p ∈ Finset.antidiagonal n, gCoeff p.1 * gCoeff p.2| ≤ ((n : ℝ) + 1) * (B * B) := by
+    |∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, gCoeff p.1 * gCoeff p.2| ≤ ((n : ℝ) + 1) * (B * B) := by
   have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (hB 0 (Nat.zero_le n))
-  calc |∑ p ∈ Finset.antidiagonal n, gCoeff p.1 * gCoeff p.2|
-      ≤ ∑ p ∈ Finset.antidiagonal n, |gCoeff p.1 * gCoeff p.2| :=
+  calc |∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, gCoeff p.1 * gCoeff p.2|
+      ≤ ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, |gCoeff p.1 * gCoeff p.2| :=
         Finset.abs_sum_le_sum_abs _ _
-    _ ≤ ∑ _p ∈ Finset.antidiagonal n, B * B := by
+    _ ≤ ∑ _p ∈ Finset.HasAntidiagonal.antidiagonal n, B * B := by
         refine Finset.sum_le_sum (fun p hp => ?_)
-        have hp' := Finset.mem_antidiagonal.mp hp
+        have hp' := Finset.HasAntidiagonal.mem_antidiagonal.mp hp
         rw [abs_mul]
         exact mul_le_mul (hB p.1 (by omega)) (hB p.2 (by omega)) (abs_nonneg _) hB0
     _ = ((n : ℝ) + 1) * (B * B) := by
@@ -188,8 +188,8 @@ theorem psiCoeff_abs_le (n : ℕ) (x : ℝ) (hx1 : 1 ≤ x) (hxn : (n : ℝ) = x
   have hn4 : (n : ℝ) + 1 ≤ 2 * x ^ 4 := by
     have h1 : (1 : ℝ) ≤ x ^ 4 := one_le_pow₀ hx1
     linarith
-  have hS' : |∑ p ∈ Finset.antidiagonal n, gCoeff p.1 * gCoeff p.2| ≤ 512 * x ^ 14 := by
-    calc |∑ p ∈ Finset.antidiagonal n, gCoeff p.1 * gCoeff p.2|
+  have hS' : |∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, gCoeff p.1 * gCoeff p.2| ≤ 512 * x ^ 14 := by
+    calc |∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, gCoeff p.1 * gCoeff p.2|
         ≤ ((n : ℝ) + 1) * (16 * x ^ 5 * (16 * x ^ 5)) := hS
       _ ≤ 2 * x ^ 4 * (16 * x ^ 5 * (16 * x ^ 5)) :=
           mul_le_mul_of_nonneg_right hn4 (by positivity)
