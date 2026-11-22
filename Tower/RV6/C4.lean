@@ -91,10 +91,13 @@ theorem c4_eq (n : ℕ) :
   have h3 := sum_antidiag_dvd 3 n (by norm_num)
   have h6 := sum_antidiag_dvd 6 n (by norm_num)
   have hc : (c4 n : ℝ) = 32 * ∑ d ∈ n.divisors, ((w d : ℤ) : ℝ) * ((n / d : ℕ) : ℝ) ^ 3 := by
-    unfold c4
     first
-      | (push_cast; done)
-      | (push_cast; ring)
+      | (simp only [c4, Int.cast_mul, Int.cast_sum, Int.cast_pow, Int.cast_natCast,
+          Int.cast_ofNat]; done)
+      | (unfold c4
+         rw [Int.cast_mul, Int.cast_sum, Int.cast_ofNat]
+         refine congrArg (fun t : ℝ => 32 * t) (Finset.sum_congr rfl (fun d _ => ?_))
+         rw [Int.cast_mul, Int.cast_pow, Int.cast_natCast])
   have hA : ∑ d ∈ n.divisors, ((w d : ℤ) : ℝ) * ((n / d : ℕ) : ℝ) ^ 3
       = ∑ x ∈ n.divisorsAntidiagonal, ((w x.1 : ℤ) : ℝ) * (x.2 : ℝ) ^ 3 :=
     (Nat.sum_divisorsAntidiagonal (fun a b => ((w a : ℤ) : ℝ) * (b : ℝ) ^ 3)).symm
