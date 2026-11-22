@@ -193,9 +193,7 @@ theorem besselK0_le_kappa_exp {t : ℝ} (ht : 1 ≤ t) :
     besselK0 t ≤ Real.exp 1 * besselK0 1 * Real.exp (-t) := by
   have h := besselK0_le_of_one_le ht
   have e : Real.exp (1 - t) = Real.exp 1 * Real.exp (-t) := by
-    rw [← Real.exp_add]
-    congr 1
-    ring
+    rw [sub_eq_add_neg, Real.exp_add]
   have e2 : Real.exp 1 * Real.exp (-t) * besselK0 1
       = Real.exp 1 * besselK0 1 * Real.exp (-t) := by ring
   rw [e, e2] at h
@@ -407,8 +405,8 @@ theorem integrable_besselIK_exp (a d : ℕ) {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ
     (b := a + d + 2)
     (continuous_besselIK_exp a (a + d + 2)).aestronglyMeasurable
     (pow_nonneg (Real.exp_pos 1).le a)
-    (fun u hu => besselIK_exp_abs_le_small a (a + d + 2) hu)
-    (fun u hu => besselIK_exp_abs_le_large a d hu) hσ hσ3
+    (fun _ hu => besselIK_exp_abs_le_small a (a + d + 2) hu)
+    (fun _ hu => besselIK_exp_abs_le_large a d hu) hσ hσ3
 
 /-- `I₀(e^u)³ K₀(e^u)³ e^{σu}` is integrable on `ℝ` for `0 < σ < 3`. -/
 theorem integrable_besselIK_cube_exp {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ < 3) :
@@ -419,7 +417,7 @@ theorem integrable_besselIK_cube_exp {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ < 3) :
     (A := Real.exp 1 ^ 3) (B := 1) (α := 3) (b := 3)
     (continuous_besselIK_exp 3 3).aestronglyMeasurable
     (pow_nonneg (Real.exp_pos 1).le 3)
-    (fun u hu => besselIK_exp_abs_le_small 3 3 hu)
+    (fun _ hu => besselIK_exp_abs_le_small 3 3 hu)
     (fun u _ => besselIK_cube_exp_abs_le_large u) hσ hσ3
 
 /-- `(I₀² I₁ K₀⁵)(e^u) e^{σu}` is integrable on `ℝ` for `0 < σ < 3`. -/
@@ -435,8 +433,8 @@ theorem integrable_besselP_exp {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ < 3) :
     continuous_besselP_exp.aestronglyMeasurable
     (mul_nonneg (mul_nonneg (pow_nonneg (Real.exp_pos 1).le 2) (Bser_nonneg zero_le_one))
       (by norm_num))
-    (fun u hu => besselP_exp_abs_le_small hu)
-    (fun u hu => besselP_exp_abs_le_large hu) hσ hσ3
+    (fun _ hu => besselP_exp_abs_le_small hu)
+    (fun _ hu => besselP_exp_abs_le_large hu) hσ hσ3
 
 /-- `J₀(e^u)⁶ e^{σu}` is integrable on `ℝ` for `0 < σ < 3`. -/
 theorem integrable_besselJ0_pow_six_exp {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ < 3) :
@@ -447,6 +445,6 @@ theorem integrable_besselJ0_pow_six_exp {σ : ℝ} (hσ : 0 < σ) (hσ3 : σ < 3
     continuous_besselJ0_pow_six_exp.aestronglyMeasurable
     zero_le_one
     (fun u _ => besselJ0_pow_six_exp_abs_le_small u)
-    (fun u hu => besselJ0_pow_six_exp_abs_le_large hu) hσ hσ3
+    (fun _ hu => besselJ0_pow_six_exp_abs_le_large hu) hσ hσ3
 
 end Tower.RV6
