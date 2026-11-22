@@ -2,6 +2,8 @@ import Tower.TangentLine.ModP
 import Tower.TangentLine.NonTorsion
 import Tower.RV6.Ladder
 import Tower.RV6.BesselAlgebra
+import Tower.RV6.Swap
+import Tower.RV6.Lambert
 
 /-!
 # Axiom audit
@@ -45,3 +47,7 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rv6_of_rungs
 #print axioms Tower.RV6.sixteen_mul_pow_six
 #print axioms Tower.RV6.hasDerivAt_pow_mul_pow_of_wronskian
+#print axioms Tower.RV6.Phi_scale
+#print axioms Tower.RV6.Phi_swap
+#print axioms Tower.RV6.summable_Ecal_terms
+#print axioms Tower.RV6.summable_DEcal_terms
