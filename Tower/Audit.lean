@@ -41,6 +41,7 @@ import Tower.RV6.RungA1
 import Tower.RV6.KZero
 import Tower.RV6.LadderA2
 import Tower.RV6.TrigA2
+import Tower.RV6.MellinU
 
 /-!
 # Axiom audit
@@ -219,3 +220,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.trigT_abs_le
 #print axioms Tower.RV6.rungA2T
 #print axioms Tower.RV6.rv6_of_A2RNMP_B
+#print axioms Tower.RV6.integrable_mul_exp_of_bounds
+#print axioms Tower.RV6.integrable_besselIK_exp
+#print axioms Tower.RV6.integrable_besselIK_cube_exp
+#print axioms Tower.RV6.integrable_besselP_exp
+#print axioms Tower.RV6.integrable_besselJ0_pow_six_exp
