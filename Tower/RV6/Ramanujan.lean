@@ -408,7 +408,12 @@ theorem ram2_axis {y : ℝ} (hy : 0 < y) :
   have h := congrFun Derivative.normalizedDerivOfComplex_E₂ z
   simp only [Pi.smul_apply, Pi.sub_apply, Pi.pow_apply, smul_eq_mul] at h
   rw [D_E2_axis hy z hz, E2_axis z hz, E4_axis z hz] at h
-  exact_mod_cast h
+  have hc : ((12⁻¹ * (E2im y ^ 2 - E4im y) : ℝ) : ℂ)
+      = 12⁻¹ * ((E2im y : ℂ) ^ 2 - (E4im y : ℂ)) := by
+    first
+      | (push_cast; ring)
+      | push_cast
+  exact Complex.ofReal_injective (h.trans hc.symm)
 
 /-- `E₆(iy)` as a real function: `E₂(iy) E₄(iy) - 720 ∑ n σ₃(n) e^{-2πny}`. -/
 noncomputable def E6im (y : ℝ) : ℝ :=
@@ -472,7 +477,12 @@ theorem ram6_axis {y : ℝ} (hy : 0 < y) :
   have h := congrFun Derivative.normalizedDerivOfComplex_E₆ z
   simp only [Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, smul_eq_mul] at h
   rw [D_E6_axis hy z hz, E2_axis z hz, E4_axis z hz, E6_axis hy z hz] at h
-  exact_mod_cast h
+  have hc : ((2⁻¹ * (E2im y * E6im y - E4im y ^ 2) : ℝ) : ℂ)
+      = 2⁻¹ * ((E2im y : ℂ) * (E6im y : ℂ) - (E4im y : ℂ) ^ 2) := by
+    first
+      | (push_cast; ring)
+      | push_cast
+  exact Complex.ofReal_injective (h.trans hc.symm)
 
 /-! ## The two identities between the coefficients -/
 
