@@ -10,4 +10,7 @@ import Tower.TangentLine.Red103
 import Tower.TangentLine.Red373
 import Tower.TangentLine.Red499
 import Tower.TangentLine.NonTorsion
+import Tower.RV6.Defs
+import Tower.RV6.Ladder
+import Tower.RV6.BesselAlgebra
 import Tower.Audit
