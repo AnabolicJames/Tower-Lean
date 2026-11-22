@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (stated; proof reduced to six rungs)
+## The six-step Mahler measure (stated; one of six rungs proved)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -46,19 +46,27 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 |---|---|
 | `Tower/RV6/Defs.lean` | the objects, each a convergent integral or series: the Mahler measure as a torus integral; `I₀`, `I₁`, `J₀`, `K₀`; the Bessel moment `R₆,₂ = (8/5) ∫ I₀² I₁ K₀⁵`; `Λ(f, 5)` from Mathlib's eta function; `L(f, 5)` from the coefficients of the eta product; the regularised double Eisenstein integral `D₀₁` on `Γ₀(6)`; the integrals `J₁`, `J₂` |
 | `Tower/RV6/Ladder.lean` | the proof cut into six named propositions (`RungA1`, `RungA2`, `RungB`, `RungC1`, `RungC2`, `RungD`) and **`rv6_of_rungs`**: the rungs imply the theorem |
-| `Tower/RV6/BesselAlgebra.lean` | two pieces of the Bessel side that are already proved: the sixth-power identity behind the rotation of `∫ J₀⁶`, and the Wronskian derivative identity behind `R₆,₂ = (8/5) ∫ I₀² I₁ K₀⁵` |
-| `Tower/RV6/Swap.lean` | first brick under `RungC1`: `Φ(cd, ab; s) = (d/a)^s Φ(ac, bd; s)` for `Φ(m, n; s) = ∫₀^∞ exp(-πm/(3y) - 2πny) y^{s-1} dy`, the substitution that regroups the two Lambert series |
-| `Tower/RV6/Lambert.lean` | the Lambert series `∑ σ₁(n) e^{-2πny}` and `∑ n σ₁(n) e^{-2πny}` of the definitions converge for `y > 0` |
+| `Tower/RV6/Ladder2.lean`, `Psi.lean`, `MellinSeries.lean` | the modular side re-cut with an explicit Eisenstein form; termwise Mellin transform of a `q`-series; **`lambdaPsi5_eq`** (rung D′) |
+| `Tower/RV6/EisAxis.lean` | **`E4im_inv`**, **`E2im_inv`**: `E₄(i/y) = y⁴ E₄(iy)` and `E₂(i/y) = -y² E₂(iy) + 6y/π`, from Mathlib's Eisenstein series |
+| `Tower/RV6/QSeries.lean`, `Regroup.lean`, `Arith.lean`, `Dirichlet.lean`, `Fricke6.lean` | `q`-series on the imaginary axis (dilation, Cauchy product, Mellin transform); regrouping of double series by the product of the indices; `Σ_{mn=N} σ₃(m)σ₃(n) n = Σ_{mn=N} σ₁(m)σ₁(n) n³`; `Σ σ₃(n)/n⁵ = (π²/6) ζ(5)`, `Σ σ₁(n)/n⁵ = (π⁴/90) ζ(5)`; the Fricke relations at level six |
+| `Tower/RV6/PhiKernel.lean`, `Interchange.lean` | **`interchange_three`**, **`interchange_four`**: Lemma 5.1 of the paper (the interchange of the two Eisenstein series under the integral), by Tonelli and one identity of arithmetic functions |
+| `Tower/RV6/Eichler.lean`, `Eichler2.lean` | the partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt`; **`Tint_inv`**: `T(a) + T(1/a) = (a² + a⁻²)/480 + 2T(1) - 1/240`; the two forms of `𝒜₁`; `∫₀^∞ x² T(x) dx = ζ(5)/(24π³)` |
+| `Tower/RV6/Bilin.lean` | linearity of the integral for finite combinations and for products of two finite combinations |
+| `Tower/RV6/C4.lean` | the Fourier coefficients `c₄(n)` of `Defs.lean` are `32 (σ₃(n) - σ₃(n/2) - 9σ₃(n/3) + 9σ₃(n/6))` |
+| `Tower/RV6/RungC1.lean` (generated) | **`rungC1 : RungC1`**: `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))`, with no hypotheses |
+| `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
+| `tools/gen_interchange.py`, `tools/gen_rungc1.py` | generators of the generated files (they only substitute repeated expressions) |
 
-**Status: this is not yet a Lean proof of the theorem.**  A rung is a hypothesis.  What the
-kernel has checked is that the six rungs imply the theorem.  Each rung was checked numerically
-from the Lean definitions before it was stated (five of them by two independent programs to
-`10⁻¹²` or better, the classical random-walk representation by Monte Carlo).  The work ahead is
-to discharge the rungs one by one.
+**Status: this is not yet a Lean proof of the theorem.**  `rv6_of_rungs` shows that six
+propositions imply it.  One of the six, `RungC1` (Section 5 of the paper: the Fricke split of the
+double Eisenstein integral, including the convergence of the regularised integral and the
+interchange of Lemma 5.1), is proved.  The other five are hypotheses.  Each was checked
+numerically from the Lean definitions before it was stated.  `ROADMAP.md` has the plan and the
+state by rung.
 
 ## Not here yet
 
-* proofs of the six rungs of `Tower/RV6/Ladder.lean`;
+* proofs of the five remaining rungs of `Tower/RV6/Ladder.lean` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
