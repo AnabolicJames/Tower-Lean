@@ -15,4 +15,7 @@ import Tower.RV6.Ladder
 import Tower.RV6.BesselAlgebra
 import Tower.RV6.Swap
 import Tower.RV6.Lambert
+import Tower.RV6.MellinSeries
+import Tower.RV6.Psi
+import Tower.RV6.Ladder2
 import Tower.Audit

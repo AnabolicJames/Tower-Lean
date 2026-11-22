@@ -4,6 +4,7 @@ import Tower.RV6.Ladder
 import Tower.RV6.BesselAlgebra
 import Tower.RV6.Swap
 import Tower.RV6.Lambert
+import Tower.RV6.Ladder2
 
 /-!
 # Axiom audit
@@ -51,3 +52,7 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.Phi_swap
 #print axioms Tower.RV6.summable_Ecal_terms
 #print axioms Tower.RV6.summable_DEcal_terms
+#print axioms Tower.RV6.integral_qseries
+#print axioms Tower.RV6.lambdaPsi5_eq
+#print axioms Tower.RV6.rv6_psi_of_rungs
+#print axioms Tower.RV6.rv6_of_rungs'
