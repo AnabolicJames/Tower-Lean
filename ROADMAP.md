@@ -24,7 +24,7 @@ and nothing is continued analytically.
 | rung | statement | status |
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | open |
-| A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved |
+| A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved; `R₆,₂` is a convergent positive integral (`BesselR.lean`) |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
@@ -45,7 +45,7 @@ C1 and C2″ together are `D01_eq_modular`:
 | 5 | `Eichler`, `Eichler2`, `Bilin`, `RungC1`, `C4` | the partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt` and its inversion formula; the two forms of `𝒜₁`; `∫ x² T = ζ(5)/(24π³)`; the Fricke split; `c₄(n)` as divisor sums; **rung C1** |
 | 6 | `QCalc`, `DEInv`, `PsiW`, `RungC2`, `Ladder3` | termwise differentiation of a `q`-series, integrability of `qa C y · y^k`, the Cauchy product; the inversion formula of `D E₂`; the Fricke substitution in an integral; the moments of `𝔉` (`∫ 𝔉 y² = 0`, `∫ 𝔉 y⁴ = ζ(5)/(144π)`, `∫ 𝔉 D𝔉 y⁵ = (5/(4π)) ∫ 𝔉² y⁴`); **rungs C2″ and D″**; the ladder from the Bessel side |
 | 7 | `Ser`, `Ramanujan`, `Level6`, `EtaRec` | `θ = X d/dX` on `ℝ⟦X⟧`; uniqueness of the coefficients of a `q`-series; `(2πi)⁻¹ d/dz` on the imaginary axis; Ramanujan's identities for `E₂, E₄, E₆` in `ℝ⟦X⟧` from Mathlib's; the nine relations at level 6 by a closed linear system under `θ`; the logarithmic derivative of the truncated eta product; **rung E″**; `rv6_of_bessel` |
-| 8 (first session) | `BesselI`, `BesselK`, `BesselW` | `I₀' = I₁`, `(t I₁)' = t I₀`; `K₁`, `K₀' = -K₁`, `(t K₁)' = -t K₀`; `e^{-t} ≤ t K₁ ≤ 1`; the Wronskian `I₀K₁ + I₁K₀ = 1/t`.  Carried: `K₀(t) ≤ 1 + log(2/t)` and the Gaussian bound, integrability of `I₀² I₁ K₀⁵` and `R₆,₂ > 0` |
+| 8 | `BesselI`, `BesselK`, `BesselW`, `BesselR` | `I₀' = I₁`, `(t I₁)' = t I₀`; `K₁`, `K₀' = -K₁`, `(t K₁)' = -t K₀`; `e^{-t} ≤ t K₁ ≤ 1`; the Wronskian `I₀K₁ + I₁K₀ = 1/t`; `I₀ ≤ cosh`, `I₁ ≤ sinh`, `K₀ > 0`; `I₀ ≤ e^t` and `I₁K₀ ≤ 1/t` (from the Wronskian); `K₀(t) ≤ e^{-t}√(π/(2t))`, `K₀(t) ≤ log(1 + 2/t)`; **`I₀² I₁ K₀⁵` is integrable on `(0, ∞)` and `R₆,₂ > 0`** |
 
 ## Plan by rung
 
@@ -56,15 +56,19 @@ differences satisfy `θR = M R` with `M(0)` having eigenvalues `0, 2, 3, 6` only
 equation `12 θG = (Σ_{d ∣ 6} d E₂(X^d)) G` for `G = Σ psiW(n) Xⁿ`; the same equation for the eta
 product from its logarithmic derivative.
 
-**Bessel calculus (wave 8, under way).**  Done: the derivative formulas and the Wronskian for the
-functions of `Defs.lean`.  Next: `K₀(t) ≤ 1 + log(2/t)` for `t ≤ 1` and `K₀(t) ≤ e^{1-t} K₀(1)` for
-`t ≥ 1`; with `I₁K₀ ≤ 1/t` and `I₀ ≤ e^t` (both from the Wronskian) these give the integrability
-of `I₀² I₁ K₀⁵`, i.e. that `R₆,₂` of `Defs.lean` is a convergent positive integral.
+**Bessel calculus.**  Done (wave 8): the derivative formulas and the Wronskian for the functions
+of `Defs.lean`; the bounds `I₀ ≤ e^t`, `I₁K₀ ≤ 1/t`, `K₀(t) ≤ e^{1-t} K₀(1)` (`t ≥ 1`),
+`K₀(t) ≤ log(1 + 2/t)`; the integrability of `I₀² I₁ K₀⁵` on `(0, ∞)`.  `R₆,₂` of `Defs.lean` is a
+convergent positive integral (a Bochner integral of a non-integrable function would be `0`).
 
-**A1.**  `J₀` as the characteristic function of a uniform step (Bessel's integral for `J₀`, from
-the series by Wallis' integrals); `|J₀(t)| ≤ C t^{-1/2}` from the energy `u'² + u²` of
-`u = √t J₀`; `log a = log 2 + ∫ (e^{-t} - J₀(at)) dt/t`; exchange with the expectation.
-Self-contained real analysis; several waves.
+**A1.**  In this order.  (1) `J₀' = -J₁` and `(t J₁)' = t J₀` from the series;
+`J₀² + J₁² ≤ 1` on `t ≥ 0` (its derivative is `-2J₁²/t`); the energy
+`E = t J₀² + t J₁² - J₀J₁ + J₀²/(2t)` of `√t J₀` has `E' = -J₀²/(2t²)`, so `J₀(t)² ≤ E(1)/t` for
+`t ≥ 1`; the integrand of the walk side is integrable.  (2) `∫₀^∞ e^{-δt} J₀(at) dt = (δ² + a²)^{-1/2}`
+from the two derivative formulas, hence `∫₀^∞ (e^{-t} - J₀(at)) dt/t = log a - log 2`.
+(3) Bessel's integral `J₀(t) = ∫₀¹ cos(t cos 2πθ) dθ` (both sides solve the same first-order
+system and the difference has non-increasing energy); the characteristic function of the
+six-step walk; exchange with the expectation over the torus.  Real analysis only; several waves.
 
 **A2.**  Lemma 2.1 (with the Wronskian, now available); Hankel functions `J₀ ± iY₀` in a half
 plane and the rotation of `∫ J₀⁶ t^{s-1} dt`; the Mellin expansions (2.6).  Needs conditionally
@@ -103,3 +107,8 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
 * `ring` does not identify `(1/2)^(2k)` with `(1/4)^k`: a numeral under a variable exponent is
   rewritten by `pow_mul` first.
 * `IntegrableOn` is not unfolded by dot notation: `Integrable.const_mul h c`, not `h.const_mul c`.
+* `rw` rewrites the first match in pre-order (the left-hand side of a relation before the right,
+  a term before its subterms) and then every instance of that match; before a `rw [mul_one]` or
+  `rw [neg_pow]` the first match is worked out by hand, or the lemma is given its arguments.
+* `Continuous.mul`, `HasDerivAt.mul`, `Continuous.pow`, `HasDerivAt.div` are stated for `f * g`,
+  `f ^ n`, `f / g` as functions; a typed `have` written with `fun x => f x * g x` accepts them.
