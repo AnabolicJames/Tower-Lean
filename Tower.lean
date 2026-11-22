@@ -41,4 +41,5 @@ import Tower.RV6.Level6
 import Tower.RV6.Ramanujan
 import Tower.RV6.EtaRec
 import Tower.RV6.BesselI
+import Tower.RV6.BesselK
 import Tower.Audit
