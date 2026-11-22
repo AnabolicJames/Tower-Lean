@@ -45,4 +45,6 @@ import Tower.RV6.BesselK
 import Tower.RV6.BesselW
 import Tower.RV6.BesselR
 import Tower.RV6.BesselJ
+import Tower.RV6.Laplace
+import Tower.RV6.LogInt
 import Tower.Audit
