@@ -36,10 +36,28 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
+## The six-step Mahler measure (stated; proof reduced to six rungs)
+
+`m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
+(the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
+pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
+
+| File | Content |
+|---|---|
+| `Tower/RV6/Defs.lean` | the objects, each a convergent integral or series: the Mahler measure as a torus integral; `I₀`, `I₁`, `J₀`, `K₀`; the Bessel moment `R₆,₂ = (8/5) ∫ I₀² I₁ K₀⁵`; `Λ(f, 5)` from Mathlib's eta function; `L(f, 5)` from the coefficients of the eta product; the regularised double Eisenstein integral `D₀₁` on `Γ₀(6)`; the integrals `J₁`, `J₂` |
+| `Tower/RV6/Ladder.lean` | the proof cut into six named propositions (`RungA1`, `RungA2`, `RungB`, `RungC1`, `RungC2`, `RungD`) and **`rv6_of_rungs`**: the rungs imply the theorem |
+| `Tower/RV6/BesselAlgebra.lean` | two pieces of the Bessel side that are already proved: the sixth-power identity behind the rotation of `∫ J₀⁶`, and the Wronskian derivative identity behind `R₆,₂ = (8/5) ∫ I₀² I₁ K₀⁵` |
+
+**Status: this is not yet a Lean proof of the theorem.**  A rung is a hypothesis.  What the
+kernel has checked is that the six rungs imply the theorem.  Each rung was checked numerically
+from the Lean definitions before it was stated (five of them by two independent programs to
+`10⁻¹²` or better, the classical random-walk representation by Monte Carlo).  The work ahead is
+to discharge the rungs one by one.
+
 ## Not here yet
 
-* the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`;
-* the six-step evaluation `m(1 + x₁ + ⋯ + x₅) = 648 L(f, 5)/π⁶`.
+* proofs of the six rungs of `Tower/RV6/Ladder.lean`;
+* the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
 
