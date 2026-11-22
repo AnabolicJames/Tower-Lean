@@ -20,6 +20,9 @@ import Tower.RV6.C4
 import Tower.RV6.RungC1
 import Tower.RV6.QCalc
 import Tower.RV6.DEInv
+import Tower.RV6.PsiW
+import Tower.RV6.RungC2
+import Tower.RV6.Ladder3
 
 /-!
 # Axiom audit
@@ -114,3 +117,16 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.DGcal_fricke
 #print axioms Tower.RV6.fricke_subst
 #print axioms Tower.RV6.integral_qa_scale
+#print axioms Tower.RV6.Fcal_eq_qa
+#print axioms Tower.RV6.DFcal_eq_qa
+#print axioms Tower.RV6.M2F_eq
+#print axioms Tower.RV6.L5F_eq
+#print axioms Tower.RV6.M5F_eq
+#print axioms Tower.RV6.lambdaPsiW5_eq
+#print axioms Tower.RV6.lambdaPsiW5_split
+#print axioms Tower.RV6.J2_eq_moments
+#print axioms Tower.RV6.J1_eq_moments
+#print axioms Tower.RV6.rungC2W
+#print axioms Tower.RV6.D01_eq_modular
+#print axioms Tower.RV6.rv6_psiW_of_bessel
+#print axioms Tower.RV6.rv6_of_bessel_and_E
