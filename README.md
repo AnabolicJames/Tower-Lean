@@ -62,6 +62,7 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/Ramanujan.lean` | **`qa_coeff_unique`**: a `q`-series of polynomial growth that vanishes for all `y > 0` has zero coefficients; **`D_axis`**: `(2πi)⁻¹ d/dz` on the imaginary axis; **`ram6`**: Ramanujan's identities for `E₂, E₄, E₆` at `X, X², X³, X⁶` in `ℝ⟦X⟧`, from Mathlib's identities on the upper half plane |
 | `Tower/RV6/Level6.lean` (generated) | the nine polynomial relations among `E₂, E₄, E₆` at `X, X², X³, X⁶` (**`Rf1_eq_zero`** … **`Rf9_eq_zero`**): the differences satisfy a closed linear system under `θ`, whose matrix at `X = 0` has no eigenvalue `≥ 7`; **`thetaGam_scaled`** |
 | `Tower/RV6/EtaRec.lean` | **`rungEW`** (rung E″): `psiW(n)` is the `n`-th coefficient of `X ∏ ((1-X^k)(1-X^{2k})(1-X^{3k})(1-X^{6k}))²`, by the logarithmic derivative of the product and uniqueness of the recurrence; **`rv6_of_bessel`**: `RungA1`, `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
+| `Tower/RV6/BesselI.lean`, `BesselK.lean`, `BesselW.lean` | the Bessel functions of `Defs.lean`: `I₀' = I₁`, `(t I₁)' = t I₀` (termwise differentiation of the series); `K₁(t) = ∫₀^∞ e^{-t cosh u} cosh u du`, `K₀' = -K₁`, `(t K₁)' = -t K₀` (differentiation under the integral sign, integration by parts); `e^{-t} ≤ t K₁(t) ≤ 1`; **`wronskian`**: `I₀ K₁ + I₁ K₀ = 1/t` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
@@ -72,7 +73,8 @@ hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
 (Sections 5 and 6 of the paper; nothing is regularised and no convergence is assumed).
 **`rv6_of_bessel`** therefore derives the theorem from three statements, which are still
 hypotheses: the rungs of the Bessel side, `RungA1`, `RungA2`, `RungB`.  Each was checked
-numerically from the Lean definitions before it was stated.  `ROADMAP.md` has the plan and the
+numerically from the Lean definitions before it was stated.  On that side the calculus of
+`I₀, I₁, K₀, K₁` and the Wronskian are proved; no rung is discharged yet.  `ROADMAP.md` has the plan and the
 state by rung.
 
 ## Not here yet

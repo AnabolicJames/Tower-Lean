@@ -24,7 +24,7 @@ and nothing is continued analytically.
 | rung | statement | status |
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | open |
-| A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps proved (`BesselAlgebra.lean`) |
+| A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
@@ -45,6 +45,7 @@ C1 and C2″ together are `D01_eq_modular`:
 | 5 | `Eichler`, `Eichler2`, `Bilin`, `RungC1`, `C4` | the partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt` and its inversion formula; the two forms of `𝒜₁`; `∫ x² T = ζ(5)/(24π³)`; the Fricke split; `c₄(n)` as divisor sums; **rung C1** |
 | 6 | `QCalc`, `DEInv`, `PsiW`, `RungC2`, `Ladder3` | termwise differentiation of a `q`-series, integrability of `qa C y · y^k`, the Cauchy product; the inversion formula of `D E₂`; the Fricke substitution in an integral; the moments of `𝔉` (`∫ 𝔉 y² = 0`, `∫ 𝔉 y⁴ = ζ(5)/(144π)`, `∫ 𝔉 D𝔉 y⁵ = (5/(4π)) ∫ 𝔉² y⁴`); **rungs C2″ and D″**; the ladder from the Bessel side |
 | 7 | `Ser`, `Ramanujan`, `Level6`, `EtaRec` | `θ = X d/dX` on `ℝ⟦X⟧`; uniqueness of the coefficients of a `q`-series; `(2πi)⁻¹ d/dz` on the imaginary axis; Ramanujan's identities for `E₂, E₄, E₆` in `ℝ⟦X⟧` from Mathlib's; the nine relations at level 6 by a closed linear system under `θ`; the logarithmic derivative of the truncated eta product; **rung E″**; `rv6_of_bessel` |
+| 8 (first session) | `BesselI`, `BesselK`, `BesselW` | `I₀' = I₁`, `(t I₁)' = t I₀`; `K₁`, `K₀' = -K₁`, `(t K₁)' = -t K₀`; `e^{-t} ≤ t K₁ ≤ 1`; the Wronskian `I₀K₁ + I₁K₀ = 1/t`.  Carried: `K₀(t) ≤ 1 + log(2/t)` and the Gaussian bound, integrability of `I₀² I₁ K₀⁵` and `R₆,₂ > 0` |
 
 ## Plan by rung
 
@@ -55,14 +56,24 @@ differences satisfy `θR = M R` with `M(0)` having eigenvalues `0, 2, 3, 6` only
 equation `12 θG = (Σ_{d ∣ 6} d E₂(X^d)) G` for `G = Σ psiW(n) Xⁿ`; the same equation for the eta
 product from its logarithmic derivative.
 
-**A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
-exchange with the expectation; `|J₀(t)| ≤ C t^{-1/2}`.
+**Bessel calculus (wave 8, under way).**  Done: the derivative formulas and the Wronskian for the
+functions of `Defs.lean`.  Next: `K₀(t) ≤ 1 + log(2/t)` for `t ≤ 1` and `K₀(t) ≤ e^{1-t} K₀(1)` for
+`t ≥ 1`; with `I₁K₀ ≤ 1/t` and `I₀ ≤ e^t` (both from the Wronskian) these give the integrability
+of `I₀² I₁ K₀⁵`, i.e. that `R₆,₂` of `Defs.lean` is a convergent positive integral.
 
-**A2.**  `I₀' = I₁`, `K₀' = -K₁`, the Wronskian; Lemma 2.1; Hankel functions and the rotation of
-`∫ J₀⁶ t^{s-1} dt`; the Mellin expansions (2.6).
+**A1.**  `J₀` as the characteristic function of a uniform step (Bessel's integral for `J₀`, from
+the series by Wallis' integrals); `|J₀(t)| ≤ C t^{-1/2}` from the energy `u'² + u²` of
+`u = √t J₀`; `log a = log 2 + ∫ (e^{-t} - J₀(at)) dt/t`; exchange with the expectation.
+Self-contained real analysis; several waves.
 
-**B.**  Lemma 3.1 (Mellin–Parseval and one contour shift) and Zhou's parametrisations (4.4) of
-the Hankel transforms of `I₀K₀³` and `(I₀K₀)²`.  The largest item by far; to be split when reached.
+**A2.**  Lemma 2.1 (with the Wronskian, now available); Hankel functions `J₀ ± iY₀` in a half
+plane and the rotation of `∫ J₀⁶ t^{s-1} dt`; the Mellin expansions (2.6).  Needs conditionally
+convergent integrals handled by a damping factor; large.
+
+**B.**  Lemma 3.1 (Mellin–Parseval and one contour shift), Proposition 3.2 (the Wronskian
+identity), Lemma 4.1, and Zhou's parametrisations (4.4) of the Hankel transforms of `I₀K₀³` and
+`(I₀K₀)²`, which the paper quotes and which would have to be proved here.  The largest item by
+far; to be split into sub-rungs with convergent integrals when reached.
 
 ## Notes on compiling without a local Lean
 
@@ -89,3 +100,6 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
 * `unfold` reduces closed natural-number arithmetic (`0 / 2`); a following `rw [Nat.zero_div]`
   finds nothing.
 * When a tactic may or may not close the goal (`push_cast`), the next one goes under `first`.
+* `ring` does not identify `(1/2)^(2k)` with `(1/4)^k`: a numeral under a variable exponent is
+  rewritten by `pow_mul` first.
+* `IntegrableOn` is not unfolded by dot notation: `Integrable.const_mul h c`, not `h.const_mul c`.
