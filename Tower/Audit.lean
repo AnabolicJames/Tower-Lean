@@ -34,6 +34,7 @@ import Tower.RV6.BesselR
 import Tower.RV6.BesselJ
 import Tower.RV6.Laplace
 import Tower.RV6.LogInt
+import Tower.RV6.BesselInt
 
 /-!
 # Axiom audit
@@ -184,3 +185,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.lapl_besselJ0
 #print axioms Tower.RV6.hasDerivAt_logInt
 #print axioms Tower.RV6.logInt_eq
+#print axioms Tower.RV6.hasDerivAt_besG
+#print axioms Tower.RV6.hasDerivAt_mul_besH
+#print axioms Tower.RV6.bessel_system_zero
+#print axioms Tower.RV6.besselJ0_eq_besG
+#print axioms Tower.RV6.besselJ1_eq_besH
