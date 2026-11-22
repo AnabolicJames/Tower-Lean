@@ -5,8 +5,9 @@ Target: `Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5` with no hypotheses.
 Today: the modular side is proved, including the identification with the eta product, and so is
 the first rung of the Bessel side, the random-walk representation of `μ₆` (`rungA1`, wave 13).
 `Tower.RV6.rv6_of_A2_B` takes the two rungs that are left (`RungA2`, `RungB`) and gives
-`μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing those two hypotheses and is updated
-with every wave.  "Proved" means: in this repository,
+`μ₆ = (648/π⁶) L(f, 5)`.  `RungA2` is cut into five sub-rungs about a real parameter `s > 0`
+(wave 15); `Tower.RV6.rv6_of_A2sub_B` takes those five and `RungB`.  This file is the plan for
+removing these hypotheses and is updated with every wave.  "Proved" means: in this repository,
 kernel-checked, no hypotheses.
 
 ## Architecture
@@ -25,12 +26,25 @@ and nothing is continued analytically.
 | rung | statement | status |
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | **proved** (`rungA1`, wave 13) |
-| A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved; `R₆,₂` is a convergent positive integral (`BesselR.lean`) |
+| A2 | that side `= (30/π⁴) R₆,₂` | open; **reduced to five sub-rungs** (`rungA2_of_subrungs`, wave 15), table below |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
 | D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | **proved** (`lambdaPsiW5_eq`, wave 6) |
 | E″ | `a(n) = psiW(n)` for all `n` | **proved** (`rungEW`, wave 7) |
+
+The sub-rungs of A2 (`LadderA2.lean`).  `mellU h s = ∫ h(e^u) e^{su} du` is the Mellin transform
+`∫₀^∞ h(t) t^{s-1} dt` in the variable `u = log t`; `N = mellU J₀⁶`, `M_{a,b} = mellU (I₀^a K₀^b)`,
+`P(s) = mellU (I₀² I₁ K₀⁵) (s + 1)`, `a₀ = log 2 + eulerW`, where `eulerW` is the constant of
+`K₀(t) = -log(t/2) + eulerW + O(t)` (`KZero.lean`).
+
+| sub-rung | statement | status |
+|---|---|---|
+| A2R | for `0 < s < 1`: `N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)` | open (rotation of the contour) |
+| A2N | `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+` | open |
+| A2M | `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` bounded on `0 < s ≤ 1` for `(a,b) = (1,5), (3,3), (3,5)` | open |
+| A2P | for `0 < s ≤ 1`: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)`; `(8/5) P(s) → R₆,₂` as `s → 0+` | open |
+| A2T | `(1440/π⁵) sin(πs/2)/s⁶ - (720/π⁴) cos(πs/2)/s⁵ - (120/π³) sin(πs/2)/s⁴ - 1/s → 0` as `s → 0+` | open |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -52,6 +66,9 @@ C1 and C2″ together are `D01_eq_modular`:
 | 11 | `BesselInt` | **Bessel's integral** `J₀(x) = ∫₀¹ cos(x cos 2πθ) dθ`, `J₁(x) = ∫₀¹ sin(x cos 2πθ) cos 2πθ dθ` (`x ≥ 0`): both pairs solve `A' = -B`, `(xB)' = xA`, and a solution with zero data at `0` vanishes on `[0, ∞)` |
 | 12 | `CharFun` | invariance of a period integral under shifts; `J₀(t‖z‖) = ∫₀¹ cos(t (Re z cos 2πθ - Im z sin 2πθ)) dθ`; Lebesgue measure on `[0,1]⁵` as a product measure; **the characteristic function of the walk**, `∫_{[0,1]⁵} J₀(t ‖1 + Σ e(τ_j)‖) dτ = J₀(t)⁶` |
 | 13 | `CubeLog`, `RungA1` | the exchange `∫_{[0,1]⁵} log(δ + √(‖X‖² + δ²)) = log 2 + ∫₀^∞ (e^{-t} - e^{-δt} J₀⁶) dt/t` (Fubini on `cube × (0, ∞)`); the damping removed on the walk side (dominated convergence); `X ≠ 0` almost everywhere on the cube; a limit of an antitone sequence of integrable functions with integrals bounded below is integrable; **rung A1**; `rv6_of_A2_B` |
+
+| 14 | `KZero` | `E(x) = ∫₀^∞ exp(-x e^u) du` with `E' = -e^{-x}/x`; `0 ≤ E(t/2) - K₀(t) ≤ t/2`; the constant `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`; **`|K₀(t) + log(t/2) - eulerW| ≤ t/2`** for `t > 0` |
+| 15 | `LadderA2` | the five sub-rungs of A2 stated (each checked numerically from the definitions first); **`rungA2_of_subrungs`**: they imply `RungA2` (multiply the rotation formula by `e^{-a₀ s}`, subtract `1/s`, let `s → 0+`; limits along the right neighbourhoods of `0` and their uniqueness); `rv6_of_A2sub_B` |
 
 ## Plan by rung
 
@@ -76,28 +93,31 @@ continuous integrands.  The right side stays bounded as `δ → 0`; the integran
 on the cube (monotone convergence), and the two limits agree.  No change of variables on the cube
 and no circle average was needed.
 
-**A2.**  `walkSide = (30/π⁴) R₆,₂`.  The plan keeps `s` real and small and never continues a
-Mellin transform analytically:
-(a) the constant `γ₀ = -∫₀^∞ e^{-t} log t dt` and `K₀(t) = -log(t/2) - γ₀ + O(t(1 + |log t|))`
-at `0` (compare `K₀(t)` with `∫_{t/2}^∞ e^{-w} dw/w`; the constant cancels in the end, so it is
-never identified with Euler's);
-(b) for `M_{a,b}(s) = ∫₀^∞ I₀^a K₀^b t^{s-1} dt` and `a₀ = log 2 - γ₀`:
-`e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` is bounded on `0 < s ≤ 1` for `(a, b) = (1,5), (3,3), (3,5)`,
-and `M_{2,4}(s) = (8/5) ∫ t^s I₀² I₁ K₀⁵ dt + (s/5) M_{3,5}(s)` (the Wronskian, wave 8), so
-`e^{-a₀ s} M_{2,4}(s) - 24/s⁵ → R₆,₂`;
-(c) `∫₀^∞ J₀⁶ t^{s-1} dt - 1/s → -(walkSide - log 2) - γ₀` as `s → 0+`;
-(d) complex Bessel functions on the closed first quadrant: `J₀(z) = ∫₀¹ cos(z cos 2πθ) dθ`,
-`K₀(w) = ∫₀^∞ e^{-w cosh u} du` (`Re w > 0`), and `H⁺ = J₀ + iY₀` given by
-`(2/(πi)) K₀(-iz)` for `Im z > 0` and by
-`(2/π) ∫₀^{π/2} e^{iz cos θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` for `Re z > 0`; the two agree
-on the open quadrant (Cauchy's theorem for `e^{z sinh w}` on a rectangle of the strip
-`π/2 ≤ Im w ≤ π`); on the real axis `Re H⁺ = J₀`, on the imaginary axis
-`H⁺(iy) = (2/(πi)) K₀(y)` and `J₀(iy) = I₀(y)`;
-(e) the rotation (2.5) of the paper for `0 < s < 1`: Cauchy's theorem on a rectangle for
-`G(e^w) e^{sw}` (logarithmic coordinates turn the quarter annulus into a rectangle), with
-`G = (3/8) J₀ (H⁺)⁵ - (15/8) J₀² (H⁺)⁴ + (5/2) J₀³ (H⁺)³`, `Re G = J₀⁶` on the real axis; the two
-arcs vanish by `|J₀(z)| ≤ e^{|Im z|}` and `|H⁺(z)| ≤ (2/π) K₀(Im z)`;
-(f) `s → 0+`: the poles cancel, the constant terms give the rung.
+**A2.**  `walkSide = (30/π⁴) R₆,₂`.  The proof keeps `s` real and small and never continues a
+Mellin transform analytically.  Done: the constant `eulerW` and `K₀(t) = a₀ - log t + O(t)` at `0`
+(wave 14; the constant is never identified with Euler's, it cancels); the reduction to the five
+sub-rungs (wave 15).  Left, in the order planned:
+* A2T: with `x = πs/2` the expression is `(π/2) N(x)/x⁶`, `N(x) = 45 sin x - 45 x cos x -
+  15 x² sin x - x⁵`; `N' = 5x N₁`, `N₁ = 3 sin x - 3x cos x - x³`, `N₁' = 3x (sin x - x)`, and
+  `x - x³/6 ≤ sin x ≤ x` gives `-x⁷/14 ≤ N(x) ≤ 0` on `x ≥ 0`.
+* A2P: `(I₀³K₀⁵)' = 8 I₀² I₁ K₀⁵ - 5 I₀² K₀⁴/t` (the Wronskian, wave 8), integrated against `t^s`
+  in the variable `u = log t`; `(8/5) P(s) → R₆,₂` by dominated convergence.
+* A2M: `∫_{u ≤ a₀} (a₀ - u)^b e^{su} du = b! e^{a₀ s}/s^{b+1}`; `|K₀(t) - (a₀ - log t)| ≤ t/2`
+  gives `|I₀^a K₀^b - (a₀ - log t)^b| ≤ C t (1 + |log t|)^b` near `0`; the tails are bounded.
+* A2N: `N(s) - 1/s = ∫_{u ≤ 0} (J₀(e^u)⁶ - 1) e^{su} du + ∫_{u > 0} J₀(e^u)⁶ e^{su} du`, dominated
+  convergence, and `eulerW = ∫₁^∞ e^{-w} dw/w - ∫₀¹ (1 - e^{-w}) dw/w` (`expE_one`).
+* A2R, in two parts.  (d) Complex Bessel functions on the closed first quadrant:
+  `J₀(z) = ∫₀¹ cos(z cos 2πθ) dθ`, `K₀(w) = ∫₀^∞ e^{-w cosh u} du` (`Re w > 0`), and
+  `H⁺ = J₀ + iY₀` given by `(2/(πi)) K₀(-iz)` for `Im z > 0` and by
+  `(2/π) ∫₀^{π/2} e^{iz cos θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` for `Re z > 0`; the two agree
+  on the open quadrant (Cauchy's theorem for `e^{z sinh w}` on a rectangle of the strip
+  `π/2 ≤ Im w ≤ π`); on the real axis `Re H⁺ = J₀`, on the imaginary axis
+  `H⁺(iy) = (2/(πi)) K₀(y)` and `J₀(iy) = I₀(y)`.  (e) The rotation (2.5) of the paper for
+  `0 < s < 1`: Cauchy's theorem on a rectangle for `G(e^w) e^{sw}` (logarithmic coordinates turn
+  the quarter annulus into a rectangle), with
+  `G = (3/8) J₀ (H⁺)⁵ - (15/8) J₀² (H⁺)⁴ + (5/2) J₀³ (H⁺)³`, `Re G = J₀⁶` on the real axis
+  (`sixteen_mul_pow_six`); the two arcs vanish by `|J₀(z)| ≤ e^{|Im z|}` and
+  `|H⁺(z)| ≤ (2/π) K₀(Im z)`.
 
 **B.**  Lemma 3.1 (Mellin–Parseval and one contour shift), Proposition 3.2 (the Wronskian
 identity), Lemma 4.1, and Zhou's parametrisations (4.4) of the Hankel transforms of `I₀K₀³` and
@@ -152,3 +172,11 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   `integral_nonneg`; an instance that Mathlib does not provide (`IsFiniteMeasure` of Lebesgue
   measure restricted to a box in `Fin 5 → ℝ`) is declared once, after rewriting the measure as a
   product; a constant is integrated as `c * 1` with the integral of `1` proved once.
+* Waves 14 and 15: a new top-level name is counted across `Tower/` before the first push (a clash
+  with an older file fails the build of `Audit` although the new file compiles); lemmas produced
+  by `@[to_dual]` or `@[to_additive]` (`Ioo_mem_nhdsGT`, `Filter.Tendsto.abs`,
+  `squeeze_zero_norm'`) have no `theorem` line of their own, so they are found through the dual
+  or multiplicative name; limits at `0+` are stated with `nhdsWithin 0 (Set.Ioi 0)` written out
+  and combined by `.mul`, `.add`, `.sub`, `.const_mul`, each result restated by a typed `have`;
+  two functions that must be the same lambda in two hypotheses are compared as text by a script
+  before the push.

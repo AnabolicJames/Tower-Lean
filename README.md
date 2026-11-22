@@ -70,6 +70,8 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/CharFun.lean` | **`integral_cube_besselJ0`**: `∫_{[0,1]⁵} J₀(t ‖1 + Σ e(τ_j)‖) dτ = J₀(t)⁶`, the characteristic function of the six-step walk; `cube_restrict`: Lebesgue measure on the cube is a product measure |
 | `Tower/RV6/CubeLog.lean` | **`integral_cube_logG`**: `∫_{[0,1]⁵} log(δ + √(‖X‖² + δ²)) dτ = log 2 + ∫₀^∞ (e^{-t} - e^{-δt} J₀(t)⁶) dt/t` for `δ > 0` |
 | `Tower/RV6/RungA1.lean` | **`rungA1 : RungA1`**: `m(1 + x₁ + ⋯ + x₅) = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t`, with no hypotheses; `ae_cubeX_ne_zero`; `integrable_of_antitone_of_tendsto`; **`rv6_of_A2_B`**: `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
+| `Tower/RV6/KZero.lean` | **`abs_besselK0_add_log_le`**: `|K₀(t) + log(t/2) - eulerW| ≤ t/2` for `t > 0`, with `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`, `E(x) = ∫₀^∞ exp(-x e^u) du` |
+| `Tower/RV6/LadderA2.lean` | `RungA2` cut into five named sub-rungs about a real `s > 0` (`RungA2R`, `RungA2N`, `RungA2M`, `RungA2P`, `RungA2T`) and **`rungA2_of_subrungs`**: they imply `RungA2`; **`rv6_of_A2sub_B`** |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
@@ -84,13 +86,15 @@ integral over `[0,1]⁵` (the integrability of `log ‖1 + Σ e(τ_j)‖` on the
 **`rv6_of_A2_B`** therefore derives the theorem from two statements, which are still hypotheses:
 `RungA2` (`walkSide = (30/π⁴) R₆,₂`, the rotation of the contour) and `RungB` (the Bessel-side
 evaluation of the double Eisenstein integral).  Each was checked numerically from the Lean
-definitions before it was stated.  Towards them, the calculus of `I₀, I₁, K₀, K₁`, the Wronskian,
-and the convergence and positivity of the integral defining `R₆,₂` are proved.  `ROADMAP.md` has
-the plan and the state by rung.
+definitions before it was stated.  `RungA2` is in turn derived (**`rungA2_of_subrungs`**) from five
+sub-rungs about Mellin transforms at a real `s > 0`, also hypotheses and also checked numerically
+first; **`rv6_of_A2sub_B`** takes those five and `RungB`.  Towards them, the calculus of
+`I₀, I₁, K₀, K₁`, the Wronskian, the convergence and positivity of the integral defining `R₆,₂`,
+and the expansion of `K₀` at `0` are proved.  `ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of `RungA2`, `RungB` (`ROADMAP.md`);
+* proofs of the five sub-rungs of `RungA2` and of `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
