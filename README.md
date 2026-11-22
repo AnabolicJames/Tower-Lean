@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (stated; one of six rungs proved)
+## The six-step Mahler measure (the modular side proved; the Bessel side open)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -54,19 +54,25 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/Bilin.lean` | linearity of the integral for finite combinations and for products of two finite combinations |
 | `Tower/RV6/C4.lean` | the Fourier coefficients `c₄(n)` of `Defs.lean` are `32 (σ₃(n) - σ₃(n/2) - 9σ₃(n/3) + 9σ₃(n/6))` |
 | `Tower/RV6/RungC1.lean` (generated) | **`rungC1 : RungC1`**: `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))`, with no hypotheses |
+| `Tower/RV6/QCalc.lean`, `DEInv.lean` | termwise differentiation and integrability of a `q`-series on the imaginary axis, the Cauchy product; **`DEq_inv`**: the inversion formula of `D E₂`; `fricke_subst`: `∫₀^∞ g(1/(6y)) y⁻² dy = 6 ∫₀^∞ g` |
+| `Tower/RV6/PsiW.lean` | the weight-four form `Ψ^W` by its coefficients `psiW` (divisor sums); the moments of `𝔉`; **`lambdaPsiW5_eq`** (rung D″): `∫₀^∞ Ψ^W(iy) y⁴ dy = (3/(4π⁵)) Σ psiW(n)/n⁵` |
+| `Tower/RV6/RungC2.lean` | **`rungC2W`** (rung C2″): `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy` |
+| `Tower/RV6/Ladder3.lean` | **`D01_eq_modular`** (no hypotheses); **`rv6_psiW_of_bessel`**: `RungA1`, `RungA2`, `RungB` imply `μ₆ = (648/π⁶) Σ psiW(n)/n⁵`; `rv6_of_bessel_and_E` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py` | generators of the generated files (they only substitute repeated expressions) |
 
-**Status: this is not yet a Lean proof of the theorem.**  `rv6_of_rungs` shows that six
-propositions imply it.  One of the six, `RungC1` (Section 5 of the paper: the Fricke split of the
-double Eisenstein integral, including the convergence of the regularised integral and the
-interchange of Lemma 5.1), is proved.  The other five are hypotheses.  Each was checked
-numerically from the Lean definitions before it was stated.  `ROADMAP.md` has the plan and the
-state by rung.
+**Status: this is not yet a Lean proof of the theorem.**  The modular side is proved with no
+hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
+`(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, and that integral is
+`(3/(4π⁵)) Σ psiW(n)/n⁵` (Sections 5 and 6 of the paper; nothing is regularised and no convergence
+is assumed).  Four statements are still hypotheses: the three rungs of the Bessel side (`RungA1`,
+`RungA2`, `RungB`) and `RungEW`, which says that `psiW(n)` is the `n`-th coefficient of the eta
+product.  Each was checked numerically from the Lean definitions before it was stated.
+`ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of the five remaining rungs of `Tower/RV6/Ladder.lean` (`ROADMAP.md`);
+* proofs of `RungA1`, `RungA2`, `RungB` and `RungEW` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building

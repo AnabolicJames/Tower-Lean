@@ -2,10 +2,12 @@
 
 Target: `Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5` with no hypotheses.
 
-Today: `rv6_of_rungs` takes six hypotheses (the rungs of `Tower/RV6/Ladder.lean`).  One of them,
-`RungC1`, is now a theorem (`Tower.RV6.rungC1`).  This file is the plan for removing the others
-and is updated with every wave.  "Proved" means: in this repository, kernel-checked, no
-hypotheses.
+Today: the modular side is proved.  `Tower.RV6.rv6_psiW_of_bessel` takes the three Bessel-side
+rungs (`RungA1`, `RungA2`, `RungB`) and gives `μ₆ = (648/π⁶) Σ psiW(n)/n⁵` with explicit
+divisor-sum coefficients; `rv6_of_bessel_and_E` adds the identity of coefficients `RungEW` and
+gives the statement with the eta product.  This file is the plan for removing the four
+hypotheses that are left and is updated with every wave.  "Proved" means: in this repository,
+kernel-checked, no hypotheses.
 
 ## Architecture
 
@@ -26,9 +28,12 @@ and nothing is continued analytically.
 | A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps proved (`BesselAlgebra.lean`) |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
-| C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | open (next) |
-| D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | open (next); the same statement for an earlier form is proved (`lambdaPsi5_eq`) |
-| E″ | `a(n) = psiW(n)` for all `n` | open |
+| C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
+| D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | **proved** (`lambdaPsiW5_eq`, wave 6) |
+| E″ | `a(n) = psiW(n)` for all `n` | open (next); true for `n ≤ 60` in exact arithmetic |
+
+C1 and C2″ together are `D01_eq_modular`:
+`D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
 
 ## Proved so far
 
@@ -39,30 +44,28 @@ and nothing is continued analytically.
 | 3 | `QSeries`, `Regroup`, `Arith`, `Dirichlet`, `Fricke6` | `q`-series calculus on the imaginary axis; regrouping a double series by the product of its indices; `Σ_{mn=N} σ₃(m)σ₃(n) n = Σ_{mn=N} σ₁(m)σ₁(n) n³`; `Σ σ₃(n)/n⁵ = (π²/6) ζ(5)`, `Σ σ₁(n)/n⁵ = (π⁴/90) ζ(5)`; the Fricke relations of `g₄` and `𝔊` |
 | 4 | `PhiKernel`, `Interchange` | the interchange of Lemma 5.1 of the paper (Tonelli, regrouping, the arithmetic identity) |
 | 5 | `Eichler`, `Eichler2`, `Bilin`, `RungC1`, `C4` | the partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt` and its inversion formula; the two forms of `𝒜₁`; `∫ x² T = ζ(5)/(24π³)`; the Fricke split; `c₄(n)` as divisor sums; **rung C1** |
+| 6 | `QCalc`, `DEInv`, `PsiW`, `RungC2`, `Ladder3` | termwise differentiation of a `q`-series, integrability of `qa C y · y^k`, the Cauchy product; the inversion formula of `D E₂`; the Fricke substitution in an integral; the moments of `𝔉` (`∫ 𝔉 y² = 0`, `∫ 𝔉 y⁴ = ζ(5)/(144π)`, `∫ 𝔉 D𝔉 y⁵ = (5/(4π)) ∫ 𝔉² y⁴`); **rungs C2″ and D″**; the ladder from the Bessel side |
 
 ## Plan by rung
 
-**C2″.**  Substitute `y → 1/(6y)` in `J₁`, `J₂`; with `𝔊(i/(6y)) = -(1 - 26y² + 24y² 𝔉(iy))/36`
-(`Gcal_fricke`) and its derivative,
-`(D𝔊)(i/(6y)) = (13/(3π)) y³ - (4/π) y³ 𝔉(iy) + 4 y⁴ (D𝔉)(iy)`,
-both become integrals at the cusp `∞`:
-`J₂ = 156 L₅(𝔉) - 144 L₅(𝔉²)`, `J₁ = (156/π) L₅(𝔉) + (36/π) L₅(𝔉²)`, `L₅(h) = ∫₀^∞ h(iy) y⁴ dy`,
-using `∫ y² 𝔉 = 0`, `L₅(𝔉) = ζ(5)/(144π)` and `∫ y⁵ 𝔉 D𝔉 = (5/(4π)) L₅(𝔉²)` (coefficients of
-`𝔉 · D𝔉` are `(n/2)(F∗F)_n`).  By definition of `psiW`,
-`Λ(Ψ^W, 5) = -ζ(5)/(96π³) + (65/54) L₅(𝔉) - (5/9) L₅(𝔉²)`, and `L₅(𝔉²)` cancels.
-Needed: termwise differentiation of a `q`-series (Mathlib: `hasDerivAt_tsum_of_isPreconnected`),
-integrability of `qa C y · y^k` from the summability of `Σ |C(n)|/n^{k+1}`, the Cauchy product
-(`qa_mul`).
+**E″.**  By power series, without the valence formula at level six.  Write
+`x_d = E₂(q^d)`, `u_d = E₄(q^d)`, `v_d = E₆(q^d)` (`d ∣ 6`) as formal power series with their
+divisor-sum coefficients, and `θ = q d/dq`.
 
-**D″.**  `integral_qa` with `|psiW(n)| ≤ C n^{7/2}`; the bound is the one of `Psi.lean` with `F` in
-place of `g`.
+1. Ramanujan's identities `12 θx = x² - u`, `3 θu = xu - v`, `2 θv = xv - u²` are in Mathlib as
+   identities of functions on the upper half plane (`RamanujanFormula.lean`).  Restricted to the
+   imaginary axis they are identities between the real `q`-series of `QSeries.lean`, hence between
+   coefficients; applying `X ↦ X^d` (`PowerSeries.expand`) gives them for `x_d, u_d, v_d`.
+2. Nine relations hold among the twelve series: `ρ(x) = 0` (one quadratic relation among the
+   `x_d`), `u_d = U_d(x)` (four), `v_d = V_d(x)` (four).  The vector `R` of the nine differences
+   satisfies `θR = M R` with a matrix `M` of polynomials (nine polynomial identities, checked by
+   `ring`).  At `q = 0` the matrix has eigenvalues `0, 2, 3, 6`, so `R = 0` as soon as its
+   coefficients vanish through `q⁶`: for `n ≥ 7`, `n - M(0)` is invertible.
+3. With the nine relations, `θG = P G` for `G = Σ psiW(n) qⁿ`, `P = (1/12) Σ_{d ∣ 6} d x_d`: one more
+   polynomial identity.  The eta product satisfies the same equation (logarithmic derivative of
+   the product, in `ℤ⟦X⟧`), and the equation determines the coefficients from the first one.
 
-**E″.**  Both sides are in `M₄(Γ₀(6))`; agreement through `q⁴` plus a Sturm bound.  Mathlib has
-the norm to level one and the level-one valence results; the eta quotient needs exact invariance
-under `Γ₀(6)`.  Alternatively through the pentagonal number theorem (in Mathlib) and theta-series
-identities.
-
-**A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
+**A1.****A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
 exchange with the expectation; `|J₀(t)| ≤ C t^{-1/2}`.
 
 **A2.**  `I₀' = I₁`, `K₀' = -K₁`, the Wronskian; Lemma 2.1; Hankel functions and the rotation of
@@ -84,3 +87,8 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   pushed with an explicit list of lemmas.
 * Algebraic steps are `linear_combination` with cofactors checked beforehand in exact rational
   arithmetic, with `x⁻¹` treated as an independent variable and `x * x⁻¹ = 1` as a hypothesis.
+* An explicit lambda given as an argument leaves `(fun n => …) k` in the type of the result.
+  A typed `have` absorbs it (the check is up to beta); `rw` finds the instance through it.
+* Integrability of an integrand whose integral is known and non-zero is
+  `Integrable.of_integral_ne_zero`; for an integrand that agrees with an integrable one on the
+  domain, `IntegrableOn.congr_fun`.
