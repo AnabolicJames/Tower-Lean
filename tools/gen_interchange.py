@@ -156,10 +156,17 @@ theorem integral_qa_mul @HYP@ :
             (mul_nonneg (mul_nonneg hCB (pow_nonneg (hpos p.2).le _)) hD2)
             (mul_nonneg hWu0 (div_nonneg zero_le_one (pow_nonneg (hpos p.1).le _)))
   have hmaj : Summable fun p : ℕ × ℕ => Wu * (1 / @X@ ^ 2) * (Wv * (1 / @Z@ ^ 2)) := by
-    have h := summable_mul_of_summable_norm
-      (f := fun m : ℕ => Wu * (1 / ((m + 1 : ℕ) : ℝ) ^ 2))
-      (g := fun n : ℕ => Wv * (1 / ((n + 1 : ℕ) : ℝ) ^ 2))
-      (hs2.mul_left Wu).abs (hs2.mul_left Wv).abs
+    have hnu : Summable fun m : ℕ => ‖Wu * (1 / ((m + 1 : ℕ) : ℝ) ^ 2)‖ := by
+      refine (hs2.mul_left Wu).congr (fun m => ?_)
+      show Wu * (1 / ((m + 1 : ℕ) : ℝ) ^ 2) = ‖Wu * (1 / ((m + 1 : ℕ) : ℝ) ^ 2)‖
+      rw [Real.norm_of_nonneg
+        (mul_nonneg hWu0 (div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg _) _)))]
+    have hnv : Summable fun n : ℕ => ‖Wv * (1 / ((n + 1 : ℕ) : ℝ) ^ 2)‖ := by
+      refine (hs2.mul_left Wv).congr (fun n => ?_)
+      show Wv * (1 / ((n + 1 : ℕ) : ℝ) ^ 2) = ‖Wv * (1 / ((n + 1 : ℕ) : ℝ) ^ 2)‖
+      rw [Real.norm_of_nonneg
+        (mul_nonneg hWv0 (div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg _) _)))]
+    have h := summable_mul_of_summable_norm hnu hnv
     exact h
   have hsummable : Summable (fun p : ℕ × ℕ => |@C@| * @PHI@) :=
     Summable.of_nonneg_of_le (fun p => mul_nonneg (abs_nonneg _) (PhiN_nonneg _ _ _)) hbound hmaj
@@ -300,7 +307,8 @@ theorem natCast_zero_or_one_le (n : ℕ) : (n : ℝ) = 0 ∨ 1 ≤ (n : ℝ) := 
   · left
     exact_mod_cast h
   · right
-    exact_mod_cast h
+    have h1 : 1 ≤ n := h
+    exact_mod_cast h1
 
 theorem bound_sig3_div (n : ℕ) : |sig 3 n / (n : ℝ)| ≤ 1 * (n : ℝ) ^ (3 + 1) :=
   (abs_div_le_abs _ _ (natCast_zero_or_one_le n)).trans (sig_abs_le 3 n)
