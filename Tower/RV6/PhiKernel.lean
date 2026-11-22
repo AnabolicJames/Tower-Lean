@@ -20,7 +20,7 @@ open Real MeasureTheory
 theorem exp_neg_inv_bound {c y : ℝ} (hc : 0 < c) (hy : 0 < y) (k : ℕ) :
     c ^ k * Real.exp (-c / y) ≤ (k.factorial : ℝ) * y ^ k := by
   have hx : 0 ≤ c / y := (div_pos hc hy).le
-  have h1 := Real.pow_div_factorial_le_exp hx k
+  have h1 := Real.pow_div_factorial_le_exp (c / y) hx k
   have hk : (0 : ℝ) < (k.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos k
   have h2 : (c / y) ^ k ≤ Real.exp (c / y) * (k.factorial : ℝ) := (div_le_iff₀ hk).mp h1
   rw [div_pow] at h2
