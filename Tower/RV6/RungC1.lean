@@ -1,7 +1,9 @@
 import Mathlib
 import Tower.RV6.Defs
+import Tower.RV6.Ladder
 import Tower.RV6.Interchange
 import Tower.RV6.Eichler2
+import Tower.RV6.C4
 
 /-!
 # The Fricke split of the double Eisenstein integral (rung C1 in Eisenstein form)
@@ -22,7 +24,9 @@ partial Eichler integral:
    (`interchange_three`, `interchange_four`), and the coefficients recombine to `J₁`, `J₂`.
 
 The four divisors are indexed by `Finset.range 4` through `dv`; the coefficient vectors of
-`𝔉`, `𝔊` are `cF`, `cG`.  This file is written by `tools/gen_rungc1.py`.
+`𝔉`, `𝔊` are `cF`, `cG`.  The last section passes from `g4E` to the `g4` of `Defs.lean`
+(`C4.lean`) and states the result as `rungC1 : RungC1`.  This file is written by
+`tools/gen_rungc1.py`.
 -/
 
 namespace Tower.RV6
@@ -296,5 +300,22 @@ theorem D01E_eq : D01E = -(104 / (27 * π ^ 3)) * zeta5 + crossTerm := by
   unfold crossTerm
   rw [J1_eq, J2_eq]
   ring
+
+/-! ## Rung C1 -/
+
+/-- The double Eisenstein integral of `Defs.lean` is the one of the Eisenstein combination. -/
+theorem D01_eq_D01E : D01 = D01E := by
+  unfold D01 D01E
+  refine setIntegral_congr_fun measurableSet_Ioi (fun y hy => ?_)
+  have hy0 : (0 : ℝ) < y := hy
+  show g4 y * A1 y - 1 / (162 * y ^ 6) = g4E y * A1E y - 1 / (162 * y ^ 6)
+  rw [g4_eq_g4E hy0, A1_eq_A1E hy0]
+
+/-- **Rung C1 of `Ladder.lean`, with no hypotheses:**
+`D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))`. -/
+theorem rungC1 : RungC1 := by
+  unfold RungC1
+  rw [D01_eq_D01E]
+  exact D01E_eq
 
 end Tower.RV6

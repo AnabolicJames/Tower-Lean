@@ -16,6 +16,7 @@ import Tower.RV6.Interchange
 import Tower.RV6.Eichler
 import Tower.RV6.Bilin
 import Tower.RV6.Eichler2
+import Tower.RV6.C4
 import Tower.RV6.RungC1
 
 /-!
@@ -99,3 +100,6 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_sq_mul_Tint
 #print axioms Tower.RV6.integral_Tint_fricke
 #print axioms Tower.RV6.D01E_eq
+#print axioms Tower.RV6.c4_eq
+#print axioms Tower.RV6.g4_eq_g4E
+#print axioms Tower.RV6.rungC1
