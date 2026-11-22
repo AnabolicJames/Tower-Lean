@@ -38,6 +38,7 @@ import Tower.RV6.BesselInt
 import Tower.RV6.CharFun
 import Tower.RV6.CubeLog
 import Tower.RV6.RungA1
+import Tower.RV6.KZero
 
 /-!
 # Axiom audit
@@ -204,3 +205,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.ae_cubeX_ne_zero
 #print axioms Tower.RV6.rungA1
 #print axioms Tower.RV6.rv6_of_A2_B
+#print axioms Tower.RV6.expE_sub_besselK0_le
+#print axioms Tower.RV6.hasDerivAt_expE
+#print axioms Tower.RV6.expE_add_log
+#print axioms Tower.RV6.abs_besselK0_add_log_le
+#print axioms Tower.RV6.expE_one
