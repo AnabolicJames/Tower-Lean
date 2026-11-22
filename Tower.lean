@@ -59,4 +59,5 @@ import Tower.RV6.RungA2P
 import Tower.RV6.PoleM
 import Tower.RV6.RungA2M
 import Tower.RV6.RungA2N
+import Tower.RV6.CKernel
 import Tower.Audit

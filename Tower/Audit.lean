@@ -46,6 +46,7 @@ import Tower.RV6.RungA2P
 import Tower.RV6.PoleM
 import Tower.RV6.RungA2M
 import Tower.RV6.RungA2N
+import Tower.RV6.CKernel
 
 /-!
 # Axiom audit
@@ -248,3 +249,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.walk_AB_eq
 #print axioms Tower.RV6.rungA2N
 #print axioms Tower.RV6.rv6_of_A2R_B
+#print axioms Tower.RV6.hasDerivAt_integral_cexp_mul
+#print axioms Tower.RV6.differentiable_kerA
+#print axioms Tower.RV6.differentiable_cJ0
+#print axioms Tower.RV6.norm_cJ0_le
+#print axioms Tower.RV6.cJ0_eq_integral
