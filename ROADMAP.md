@@ -21,7 +21,7 @@ whose coefficients `psiCoeff n` are finite divisor sums.  The identity `Ψ = (η
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + crossTerm` | open; substitution identity and convergence proved (`Swap.lean`, `Lambert.lean`) |
 | C2′ | `crossTerm = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ, 5)` | open |
-| D′ | `Λ(Ψ, 5) = (3/(4π⁵)) Σ psiCoeff(n)/n⁵` | wave 1 |
+| D′ | `Λ(Ψ, 5) = (3/(4π⁵)) Σ psiCoeff(n)/n⁵` | **proved** (`lambdaPsi5_eq`, wave 1) |
 | E  | `aCoeff n = psiCoeff n` for all `n` | open |
 
 ## Plan by rung (everything on the imaginary axis; no analytic continuation is needed)
