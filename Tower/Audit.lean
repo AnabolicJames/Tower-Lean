@@ -36,6 +36,8 @@ import Tower.RV6.Laplace
 import Tower.RV6.LogInt
 import Tower.RV6.BesselInt
 import Tower.RV6.CharFun
+import Tower.RV6.CubeLog
+import Tower.RV6.RungA1
 
 /-!
 # Axiom audit
@@ -196,3 +198,9 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_cube_prod
 #print axioms Tower.RV6.integral_cube_cos
 #print axioms Tower.RV6.integral_cube_besselJ0
+#print axioms Tower.RV6.integral_cube_logG
+#print axioms Tower.RV6.integrable_of_antitone_of_tendsto
+#print axioms Tower.RV6.tendsto_walk_damped
+#print axioms Tower.RV6.ae_cubeX_ne_zero
+#print axioms Tower.RV6.rungA1
+#print axioms Tower.RV6.rv6_of_A2_B

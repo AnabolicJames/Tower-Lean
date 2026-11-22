@@ -49,4 +49,6 @@ import Tower.RV6.Laplace
 import Tower.RV6.LogInt
 import Tower.RV6.BesselInt
 import Tower.RV6.CharFun
+import Tower.RV6.CubeLog
+import Tower.RV6.RungA1
 import Tower.Audit
