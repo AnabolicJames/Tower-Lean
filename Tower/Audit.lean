@@ -50,6 +50,7 @@ import Tower.RV6.CKernel
 import Tower.RV6.CJSeries
 import Tower.RV6.CKZero
 import Tower.RV6.HAgree
+import Tower.RV6.GPoly
 
 /-!
 # Axiom audit
@@ -276,3 +277,16 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rect_cexp_mul_sinh
 #print axioms Tower.RV6.cK0_neg_I_mul_eq
 #print axioms Tower.RV6.hE_eq_hK
+#print axioms Tower.RV6.gpoly_ofReal_add
+#print axioms Tower.RV6.gpoly_re
+#print axioms Tower.RV6.gpoly_I_axis_mul
+#print axioms Tower.RV6.gpoly_I_axis_mul_re
+#print axioms Tower.RV6.norm_gpoly_le
+#print axioms Tower.RV6.gpoly_bound_mono
+#print axioms Tower.RV6.norm_ccos_le
+#print axioms Tower.RV6.integral_cosh_mul_sin_eq
+#print axioms Tower.RV6.norm_cJ0_le_besselI0
+#print axioms Tower.RV6.norm_gpoly_cJ0_hK_le
+#print axioms Tower.RV6.exists_besselIK_exp_le
+#print axioms Tower.RV6.sidePhi_exp_le
+#print axioms Tower.RV6.sidePhi_side_le
