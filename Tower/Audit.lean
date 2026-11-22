@@ -14,6 +14,8 @@ import Tower.RV6.Fricke6
 import Tower.RV6.PhiKernel
 import Tower.RV6.Interchange
 import Tower.RV6.Eichler
+import Tower.RV6.Bilin
+import Tower.RV6.Eichler2
 
 /-!
 # Axiom audit
@@ -90,3 +92,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.Tint_eq
 #print axioms Tower.RV6.integral_inv_subst
 #print axioms Tower.RV6.Tint_inv
+#print axioms Tower.RV6.integral_bilin_gen
+#print axioms Tower.RV6.A1E_direct
+#print axioms Tower.RV6.A1E_fricke
+#print axioms Tower.RV6.integral_sq_mul_Tint
+#print axioms Tower.RV6.integral_Tint_fricke
