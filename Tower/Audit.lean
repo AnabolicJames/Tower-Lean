@@ -40,6 +40,7 @@ import Tower.RV6.CubeLog
 import Tower.RV6.RungA1
 import Tower.RV6.KZero
 import Tower.RV6.LadderA2
+import Tower.RV6.TrigA2
 
 /-!
 # Axiom audit
@@ -214,3 +215,7 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.subrung_identity
 #print axioms Tower.RV6.rungA2_of_subrungs
 #print axioms Tower.RV6.rv6_of_A2sub_B
+#print axioms Tower.RV6.trigN_lower
+#print axioms Tower.RV6.trigT_abs_le
+#print axioms Tower.RV6.rungA2T
+#print axioms Tower.RV6.rv6_of_A2RNMP_B
