@@ -140,8 +140,7 @@ theorem rec_psi (n : ℕ) : ((n : ℝ) - 1) * psiW n = -2 * conv psiW qE n := by
 
 theorem qE_zero : qE 0 = 0 := by
   unfold qE
-  rw [if_pos (dvd_zero 2), if_pos (dvd_zero 3), if_pos (dvd_zero 6), Nat.zero_div, Nat.zero_div,
-    Nat.zero_div, sig_zero]
+  rw [if_pos (dvd_zero 2), if_pos (dvd_zero 3), if_pos (dvd_zero 6), sig_zero]
   norm_num
 
 theorem Fc_one : Fc 1 = 1 := by
