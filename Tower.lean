@@ -19,4 +19,9 @@ import Tower.RV6.MellinSeries
 import Tower.RV6.Psi
 import Tower.RV6.Ladder2
 import Tower.RV6.EisAxis
+import Tower.RV6.QSeries
+import Tower.RV6.Regroup
+import Tower.RV6.Arith
+import Tower.RV6.Dirichlet
+import Tower.RV6.Fricke6
 import Tower.Audit

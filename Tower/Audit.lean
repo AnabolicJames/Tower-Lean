@@ -6,6 +6,11 @@ import Tower.RV6.Swap
 import Tower.RV6.Lambert
 import Tower.RV6.Ladder2
 import Tower.RV6.EisAxis
+import Tower.RV6.QSeries
+import Tower.RV6.Regroup
+import Tower.RV6.Arith
+import Tower.RV6.Dirichlet
+import Tower.RV6.Fricke6
 
 /-!
 # Axiom audit
@@ -59,3 +64,13 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rv6_of_rungs'
 #print axioms Tower.RV6.E4im_inv
 #print axioms Tower.RV6.E2im_inv
+#print axioms Tower.RV6.qa_dilate
+#print axioms Tower.RV6.qa_comb4
+#print axioms Tower.RV6.qa_mul
+#print axioms Tower.RV6.integral_qa
+#print axioms Tower.RV6.tsum_prod_eq_tsum_divisorsAntidiagonal
+#print axioms Tower.RV6.conv_sig_identity
+#print axioms Tower.RV6.tsum_sig3_div_pow5
+#print axioms Tower.RV6.tsum_sig1_div_pow5
+#print axioms Tower.RV6.g4E_fricke
+#print axioms Tower.RV6.Gcal_fricke
