@@ -101,15 +101,18 @@ theorem summable_shift_one_div_pow_norm {p : ℕ} (hp : 1 < p) :
 theorem tsum_shift_mul (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
     (∑' a : ℕ, (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ s) * (∑' b : ℕ, (1 : ℝ) / ((b + 1 : ℕ) : ℝ) ^ t)
       = ∑' p : ℕ × ℕ,
-        (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
-  tsum_mul_tsum_of_summable_norm (summable_shift_one_div_pow_norm hs)
+        (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) := by
+  have h := tsum_mul_tsum_of_summable_norm (summable_shift_one_div_pow_norm hs)
     (summable_shift_one_div_pow_norm ht)
+  exact h
 
 theorem summable_shift_prod (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
     Summable fun p : ℕ × ℕ =>
-      (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
-  summable_mul_of_summable_norm (summable_shift_one_div_pow_norm hs)
+      (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) := by
+  -- elaborated without the expected type: `?f p.1 * ?g p.2` is not a pattern
+  have h := summable_mul_of_summable_norm (summable_shift_one_div_pow_norm hs)
     (summable_shift_one_div_pow_norm ht)
+  exact h
 
 theorem tsum_shift_prod_regroup (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
     ∑' p : ℕ × ℕ, (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t)
