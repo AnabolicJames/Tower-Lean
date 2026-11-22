@@ -88,32 +88,44 @@ theorem sum_divisorsAntidiagonal_inv (k t N : ℕ) :
   unfold sig
   exact (Nat.sum_divisorsAntidiagonal' (fun _ b => (b : ℝ) ^ k)).symm
 
+theorem summable_shift_one_div_pow {p : ℕ} (hp : 1 < p) :
+    Summable fun a : ℕ => (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ p :=
+  (summable_nat_add_iff 1).mpr ((Real.summable_one_div_nat_pow (p := p)).mpr hp)
+
+theorem summable_shift_one_div_pow_norm {p : ℕ} (hp : 1 < p) :
+    Summable fun a : ℕ => ‖(1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ p‖ := by
+  refine (summable_shift_one_div_pow hp).congr (fun a => ?_)
+  show (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ p = ‖(1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ p‖
+  rw [Real.norm_of_nonneg (div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg _) _))]
+
+theorem tsum_shift_mul (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
+    (∑' a : ℕ, (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ s) * (∑' b : ℕ, (1 : ℝ) / ((b + 1 : ℕ) : ℝ) ^ t)
+      = ∑' p : ℕ × ℕ,
+        (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
+  tsum_mul_tsum_of_summable_norm (summable_shift_one_div_pow_norm hs)
+    (summable_shift_one_div_pow_norm ht)
+
+theorem summable_shift_prod (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
+    Summable fun p : ℕ × ℕ =>
+      (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
+  summable_mul_of_summable_norm (summable_shift_one_div_pow_norm hs)
+    (summable_shift_one_div_pow_norm ht)
+
+theorem tsum_shift_prod_regroup (s t : ℕ) (hs : 1 < s) (ht : 1 < t) :
+    ∑' p : ℕ × ℕ, (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ s * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t)
+      = ∑' N : ℕ, ∑ x ∈ (N + 1).divisorsAntidiagonal,
+          (1 : ℝ) / (x.1 : ℝ) ^ s * ((1 : ℝ) / (x.2 : ℝ) ^ t) :=
+  tsum_prod_eq_tsum_divisorsAntidiagonal
+    (fun a b : ℕ => (1 : ℝ) / (a : ℝ) ^ s * ((1 : ℝ) / (b : ℝ) ^ t)) (summable_shift_prod s t hs ht)
+
 /-- `∑ σ_k(n)/n^s = (∑ 1/a^s)(∑ 1/b^t)` for `s = k + t`, `t ≥ 2`. -/
 theorem tsum_sig_div_pow (k t s : ℕ) (hs : s = k + t) (ht : 2 ≤ t) :
     ∑' n : ℕ, sig k (n + 1) / ((n + 1 : ℕ) : ℝ) ^ s
       = (∑' a : ℕ, (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ s) * (∑' b : ℕ, (1 : ℝ) / ((b + 1 : ℕ) : ℝ) ^ t) := by
   subst hs
-  have hsa : Summable fun a : ℕ => (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ (k + t) :=
-    (summable_nat_add_iff 1).mpr ((Real.summable_one_div_nat_pow (p := k + t)).mpr (by omega))
-  have hsb : Summable fun b : ℕ => (1 : ℝ) / ((b + 1 : ℕ) : ℝ) ^ t :=
-    (summable_nat_add_iff 1).mpr ((Real.summable_one_div_nat_pow (p := t)).mpr (by omega))
-  have hprod : Summable fun p : ℕ × ℕ =>
-      (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ (k + t) * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
-    hsa.mul_of_nonneg hsb
-      (fun a => div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg _) _))
-      (fun b => div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg _) _))
-  have hre : ∑' p : ℕ × ℕ,
-        (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ (k + t) * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t)
-      = ∑' N : ℕ, ∑ x ∈ (N + 1).divisorsAntidiagonal,
-          (1 : ℝ) / (x.1 : ℝ) ^ (k + t) * ((1 : ℝ) / (x.2 : ℝ) ^ t) :=
-    tsum_prod_eq_tsum_divisorsAntidiagonal
-      (fun a b : ℕ => (1 : ℝ) / (a : ℝ) ^ (k + t) * ((1 : ℝ) / (b : ℝ) ^ t)) hprod
-  have hmul : (∑' a : ℕ, (1 : ℝ) / ((a + 1 : ℕ) : ℝ) ^ (k + t))
-        * (∑' b : ℕ, (1 : ℝ) / ((b + 1 : ℕ) : ℝ) ^ t)
-      = ∑' p : ℕ × ℕ,
-        (1 : ℝ) / ((p.1 + 1 : ℕ) : ℝ) ^ (k + t) * ((1 : ℝ) / ((p.2 + 1 : ℕ) : ℝ) ^ t) :=
-    tsum_mul_tsum_of_summable_norm (summable_norm_iff.mpr hsa) (summable_norm_iff.mpr hsb)
-  rw [hmul, hre]
+  have h1 : 1 < k + t := by omega
+  have h2 : 1 < t := by omega
+  rw [tsum_shift_mul (k + t) t h1 h2, tsum_shift_prod_regroup (k + t) t h1 h2]
   exact tsum_congr (fun N => sum_divisorsAntidiagonal_inv k t (N + 1))
 
 /-- `∑_{n ≥ 1} σ₃(n)/n⁵ = (π²/6) ζ(5)`. -/
