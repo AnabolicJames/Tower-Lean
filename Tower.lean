@@ -48,4 +48,5 @@ import Tower.RV6.BesselJ
 import Tower.RV6.Laplace
 import Tower.RV6.LogInt
 import Tower.RV6.BesselInt
+import Tower.RV6.CharFun
 import Tower.Audit
