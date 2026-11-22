@@ -30,6 +30,7 @@ import Tower.RV6.EtaRec
 import Tower.RV6.BesselI
 import Tower.RV6.BesselK
 import Tower.RV6.BesselW
+import Tower.RV6.BesselR
 
 /-!
 # Axiom audit
@@ -160,3 +161,10 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.mul_besselK1_le_one
 #print axioms Tower.RV6.exp_neg_le_mul_besselK1
 #print axioms Tower.RV6.wronskian
+#print axioms Tower.RV6.besselI0_le_cosh
+#print axioms Tower.RV6.besselI1_le_sinh
+#print axioms Tower.RV6.besselK0_pos
+#print axioms Tower.RV6.besselK0_le_exp_mul_sqrt
+#print axioms Tower.RV6.besselK0_le_one_add_log
+#print axioms Tower.RV6.integrableOn_R62_integrand
+#print axioms Tower.RV6.R62_pos
