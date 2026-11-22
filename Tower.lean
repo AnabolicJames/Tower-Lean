@@ -31,4 +31,6 @@ import Tower.RV6.Bilin
 import Tower.RV6.Eichler2
 import Tower.RV6.C4
 import Tower.RV6.RungC1
+import Tower.RV6.QCalc
+import Tower.RV6.DEInv
 import Tower.Audit
