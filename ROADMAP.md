@@ -65,7 +65,7 @@ divisor-sum coefficients, and `θ = q d/dq`.
    polynomial identity.  The eta product satisfies the same equation (logarithmic derivative of
    the product, in `ℤ⟦X⟧`), and the equation determines the coefficients from the first one.
 
-**A1.****A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
+**A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
 exchange with the expectation; `|J₀(t)| ≤ C t^{-1/2}`.
 
 **A2.**  `I₀' = I₁`, `K₀' = -K₁`, the Wronskian; Lemma 2.1; Hankel functions and the rotation of
