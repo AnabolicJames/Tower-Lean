@@ -72,8 +72,13 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/RungA1.lean` | **`rungA1 : RungA1`**: `m(1 + x₁ + ⋯ + x₅) = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t`, with no hypotheses; `ae_cubeX_ne_zero`; `integrable_of_antitone_of_tendsto`; **`rv6_of_A2_B`**: `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/KZero.lean` | **`abs_besselK0_add_log_le`**: `|K₀(t) + log(t/2) - eulerW| ≤ t/2` for `t > 0`, with `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`, `E(x) = ∫₀^∞ exp(-x e^u) du` |
 | `Tower/RV6/LadderA2.lean` | `RungA2` cut into five named sub-rungs about a real `s > 0` (`RungA2R`, `RungA2N`, `RungA2M`, `RungA2P`, `RungA2T`) and **`rungA2_of_subrungs`**: they imply `RungA2`; **`rv6_of_A2sub_B`** |
+| `Tower/RV6/TrigA2.lean` | **`rungA2T : RungA2T`**: the trigonometric poles cancel (`-x⁷/14 ≤ 45 sin x - 45 x cos x - 15 x² sin x - x⁵ ≤ 0` on `x ≥ 0`) |
+| `Tower/RV6/MellinU.lean` | `integrable_mul_exp_of_bounds` and the bounds that make every Mellin integrand of the ladder (`I₀^a K₀^b`, `I₀² I₁ K₀⁵`, `J₀⁶` at `e^u`, times `e^{σu}`) integrable on `ℝ` for `0 < σ < 3` |
+| `Tower/RV6/RungA2P.lean` (generated) | **`rungA2P : RungA2P`**: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)` (the Wronskian, integrated in `u = log t`) and `(8/5) P(s) → R₆,₂` |
+| `Tower/RV6/PoleM.lean`, `RungA2M.lean` (generated) | **`rungA2M : RungA2M`**: `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` is bounded on `0 < s ≤ 1`; `∫₀^∞ y^b e^{-sy} dy = b!/s^{b+1}`; `I₀^a K₀^{a+d} ≤ t^{-(a+d)}` |
+| `Tower/RV6/RungA2N.lean` (generated) | **`rungA2N : RungA2N`**: `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+`; **`rv6_of_A2R_B`**: `RungA2R` and `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
-| `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
+| `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py` | generators of the generated files (all but the third only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
 **Status: this is not yet a Lean proof of the theorem.**  The modular side is proved with no
 hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
@@ -87,14 +92,15 @@ integral over `[0,1]⁵` (the integrability of `log ‖1 + Σ e(τ_j)‖` on the
 `RungA2` (`walkSide = (30/π⁴) R₆,₂`, the rotation of the contour) and `RungB` (the Bessel-side
 evaluation of the double Eisenstein integral).  Each was checked numerically from the Lean
 definitions before it was stated.  `RungA2` is in turn derived (**`rungA2_of_subrungs`**) from five
-sub-rungs about Mellin transforms at a real `s > 0`, also hypotheses and also checked numerically
-first; **`rv6_of_A2sub_B`** takes those five and `RungB`.  Towards them, the calculus of
-`I₀, I₁, K₀, K₁`, the Wronskian, the convergence and positivity of the integral defining `R₆,₂`,
-and the expansion of `K₀` at `0` are proved.  `ROADMAP.md` has the plan and the state by rung.
+sub-rungs about Mellin transforms at a real `s > 0`, each checked numerically first.  Four of the
+five are now proved with no hypotheses (`rungA2T`, `rungA2P`, `rungA2M`, `rungA2N`), so
+**`rv6_of_A2R_B`** derives the theorem from two statements that are still hypotheses: `RungA2R`
+(for `0 < s < 1`, `∫₀^∞ J₀⁶ t^{s-1} dt` as a combination of `∫₀^∞ I₀^a K₀^b t^{s-1} dt`: the rotation
+of the contour to the imaginary axis) and `RungB`.  `ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of the five sub-rungs of `RungA2` and of `RungB` (`ROADMAP.md`);
+* proofs of `RungA2R` and of `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building

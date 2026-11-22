@@ -6,7 +6,8 @@ Today: the modular side is proved, including the identification with the eta pro
 the first rung of the Bessel side, the random-walk representation of `μ₆` (`rungA1`, wave 13).
 `Tower.RV6.rv6_of_A2_B` takes the two rungs that are left (`RungA2`, `RungB`) and gives
 `μ₆ = (648/π⁶) L(f, 5)`.  `RungA2` is cut into five sub-rungs about a real parameter `s > 0`
-(wave 15); `Tower.RV6.rv6_of_A2sub_B` takes those five and `RungB`.  This file is the plan for
+(wave 15), and four of the five are proved (waves 16 to 20).  **`Tower.RV6.rv6_of_A2R_B` takes
+the two hypotheses that are left, `RungA2R` (the rotation of the contour) and `RungB`.**  This file is the plan for
 removing these hypotheses and is updated with every wave.  "Proved" means: in this repository,
 kernel-checked, no hypotheses.
 
@@ -26,7 +27,7 @@ and nothing is continued analytically.
 | rung | statement | status |
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | **proved** (`rungA1`, wave 13) |
-| A2 | that side `= (30/π⁴) R₆,₂` | open; **reduced to five sub-rungs** (`rungA2_of_subrungs`, wave 15), table below |
+| A2 | that side `= (30/π⁴) R₆,₂` | open; **reduced to five sub-rungs** (`rungA2_of_subrungs`, wave 15), four of them proved, table below |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
@@ -40,11 +41,11 @@ The sub-rungs of A2 (`LadderA2.lean`).  `mellU h s = ∫ h(e^u) e^{su} du` is th
 
 | sub-rung | statement | status |
 |---|---|---|
-| A2R | for `0 < s < 1`: `N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)` | open (rotation of the contour) |
-| A2N | `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+` | open |
-| A2M | `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` bounded on `0 < s ≤ 1` for `(a,b) = (1,5), (3,3), (3,5)` | open |
-| A2P | for `0 < s ≤ 1`: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)`; `(8/5) P(s) → R₆,₂` as `s → 0+` | open |
-| A2T | `(1440/π⁵) sin(πs/2)/s⁶ - (720/π⁴) cos(πs/2)/s⁵ - (120/π³) sin(πs/2)/s⁴ - 1/s → 0` as `s → 0+` | open |
+| A2R | for `0 < s < 1`: `N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)` | **open** (rotation of the contour; plan below) |
+| A2N | `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+` | **proved** (`rungA2N`, wave 20) |
+| A2M | `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` bounded on `0 < s ≤ 1` for `(a,b) = (1,5), (3,3), (3,5)` | **proved** (`rungA2M`, wave 19) |
+| A2P | for `0 < s ≤ 1`: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)`; `(8/5) P(s) → R₆,₂` as `s → 0+` | **proved** (`rungA2P`, wave 18) |
+| A2T | `(1440/π⁵) sin(πs/2)/s⁶ - (720/π⁴) cos(πs/2)/s⁵ - (120/π³) sin(πs/2)/s⁴ - 1/s → 0` as `s → 0+` | **proved** (`rungA2T`, wave 16) |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -69,6 +70,11 @@ C1 and C2″ together are `D01_eq_modular`:
 
 | 14 | `KZero` | `E(x) = ∫₀^∞ exp(-x e^u) du` with `E' = -e^{-x}/x`; `0 ≤ E(t/2) - K₀(t) ≤ t/2`; the constant `eulerW = E(1) - ∫₀¹ (1 - e^{-w}) dw/w`; **`|K₀(t) + log(t/2) - eulerW| ≤ t/2`** for `t > 0` |
 | 15 | `LadderA2` | the five sub-rungs of A2 stated (each checked numerically from the definitions first); **`rungA2_of_subrungs`**: they imply `RungA2` (multiply the rotation formula by `e^{-a₀ s}`, subtract `1/s`, let `s → 0+`; limits along the right neighbourhoods of `0` and their uniqueness); `rv6_of_A2sub_B` |
+| 16 | `TrigA2` | **sub-rung A2T**: with `x = πs/2` the expression is `(π/2) N(x)/x⁶`, `N = 45 sin x - 45 x cos x - 15 x² sin x - x⁵`; `-x⁷/14 ≤ N(x) ≤ 0` on `x ≥ 0` from `N' = 5x N₁`, `N₁' = 3x (sin x - x)` and `x - x³/6 ≤ sin x ≤ x`; so the expression is `O(s)` |
+| 17 | `MellinU` | `integrable_mul_exp_of_bounds`: `g(u) e^{σu}` is integrable on `ℝ` if `|g| ≤ A (2 - u)^b` on `u ≤ 0` and `|g| ≤ B e^{-αu}` on `u > 0`, `0 < σ < α`; the bounds for `I₀^a K₀^b`, `I₀² I₁ K₀⁵`, `J₀⁶` at `e^u`; hence every Mellin integrand of the ladder is integrable for `0 < σ < 3` |
+| 18 | `RungA2P` | **sub-rung A2P**: `φ(u) = I₀(e^u)³ K₀(e^u)⁵ e^{su}` has `φ' = 8 P-integrand - 5 M₂,₄-integrand + s M₃,₅-integrand` (the Wronskian) and `φ → 0` at `±∞`, so `∫ φ' = 0`; `(8/5) P(s) → R₆,₂` by dominated convergence |
+| 19 | `PoleM`, `RungA2M` | **sub-rung A2M**: reflection `u = a₀ - y`; `∫₀^∞ y^b e^{-sy} dy = b!/s^{b+1}` (Mathlib's Gamma integral); `|I₀^a K₀^b (e^{a₀-y}) - y^b| ≤ D e^{-y/2}` for `y ≥ 0` from `|K₀(t) - (a₀ - log t)| ≤ t/2`; `I₀^a K₀^b ≤ t^{-b}` on the other half-line |
+| 20 | `RungA2N` | **sub-rung A2N**: `N(s) - 1/s = ∫_{u ≤ 0} (j - 1) e^{su} + ∫_{u > 0} j e^{su}` (`j(u) = J₀(e^u)⁶`), dominated convergence on each half-line, and `∫_{u ≤ 0} (j - 1) + ∫_{u > 0} j = eulerW - (walkSide - log 2)` by the substitutions `t = e^u` on `ℝ` and `w = e^u` on `u ≤ 0` (Mathlib's change of variables); `rv6_of_A2R_B` |
 
 ## Plan by rung
 
@@ -96,28 +102,35 @@ and no circle average was needed.
 **A2.**  `walkSide = (30/π⁴) R₆,₂`.  The proof keeps `s` real and small and never continues a
 Mellin transform analytically.  Done: the constant `eulerW` and `K₀(t) = a₀ - log t + O(t)` at `0`
 (wave 14; the constant is never identified with Euler's, it cancels); the reduction to the five
-sub-rungs (wave 15).  Left, in the order planned:
-* A2T: with `x = πs/2` the expression is `(π/2) N(x)/x⁶`, `N(x) = 45 sin x - 45 x cos x -
-  15 x² sin x - x⁵`; `N' = 5x N₁`, `N₁ = 3 sin x - 3x cos x - x³`, `N₁' = 3x (sin x - x)`, and
-  `x - x³/6 ≤ sin x ≤ x` gives `-x⁷/14 ≤ N(x) ≤ 0` on `x ≥ 0`.
-* A2P: `(I₀³K₀⁵)' = 8 I₀² I₁ K₀⁵ - 5 I₀² K₀⁴/t` (the Wronskian, wave 8), integrated against `t^s`
-  in the variable `u = log t`; `(8/5) P(s) → R₆,₂` by dominated convergence.
-* A2M: `∫_{u ≤ a₀} (a₀ - u)^b e^{su} du = b! e^{a₀ s}/s^{b+1}`; `|K₀(t) - (a₀ - log t)| ≤ t/2`
-  gives `|I₀^a K₀^b - (a₀ - log t)^b| ≤ C t (1 + |log t|)^b` near `0`; the tails are bounded.
-* A2N: `N(s) - 1/s = ∫_{u ≤ 0} (J₀(e^u)⁶ - 1) e^{su} du + ∫_{u > 0} J₀(e^u)⁶ e^{su} du`, dominated
-  convergence, and `eulerW = ∫₁^∞ e^{-w} dw/w - ∫₀¹ (1 - e^{-w}) dw/w` (`expE_one`).
-* A2R, in two parts.  (d) Complex Bessel functions on the closed first quadrant:
-  `J₀(z) = ∫₀¹ cos(z cos 2πθ) dθ`, `K₀(w) = ∫₀^∞ e^{-w cosh u} du` (`Re w > 0`), and
-  `H⁺ = J₀ + iY₀` given by `(2/(πi)) K₀(-iz)` for `Im z > 0` and by
-  `(2/π) ∫₀^{π/2} e^{iz cos θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` for `Re z > 0`; the two agree
-  on the open quadrant (Cauchy's theorem for `e^{z sinh w}` on a rectangle of the strip
-  `π/2 ≤ Im w ≤ π`); on the real axis `Re H⁺ = J₀`, on the imaginary axis
-  `H⁺(iy) = (2/(πi)) K₀(y)` and `J₀(iy) = I₀(y)`.  (e) The rotation (2.5) of the paper for
-  `0 < s < 1`: Cauchy's theorem on a rectangle for `G(e^w) e^{sw}` (logarithmic coordinates turn
-  the quarter annulus into a rectangle), with
-  `G = (3/8) J₀ (H⁺)⁵ - (15/8) J₀² (H⁺)⁴ + (5/2) J₀³ (H⁺)³`, `Re G = J₀⁶` on the real axis
-  (`sixteen_mul_pow_six`); the two arcs vanish by `|J₀(z)| ≤ e^{|Im z|}` and
-  `|H⁺(z)| ≤ (2/π) K₀(Im z)`.
+sub-rungs (wave 15); A2T, A2P, A2M, A2N (waves 16 to 20, table above).
+
+**A2R, the one sub-rung left.**  For `0 < s < 1`:
+`N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)`.
+Plan, fixed after wave 20 (it replaces the earlier sketch; every item is a convergent integral):
+
+1. *Kernels.*  `cJ0 z = (1/π) ∫₀^π cos(z sin θ) dθ`, entire, `|cJ0 z| ≤ e^{|Im z|}`; termwise
+   integration with Mathlib's `∫₀^π sin^{2k}` gives `cJ0 z = Σ (-1)^k (z/2)^{2k}/(k!)²`, hence
+   `cJ0 x = J₀(x)` and `cJ0 (iy) = I₀(y)`.  `cK0 w = ∫₀^∞ exp(-w cosh u) du` on `Re w > 0`:
+   holomorphic, `|cK0 w| ≤ K₀(Re w)`, `cK0 t = K₀(t)`.
+2. *Two forms of `H⁺ = J₀ + iY₀`.*  `hK z = (2/(πi)) cK0(-iz)` on `Im z > 0`, and
+   `hE z = (1/π) ∫₀^π e^{iz sin θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` on `Re z > 0`; both
+   holomorphic.  On the real axis `hE x = J₀(x) + i·(real)`; on the imaginary axis
+   `hK (iy) = (2/(πi)) K₀(y)`.
+3. *Agreement* `hE = hK` on the open quadrant: Cauchy's theorem for `w ↦ e^{z sinh w}` on the
+   rectangle `[-R, 0] × [0, π/2]`, the side `Re w = -R` tends to `0`
+   (`Re(z sinh(-R + iθ)) ≤ -min(Re z, Im z) sinh R`), and `θ ↦ π - θ`.
+4. *The rotation at finite `R`*, in `w = log z`: with
+   `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³`, Cauchy on `[-R, R] × [0, π/4]` for
+   `G(cJ0, hE)(e^w) e^{sw}` and on `[-R, R] × [π/4, π/2]` for `G(cJ0, hK)(e^w) e^{sw}`; the
+   common side cancels by 3.  Take real parts *before* letting `R → ∞`: the bottom side is
+   `∫_{-R}^R J₀(e^u)⁶ e^{su} du` (`Re G(J, J + iY) = J⁶`, `sixteen_mul_pow_six`), the top side is
+   the combination of `I₀^a K₀^b`; both converge absolutely (`MellinU.lean`).  The decay of `Y₀`
+   on the real axis is never needed.
+5. *The two vertical sides vanish.*  `|G| ≤ Φ(Im z)`,
+   `Φ(y) = Σ c_k e^{ky} ((2/π) K₀(y))^{6-k}` (`k = 1, 2, 3`); for every `δ ∈ (0, 1)`,
+   `Φ(y) ≤ C_δ y^{-δ}` on `y > 0` (`K₀(y) ≤ 2 - log y` for `y ≤ 1`; `e^y K₀(y) ≤ √(π/(2y))` from
+   `cosh u - 1 = 2 sinh²(u/2) ≥ u²/2` and the Gaussian integral); `sin θ ≥ 2θ/π`; so the side at
+   `|z| = r` is `≤ C r^{s-δ}`: take `δ > s` for `r → ∞` and `δ < s` for `r → 0`.
 
 **B.**  Lemma 3.1 (Mellin–Parseval and one contour shift), Proposition 3.2 (the Wronskian
 identity), Lemma 4.1, and Zhou's parametrisations (4.4) of the Hankel transforms of `I₀K₀³` and
@@ -180,3 +193,18 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   and combined by `.mul`, `.add`, `.sub`, `.const_mul`, each result restated by a typed `have`;
   two functions that must be the same lambda in two hypotheses are compared as text by a script
   before the push.
+* Waves 16 to 20 (seven files, six green at the first compile): `congr 1` can close a goal by
+  `rfl`, and a tactic after it then fails with "no goals" (the one failed run): an exponential is
+  split with a lemma `e^a e^b = e^c` given `a + b = c` (`exp_mul_exp_of_add_eq (by ring)`), stated
+  as a typed `have`; the name checker's regular expression reads a primed name as its unprimed
+  stem, so no declaration name carries a prime; factorial values are `by decide` on the natural
+  number, then `rw` and `norm_num` for the cast; closed natural-number arithmetic in exponents and
+  indices (`2 + 1` for `3`) is accepted by `exact` up to definitional equality; unused binders are
+  written `_`; a constant that would be a long expression is a `noncomputable def`, unfolded once
+  at the end; long repeated integrands are substituted by a generator in `tools/`; a dominated
+  convergence along `s → 0+` is `tendsto_integral_filter_of_dominated_convergence` on the
+  restricted measure, with the bound stated through `ae_restrict_of_forall_mem` and the result
+  taken by `have hD := …; exact hD`; Mathlib's one-dimensional change of variables
+  (`integral_image_eq_integral_abs_deriv_smul`, `integral_comp_exp`) is given as a typed `have`
+  whose two sides are written out, and the pointwise simplification is a separate function
+  equality (`funext`, `show`, `rw`).
