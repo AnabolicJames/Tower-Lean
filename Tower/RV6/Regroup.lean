@@ -39,8 +39,7 @@ theorem tsum_prod_eq_tsum_divisorsAntidiagonal (G : ℕ → ℕ → ℝ)
     intro c
     simp [PNat.natPred_add_one]
   have hs : Summable fun c : ℕ+ × ℕ+ => G c.1 c.2 :=
-    ((Equiv.prodCongr Equiv.pnatEquivNat Equiv.pnatEquivNat).summable_iff.mpr hG).congr
-      (fun c => (he c).symm)
+    ((Equiv.prodCongr Equiv.pnatEquivNat Equiv.pnatEquivNat).summable_iff.mpr hG).congr he
   have h1 : ∑' p : ℕ × ℕ, G (p.1 + 1) (p.2 + 1) = ∑' c : ℕ+ × ℕ+, G c.1 c.2 := by
     rw [← (Equiv.prodCongr Equiv.pnatEquivNat Equiv.pnatEquivNat).tsum_eq
       (fun p : ℕ × ℕ => G (p.1 + 1) (p.2 + 1))]

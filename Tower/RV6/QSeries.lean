@@ -143,11 +143,11 @@ theorem qa_mul {C D : ℕ → ℝ} {y : ℝ}
   unfold qa
   have hC' : Summable fun n : ℕ => ‖C n * Real.exp (-(2 * π * (n : ℝ) * y))‖ := by
     refine hC.congr (fun n => ?_)
-    show ‖C n * Real.exp (-(2 * π * (n : ℝ) * y))‖ = |C n| * Real.exp (-(2 * π * (n : ℝ) * y))
+    show |C n| * Real.exp (-(2 * π * (n : ℝ) * y)) = ‖C n * Real.exp (-(2 * π * (n : ℝ) * y))‖
     rw [Real.norm_eq_abs, abs_mul, abs_of_pos (Real.exp_pos _)]
   have hD' : Summable fun n : ℕ => ‖D n * Real.exp (-(2 * π * (n : ℝ) * y))‖ := by
     refine hD.congr (fun n => ?_)
-    show ‖D n * Real.exp (-(2 * π * (n : ℝ) * y))‖ = |D n| * Real.exp (-(2 * π * (n : ℝ) * y))
+    show |D n| * Real.exp (-(2 * π * (n : ℝ) * y)) = ‖D n * Real.exp (-(2 * π * (n : ℝ) * y))‖
     rw [Real.norm_eq_abs, abs_mul, abs_of_pos (Real.exp_pos _)]
   rw [tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hC' hD']
   refine tsum_congr (fun n => ?_)
