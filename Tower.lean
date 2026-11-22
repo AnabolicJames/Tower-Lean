@@ -62,4 +62,5 @@ import Tower.RV6.RungA2N
 import Tower.RV6.CKernel
 import Tower.RV6.CJSeries
 import Tower.RV6.CKZero
+import Tower.RV6.HAgree
 import Tower.Audit

@@ -49,6 +49,7 @@ import Tower.RV6.RungA2N
 import Tower.RV6.CKernel
 import Tower.RV6.CJSeries
 import Tower.RV6.CKZero
+import Tower.RV6.HAgree
 
 /-!
 # Axiom audit
@@ -270,3 +271,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.differentiableAt_hK
 #print axioms Tower.RV6.norm_hK_le
 #print axioms Tower.RV6.hK_I_mul
+#print axioms Tower.RV6.re_mul_sinh_side_le
+#print axioms Tower.RV6.tendsto_side_integral
+#print axioms Tower.RV6.rect_cexp_mul_sinh
+#print axioms Tower.RV6.cK0_neg_I_mul_eq
+#print axioms Tower.RV6.hE_eq_hK

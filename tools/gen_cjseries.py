@@ -197,7 +197,8 @@ theorem cJ0_ofReal (x : ℝ) : cJ0 (x : ℂ) = (besselJ0 x : ℂ) := by
     Complex.ofReal_tsum (fun k : ℕ => (-1) ^ k * (x / 2) ^ (2 * k) / ((Nat.factorial k : ℝ) ^ 2))
   rw [cJ0_eq_tsum, h]
   refine tsum_congr (fun k => ?_)
-  first | (push_cast; ring) | push_cast
+  push_cast
+  ring
 
 /-- **On the imaginary axis `cJ0` is `I₀`.** -/
 theorem cJ0_I_mul (y : ℝ) : cJ0 (Complex.I * (y : ℂ)) = (besselI0 y : ℂ) := by
@@ -214,7 +215,8 @@ theorem cJ0_I_mul (y : ℝ) : cJ0 (Complex.I * (y : ℂ)) = (besselI0 y : ℂ) :
     norm_num
   have hc : (((y / 2) ^ (2 * k) / ((Nat.factorial k : ℝ) ^ 2) : ℝ) : ℂ)
       = ((y : ℂ) / 2) ^ (2 * k) / ((k.factorial : ℂ) ^ 2) := by
-    first | (push_cast; ring) | push_cast
+    push_cast
+    ring
   rw [hI, hc]
   linear_combination (((y : ℂ) / 2) ^ (2 * k) / ((k.factorial : ℂ) ^ 2)) * hs
 
