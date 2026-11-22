@@ -2,10 +2,11 @@
 
 Target: `Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5` with no hypotheses.
 
-Today: the modular side is proved, including the identification with the eta product.
-`Tower.RV6.rv6_of_bessel` takes the three Bessel-side rungs (`RungA1`, `RungA2`, `RungB`) and
-gives `μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing the three hypotheses that
-are left and is updated with every wave.  "Proved" means: in this repository,
+Today: the modular side is proved, including the identification with the eta product, and so is
+the first rung of the Bessel side, the random-walk representation of `μ₆` (`rungA1`, wave 13).
+`Tower.RV6.rv6_of_A2_B` takes the two rungs that are left (`RungA2`, `RungB`) and gives
+`μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing those two hypotheses and is updated
+with every wave.  "Proved" means: in this repository,
 kernel-checked, no hypotheses.
 
 ## Architecture
@@ -23,7 +24,7 @@ and nothing is continued analytically.
 
 | rung | statement | status |
 |---|---|---|
-| A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | open; steps 1 and 2 of 3 proved: the walk-side integral converges (`BesselJ.lean`), `∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a²+δ²)) - log 2` (`LogInt.lean`) |
+| A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | **proved** (`rungA1`, wave 13) |
 | A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved; `R₆,₂` is a convergent positive integral (`BesselR.lean`) |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
@@ -48,6 +49,9 @@ C1 and C2″ together are `D01_eq_modular`:
 | 8 | `BesselI`, `BesselK`, `BesselW`, `BesselR` | `I₀' = I₁`, `(t I₁)' = t I₀`; `K₁`, `K₀' = -K₁`, `(t K₁)' = -t K₀`; `e^{-t} ≤ t K₁ ≤ 1`; the Wronskian `I₀K₁ + I₁K₀ = 1/t`; `I₀ ≤ cosh`, `I₁ ≤ sinh`, `K₀ > 0`; `I₀ ≤ e^t` and `I₁K₀ ≤ 1/t` (from the Wronskian); `K₀(t) ≤ e^{-t}√(π/(2t))`, `K₀(t) ≤ log(1 + 2/t)`; **`I₀² I₁ K₀⁵` is integrable on `(0, ∞)` and `R₆,₂ > 0`** |
 | 9 | `BesselJ` | `J₀' = -J₁`, `(t J₁)' = t J₀`, `J₁' = J₀ - J₁/t`; `J₀² + J₁² ≤ 1` on `t ≥ 0`; the energy `E = tJ₀² + tJ₁² - J₀J₁ + J₀²/(2t)` with `E' = -J₀²/(2t²)` and `J₀(t)² ≤ E(1)/t` for `t ≥ 1`; **the integrand of the walk side is integrable on `(0, ∞)`** |
 | 10 | `Laplace`, `LogInt` | `lapl φ δ = ∫₀^∞ e^{-δt} φ(t) dt`: integrability, differentiation in `δ`, integration by parts; **`∫₀^∞ e^{-δt} J₀(at) dt = 1/√(a² + δ²)`** (from the two derivative formulas: `(a² + δ²) L' = -δ L`, so `(a² + δ²) L²` is constant); **`∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a² + δ²)) - log 2`** for `a ≥ 0`, `δ > 0` |
+| 11 | `BesselInt` | **Bessel's integral** `J₀(x) = ∫₀¹ cos(x cos 2πθ) dθ`, `J₁(x) = ∫₀¹ sin(x cos 2πθ) cos 2πθ dθ` (`x ≥ 0`): both pairs solve `A' = -B`, `(xB)' = xA`, and a solution with zero data at `0` vanishes on `[0, ∞)` |
+| 12 | `CharFun` | invariance of a period integral under shifts; `J₀(t‖z‖) = ∫₀¹ cos(t (Re z cos 2πθ - Im z sin 2πθ)) dθ`; Lebesgue measure on `[0,1]⁵` as a product measure; **the characteristic function of the walk**, `∫_{[0,1]⁵} J₀(t ‖1 + Σ e(τ_j)‖) dτ = J₀(t)⁶` |
+| 13 | `CubeLog`, `RungA1` | the exchange `∫_{[0,1]⁵} log(δ + √(‖X‖² + δ²)) = log 2 + ∫₀^∞ (e^{-t} - e^{-δt} J₀⁶) dt/t` (Fubini on `cube × (0, ∞)`); the damping removed on the walk side (dominated convergence); `X ≠ 0` almost everywhere on the cube; a limit of an antitone sequence of integrable functions with integrals bounded below is integrable; **rung A1**; `rv6_of_A2_B` |
 
 ## Plan by rung
 
@@ -63,24 +67,37 @@ of `Defs.lean`; the bounds `I₀ ≤ e^t`, `I₁K₀ ≤ 1/t`, `K₀(t) ≤ e^{1
 `K₀(t) ≤ log(1 + 2/t)`; the integrability of `I₀² I₁ K₀⁵` on `(0, ∞)`.  `R₆,₂` of `Defs.lean` is a
 convergent positive integral (a Bochner integral of a non-integrable function would be `0`).
 
-**A1.**  Steps 1 and 2 are done (waves 9 and 10): the calculus and decay of `J₀`, the
-convergence of the walk-side integral, the Laplace transform of `J₀`, and the logarithm formula
-with the damping factor `e^{-δt}`, valid for every `a ≥ 0`.  Step 3, in this order:
-(a) Bessel's integral `J₀(x) = ∫₀¹ cos(x cos 2πθ) dθ` (both sides solve `A' = -B`, `(xB)' = xA`
-with the same values at `0`, and `a² + b²` of the difference is nonincreasing), in the form
-`J₀(s‖z‖) = ∫₀¹ exp(i s Re(z e(θ))) dθ` for `z ∈ ℂ`;
-(b) `∫_{[0,1]⁵} J₀(s ‖1 + Σ e(t_j)‖) dt = J₀(s)⁶` (Fubini once, then the integral of a product
-over the cube);
-(c) `log ‖1 + Σ e(t_j)‖` is integrable on the cube (the last coordinate by Mathlib's formula
-`circleAverage (log ‖· + a‖) 0 1 = log⁺ ‖a‖`, which bounds `∫ |log|` by `2 log 6`);
-(d) the formula of step 2 with `a = ‖1 + Σ e(t_j)‖` integrated over the cube, and `δ → 0`:
-on the walk side by dominated convergence with the bound of wave 9, on the Mahler side in the
-last coordinate first.  The undamped formula `∫ (e^{-t} - J₀(at)) dt/t = log a - log 2` is not
-needed.
+**A1.**  Done (waves 9 to 13).  The calculus and decay of `J₀`; the Laplace transform of `J₀` and
+the logarithm formula with the damping factor `e^{-δt}`; Bessel's integral; the characteristic
+function of the walk on the cube; then, for every `δ > 0`, the identity
+`∫_{[0,1]⁵} log(δ + √(‖X‖² + δ²)) = log 2 + ∫₀^∞ (e^{-t} - e^{-δt} J₀⁶) dt/t` between bounded
+continuous integrands.  The right side stays bounded as `δ → 0`; the integrand on the left is
+`≤ log 8` and equals `log 2δ` where `X = 0`; so `{X = 0}` is a null set, `log ‖X‖` is integrable
+on the cube (monotone convergence), and the two limits agree.  No change of variables on the cube
+and no circle average was needed.
 
-**A2.**  Lemma 2.1 (with the Wronskian, now available); Hankel functions `J₀ ± iY₀` in a half
-plane and the rotation of `∫ J₀⁶ t^{s-1} dt`; the Mellin expansions (2.6).  Needs conditionally
-convergent integrals handled by a damping factor; large.
+**A2.**  `walkSide = (30/π⁴) R₆,₂`.  The plan keeps `s` real and small and never continues a
+Mellin transform analytically:
+(a) the constant `γ₀ = -∫₀^∞ e^{-t} log t dt` and `K₀(t) = -log(t/2) - γ₀ + O(t(1 + |log t|))`
+at `0` (compare `K₀(t)` with `∫_{t/2}^∞ e^{-w} dw/w`; the constant cancels in the end, so it is
+never identified with Euler's);
+(b) for `M_{a,b}(s) = ∫₀^∞ I₀^a K₀^b t^{s-1} dt` and `a₀ = log 2 - γ₀`:
+`e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` is bounded on `0 < s ≤ 1` for `(a, b) = (1,5), (3,3), (3,5)`,
+and `M_{2,4}(s) = (8/5) ∫ t^s I₀² I₁ K₀⁵ dt + (s/5) M_{3,5}(s)` (the Wronskian, wave 8), so
+`e^{-a₀ s} M_{2,4}(s) - 24/s⁵ → R₆,₂`;
+(c) `∫₀^∞ J₀⁶ t^{s-1} dt - 1/s → -(walkSide - log 2) - γ₀` as `s → 0+`;
+(d) complex Bessel functions on the closed first quadrant: `J₀(z) = ∫₀¹ cos(z cos 2πθ) dθ`,
+`K₀(w) = ∫₀^∞ e^{-w cosh u} du` (`Re w > 0`), and `H⁺ = J₀ + iY₀` given by
+`(2/(πi)) K₀(-iz)` for `Im z > 0` and by
+`(2/π) ∫₀^{π/2} e^{iz cos θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` for `Re z > 0`; the two agree
+on the open quadrant (Cauchy's theorem for `e^{z sinh w}` on a rectangle of the strip
+`π/2 ≤ Im w ≤ π`); on the real axis `Re H⁺ = J₀`, on the imaginary axis
+`H⁺(iy) = (2/(πi)) K₀(y)` and `J₀(iy) = I₀(y)`;
+(e) the rotation (2.5) of the paper for `0 < s < 1`: Cauchy's theorem on a rectangle for
+`G(e^w) e^{sw}` (logarithmic coordinates turn the quarter annulus into a rectangle), with
+`G = (3/8) J₀ (H⁺)⁵ - (15/8) J₀² (H⁺)⁴ + (5/2) J₀³ (H⁺)³`, `Re G = J₀⁶` on the real axis; the two
+arcs vanish by `|J₀(z)| ≤ e^{|Im z|}` and `|H⁺(z)| ≤ (2/π) K₀(Im z)`;
+(f) `s → 0+`: the poles cancel, the constant terms give the rung.
 
 **B.**  Lemma 3.1 (Mellin–Parseval and one contour shift), Proposition 3.2 (the Wronskian
 identity), Lemma 4.1, and Zhou's parametrisations (4.4) of the Hankel transforms of `I₀K₀³` and
@@ -127,3 +144,11 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   hypothesis; a `by` block is never left inside a `rw [...]` term without a type ascription;
   nonlinear steps are given to `linarith` as explicit products (`mul_le_mul …`), not left to
   `nlinarith`.
+* Waves 11 to 13 (five more files, all green at the first compile) added: every Mathlib name is
+  read off the local copy of the pinned version before it is used (`continuous_finsetSum`,
+  `Set.indicator_of_notMem`, `abs_add_le` are this version's names); a goal produced by
+  `refine … (fun n => ?_)` is restated by `show` before a `rw`; an inequality between functions
+  (`0 ≤ f`, `f ≤ g`) is given as a typed `have` before it is passed to `integral_mono` or
+  `integral_nonneg`; an instance that Mathlib does not provide (`IsFiniteMeasure` of Lebesgue
+  measure restricted to a box in `Fin 5 → ℝ`) is declared once, after rewriting the measure as a
+  product; a constant is integrated as `c * 1` with the integral of `1` proved once.

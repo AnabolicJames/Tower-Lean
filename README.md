@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (the modular side proved; the Bessel side open)
+## The six-step Mahler measure (the modular side and the random-walk representation proved; two rungs open)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -66,6 +66,10 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/BesselR.lean` | bounds: `I₀ ≤ cosh`, `I₁ ≤ sinh`, `K₀ > 0`, `I₀(t) ≤ e^t`, `I₁K₀ ≤ 1/t`, `K₀(t) ≤ e^{-t}√(π/(2t))`, `K₀(t) ≤ log(1 + 2/t)`; **`integrableOn_R62_integrand`**, **`R62_pos`**: `R₆,₂ = (8/5) ∫₀^∞ I₀² I₁ K₀⁵ dt` is a convergent positive integral |
 | `Tower/RV6/BesselJ.lean` | `J₀' = -J₁`, `(t J₁)' = t J₀`; `J₀² + J₁² ≤ 1`; **`besselJ0_sq_le`**: `J₀(t)² ≤ E(1)/t` for `t ≥ 1` (the energy of `√t J₀` decreases); **`integrableOn_walk_integrand`**: the integral in `walkSide` converges |
 | `Tower/RV6/Laplace.lean`, `LogInt.lean` | **`lapl_besselJ0`**: `∫₀^∞ e^{-δt} J₀(at) dt = 1/√(a² + δ²)`; **`logInt_eq`**: `∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a² + δ²)) - log 2` (`a ≥ 0`, `δ > 0`) |
+| `Tower/RV6/BesselInt.lean` | **`besselJ0_eq_besG`**: Bessel's integral `J₀(x) = ∫₀¹ cos(x cos 2πθ) dθ` for the series `J₀` of `Defs.lean` (uniqueness for the system `A' = -B`, `(xB)' = xA`) |
+| `Tower/RV6/CharFun.lean` | **`integral_cube_besselJ0`**: `∫_{[0,1]⁵} J₀(t ‖1 + Σ e(τ_j)‖) dτ = J₀(t)⁶`, the characteristic function of the six-step walk; `cube_restrict`: Lebesgue measure on the cube is a product measure |
+| `Tower/RV6/CubeLog.lean` | **`integral_cube_logG`**: `∫_{[0,1]⁵} log(δ + √(‖X‖² + δ²)) dτ = log 2 + ∫₀^∞ (e^{-t} - e^{-δt} J₀(t)⁶) dt/t` for `δ > 0` |
+| `Tower/RV6/RungA1.lean` | **`rungA1 : RungA1`**: `m(1 + x₁ + ⋯ + x₅) = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t`, with no hypotheses; `ae_cubeX_ne_zero`; `integrable_of_antitone_of_tendsto`; **`rv6_of_A2_B`**: `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
@@ -74,18 +78,19 @@ hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
 `(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, that integral is
 `(3/(4π⁵)) Σ psiW(n)/n⁵`, and `psiW(n)` is the `n`-th coefficient of the eta product
 (Sections 5 and 6 of the paper; nothing is regularised and no convergence is assumed).
-**`rv6_of_bessel`** therefore derives the theorem from three statements, which are still
-hypotheses: the rungs of the Bessel side, `RungA1`, `RungA2`, `RungB`.  Each was checked
-numerically from the Lean definitions before it was stated.  On that side the calculus of
-`I₀, I₁, K₀, K₁`, the Wronskian, and the convergence and positivity of the integral defining
-`R₆,₂` are proved; so are the calculus and decay of `J₀`, the convergence of the walk-side
-integral, the Laplace transform of `J₀` and the logarithm formula with damping (two of the three
-steps towards `RungA1`).  No rung is discharged yet.  `ROADMAP.md` has the plan and the
-state by rung.
+The first rung of the Bessel side is proved as well: **`rungA1`**, the random-walk representation
+`μ₆ = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t`, for the Mahler measure defined in `Defs.lean` as an
+integral over `[0,1]⁵` (the integrability of `log ‖1 + Σ e(τ_j)‖` on the cube is part of the proof).
+**`rv6_of_A2_B`** therefore derives the theorem from two statements, which are still hypotheses:
+`RungA2` (`walkSide = (30/π⁴) R₆,₂`, the rotation of the contour) and `RungB` (the Bessel-side
+evaluation of the double Eisenstein integral).  Each was checked numerically from the Lean
+definitions before it was stated.  Towards them, the calculus of `I₀, I₁, K₀, K₁`, the Wronskian,
+and the convergence and positivity of the integral defining `R₆,₂` are proved.  `ROADMAP.md` has
+the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of `RungA1`, `RungA2`, `RungB` (`ROADMAP.md`);
+* proofs of `RungA2`, `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
