@@ -2,11 +2,10 @@
 
 Target: `Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5` with no hypotheses.
 
-Today: the modular side is proved.  `Tower.RV6.rv6_psiW_of_bessel` takes the three Bessel-side
-rungs (`RungA1`, `RungA2`, `RungB`) and gives `μ₆ = (648/π⁶) Σ psiW(n)/n⁵` with explicit
-divisor-sum coefficients; `rv6_of_bessel_and_E` adds the identity of coefficients `RungEW` and
-gives the statement with the eta product.  This file is the plan for removing the four
-hypotheses that are left and is updated with every wave.  "Proved" means: in this repository,
+Today: the modular side is proved, including the identification with the eta product.
+`Tower.RV6.rv6_of_bessel` takes the three Bessel-side rungs (`RungA1`, `RungA2`, `RungB`) and
+gives `μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing the three hypotheses that
+are left and is updated with every wave.  "Proved" means: in this repository,
 kernel-checked, no hypotheses.
 
 ## Architecture
@@ -20,7 +19,7 @@ and nothing is continued analytically.
 `psiW(n) = -(11/54) σ₃(n) - (22/27) σ₃(n/2) + (63/2) σ₃(n/3) + 126 σ₃(n/6) + (65/54) F_n - (5/9) Σ_{i+j=n} F_i F_j`
 
 (`σ_k(n/m) = 0` unless `m ∣ n`).  The identity `psiW(n) = a(n)`, the coefficients of
-`(η(τ) η(2τ) η(3τ) η(6τ))²`, is isolated as one statement about integer sequences, rung `E″`.
+`(η(τ) η(2τ) η(3τ) η(6τ))²`, is one statement about sequences, rung `E″`, proved in `ℝ⟦X⟧`.
 
 | rung | statement | status |
 |---|---|---|
@@ -30,7 +29,7 @@ and nothing is continued analytically.
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
 | D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | **proved** (`lambdaPsiW5_eq`, wave 6) |
-| E″ | `a(n) = psiW(n)` for all `n` | open (next); true for `n ≤ 60` in exact arithmetic |
+| E″ | `a(n) = psiW(n)` for all `n` | **proved** (`rungEW`, wave 7) |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -45,25 +44,16 @@ C1 and C2″ together are `D01_eq_modular`:
 | 4 | `PhiKernel`, `Interchange` | the interchange of Lemma 5.1 of the paper (Tonelli, regrouping, the arithmetic identity) |
 | 5 | `Eichler`, `Eichler2`, `Bilin`, `RungC1`, `C4` | the partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt` and its inversion formula; the two forms of `𝒜₁`; `∫ x² T = ζ(5)/(24π³)`; the Fricke split; `c₄(n)` as divisor sums; **rung C1** |
 | 6 | `QCalc`, `DEInv`, `PsiW`, `RungC2`, `Ladder3` | termwise differentiation of a `q`-series, integrability of `qa C y · y^k`, the Cauchy product; the inversion formula of `D E₂`; the Fricke substitution in an integral; the moments of `𝔉` (`∫ 𝔉 y² = 0`, `∫ 𝔉 y⁴ = ζ(5)/(144π)`, `∫ 𝔉 D𝔉 y⁵ = (5/(4π)) ∫ 𝔉² y⁴`); **rungs C2″ and D″**; the ladder from the Bessel side |
+| 7 | `Ser`, `Ramanujan`, `Level6`, `EtaRec` | `θ = X d/dX` on `ℝ⟦X⟧`; uniqueness of the coefficients of a `q`-series; `(2πi)⁻¹ d/dz` on the imaginary axis; Ramanujan's identities for `E₂, E₄, E₆` in `ℝ⟦X⟧` from Mathlib's; the nine relations at level 6 by a closed linear system under `θ`; the logarithmic derivative of the truncated eta product; **rung E″**; `rv6_of_bessel` |
 
 ## Plan by rung
 
-**E″.**  By power series, without the valence formula at level six.  Write
-`x_d = E₂(q^d)`, `u_d = E₄(q^d)`, `v_d = E₆(q^d)` (`d ∣ 6`) as formal power series with their
-divisor-sum coefficients, and `θ = q d/dq`.
-
-1. Ramanujan's identities `12 θx = x² - u`, `3 θu = xu - v`, `2 θv = xv - u²` are in Mathlib as
-   identities of functions on the upper half plane (`RamanujanFormula.lean`).  Restricted to the
-   imaginary axis they are identities between the real `q`-series of `QSeries.lean`, hence between
-   coefficients; applying `X ↦ X^d` (`PowerSeries.expand`) gives them for `x_d, u_d, v_d`.
-2. Nine relations hold among the twelve series: `ρ(x) = 0` (one quadratic relation among the
-   `x_d`), `u_d = U_d(x)` (four), `v_d = V_d(x)` (four).  The vector `R` of the nine differences
-   satisfies `θR = M R` with a matrix `M` of polynomials (nine polynomial identities, checked by
-   `ring`).  At `q = 0` the matrix has eigenvalues `0, 2, 3, 6`, so `R = 0` as soon as its
-   coefficients vanish through `q⁶`: for `n ≥ 7`, `n - M(0)` is invertible.
-3. With the nine relations, `θG = P G` for `G = Σ psiW(n) qⁿ`, `P = (1/12) Σ_{d ∣ 6} d x_d`: one more
-   polynomial identity.  The eta product satisfies the same equation (logarithmic derivative of
-   the product, in `ℤ⟦X⟧`), and the equation determines the coefficients from the first one.
+**E″.**  Done (wave 7), by power series and without the valence formula at level six:
+Ramanujan's three identities at level one (Mathlib) restricted to the imaginary axis and read as
+identities of coefficients; `X ↦ X^d`; nine relations among `E₂, E₄, E₆` at `X, X², X³, X⁶`, whose
+differences satisfy `θR = M R` with `M(0)` having eigenvalues `0, 2, 3, 6` only; the first-order
+equation `12 θG = (Σ_{d ∣ 6} d E₂(X^d)) G` for `G = Σ psiW(n) Xⁿ`; the same equation for the eta
+product from its logarithmic derivative.
 
 **A1.**  `J₀` as the characteristic function of a uniform step; `log r = ∫ (J₀(t) - J₀(rt)) dt/t`;
 exchange with the expectation; `|J₀(t)| ≤ C t^{-1/2}`.
@@ -92,3 +82,10 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
 * Integrability of an integrand whose integral is known and non-zero is
   `Integrable.of_integral_ne_zero`; for an integrand that agrees with an integrable one on the
   domain, `IntegrableOn.congr_fun`.
+* A lemma about a numeral that `simp` is to use is stated with `ofNat(n)` (Mathlib's
+  `no_index (OfNat.ofNat n)`); stated with `OfNat.ofNat n` it is found by `rw` but not by `simp`.
+* `exact_mod_cast` does not move a cast `ℝ → ℂ` across `12⁻¹ * ·`.  The cast equation is stated
+  and proved by `push_cast`, then `Complex.ofReal_injective`.
+* `unfold` reduces closed natural-number arithmetic (`0 / 2`); a following `rw [Nat.zero_div]`
+  finds nothing.
+* When a tactic may or may not close the goal (`push_cast`), the next one goes under `first`.

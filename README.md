@@ -58,21 +58,26 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/PsiW.lean` | the weight-four form `Ψ^W` by its coefficients `psiW` (divisor sums); the moments of `𝔉`; **`lambdaPsiW5_eq`** (rung D″): `∫₀^∞ Ψ^W(iy) y⁴ dy = (3/(4π⁵)) Σ psiW(n)/n⁵` |
 | `Tower/RV6/RungC2.lean` | **`rungC2W`** (rung C2″): `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy` |
 | `Tower/RV6/Ladder3.lean` | **`D01_eq_modular`** (no hypotheses); **`rv6_psiW_of_bessel`**: `RungA1`, `RungA2`, `RungB` imply `μ₆ = (648/π⁶) Σ psiW(n)/n⁵`; `rv6_of_bessel_and_E` |
+| `Tower/RV6/Ser.lean` | formal power series over `ℝ`: `θ = X d/dX` (a derivation), its commutation with `X ↦ X^d`, truncation at `X⁷` |
+| `Tower/RV6/Ramanujan.lean` | **`qa_coeff_unique`**: a `q`-series of polynomial growth that vanishes for all `y > 0` has zero coefficients; **`D_axis`**: `(2πi)⁻¹ d/dz` on the imaginary axis; **`ram6`**: Ramanujan's identities for `E₂, E₄, E₆` at `X, X², X³, X⁶` in `ℝ⟦X⟧`, from Mathlib's identities on the upper half plane |
+| `Tower/RV6/Level6.lean` (generated) | the nine polynomial relations among `E₂, E₄, E₆` at `X, X², X³, X⁶` (**`Rf1_eq_zero`** … **`Rf9_eq_zero`**): the differences satisfy a closed linear system under `θ`, whose matrix at `X = 0` has no eigenvalue `≥ 7`; **`thetaGam_scaled`** |
+| `Tower/RV6/EtaRec.lean` | **`rungEW`** (rung E″): `psiW(n)` is the `n`-th coefficient of `X ∏ ((1-X^k)(1-X^{2k})(1-X^{3k})(1-X^{6k}))²`, by the logarithmic derivative of the product and uniqueness of the recurrence; **`rv6_of_bessel`**: `RungA1`, `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
-| `tools/gen_interchange.py`, `tools/gen_rungc1.py` | generators of the generated files (they only substitute repeated expressions) |
+| `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
 **Status: this is not yet a Lean proof of the theorem.**  The modular side is proved with no
 hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
-`(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, and that integral is
-`(3/(4π⁵)) Σ psiW(n)/n⁵` (Sections 5 and 6 of the paper; nothing is regularised and no convergence
-is assumed).  Four statements are still hypotheses: the three rungs of the Bessel side (`RungA1`,
-`RungA2`, `RungB`) and `RungEW`, which says that `psiW(n)` is the `n`-th coefficient of the eta
-product.  Each was checked numerically from the Lean definitions before it was stated.
-`ROADMAP.md` has the plan and the state by rung.
+`(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, that integral is
+`(3/(4π⁵)) Σ psiW(n)/n⁵`, and `psiW(n)` is the `n`-th coefficient of the eta product
+(Sections 5 and 6 of the paper; nothing is regularised and no convergence is assumed).
+**`rv6_of_bessel`** therefore derives the theorem from three statements, which are still
+hypotheses: the rungs of the Bessel side, `RungA1`, `RungA2`, `RungB`.  Each was checked
+numerically from the Lean definitions before it was stated.  `ROADMAP.md` has the plan and the
+state by rung.
 
 ## Not here yet
 
-* proofs of `RungA1`, `RungA2`, `RungB` and `RungEW` (`ROADMAP.md`);
+* proofs of `RungA1`, `RungA2`, `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
