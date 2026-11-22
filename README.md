@@ -64,6 +64,8 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/EtaRec.lean` | **`rungEW`** (rung E″): `psiW(n)` is the `n`-th coefficient of `X ∏ ((1-X^k)(1-X^{2k})(1-X^{3k})(1-X^{6k}))²`, by the logarithmic derivative of the product and uniqueness of the recurrence; **`rv6_of_bessel`**: `RungA1`, `RungA2`, `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselI.lean`, `BesselK.lean`, `BesselW.lean` | the Bessel functions of `Defs.lean`: `I₀' = I₁`, `(t I₁)' = t I₀` (termwise differentiation of the series); `K₁(t) = ∫₀^∞ e^{-t cosh u} cosh u du`, `K₀' = -K₁`, `(t K₁)' = -t K₀` (differentiation under the integral sign, integration by parts); `e^{-t} ≤ t K₁(t) ≤ 1`; **`wronskian`**: `I₀ K₁ + I₁ K₀ = 1/t` |
 | `Tower/RV6/BesselR.lean` | bounds: `I₀ ≤ cosh`, `I₁ ≤ sinh`, `K₀ > 0`, `I₀(t) ≤ e^t`, `I₁K₀ ≤ 1/t`, `K₀(t) ≤ e^{-t}√(π/(2t))`, `K₀(t) ≤ log(1 + 2/t)`; **`integrableOn_R62_integrand`**, **`R62_pos`**: `R₆,₂ = (8/5) ∫₀^∞ I₀² I₁ K₀⁵ dt` is a convergent positive integral |
+| `Tower/RV6/BesselJ.lean` | `J₀' = -J₁`, `(t J₁)' = t J₀`; `J₀² + J₁² ≤ 1`; **`besselJ0_sq_le`**: `J₀(t)² ≤ E(1)/t` for `t ≥ 1` (the energy of `√t J₀` decreases); **`integrableOn_walk_integrand`**: the integral in `walkSide` converges |
+| `Tower/RV6/Laplace.lean`, `LogInt.lean` | **`lapl_besselJ0`**: `∫₀^∞ e^{-δt} J₀(at) dt = 1/√(a² + δ²)`; **`logInt_eq`**: `∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a² + δ²)) - log 2` (`a ≥ 0`, `δ > 0`) |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py` | generators of the generated files (the first two only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
 
@@ -76,7 +78,9 @@ hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
 hypotheses: the rungs of the Bessel side, `RungA1`, `RungA2`, `RungB`.  Each was checked
 numerically from the Lean definitions before it was stated.  On that side the calculus of
 `I₀, I₁, K₀, K₁`, the Wronskian, and the convergence and positivity of the integral defining
-`R₆,₂` are proved; no rung is discharged yet.  `ROADMAP.md` has the plan and the
+`R₆,₂` are proved; so are the calculus and decay of `J₀`, the convergence of the walk-side
+integral, the Laplace transform of `J₀` and the logarithm formula with damping (two of the three
+steps towards `RungA1`).  No rung is discharged yet.  `ROADMAP.md` has the plan and the
 state by rung.
 
 ## Not here yet

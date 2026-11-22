@@ -23,7 +23,7 @@ and nothing is continued analytically.
 
 | rung | statement | status |
 |---|---|---|
-| A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | open |
+| A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | open; steps 1 and 2 of 3 proved: the walk-side integral converges (`BesselJ.lean`), `∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a²+δ²)) - log 2` (`LogInt.lean`) |
 | A2 | that side `= (30/π⁴) R₆,₂` | open; two algebraic steps (`BesselAlgebra.lean`) and the Wronskian (`BesselW.lean`) proved; `R₆,₂` is a convergent positive integral (`BesselR.lean`) |
 | B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
@@ -46,6 +46,8 @@ C1 and C2″ together are `D01_eq_modular`:
 | 6 | `QCalc`, `DEInv`, `PsiW`, `RungC2`, `Ladder3` | termwise differentiation of a `q`-series, integrability of `qa C y · y^k`, the Cauchy product; the inversion formula of `D E₂`; the Fricke substitution in an integral; the moments of `𝔉` (`∫ 𝔉 y² = 0`, `∫ 𝔉 y⁴ = ζ(5)/(144π)`, `∫ 𝔉 D𝔉 y⁵ = (5/(4π)) ∫ 𝔉² y⁴`); **rungs C2″ and D″**; the ladder from the Bessel side |
 | 7 | `Ser`, `Ramanujan`, `Level6`, `EtaRec` | `θ = X d/dX` on `ℝ⟦X⟧`; uniqueness of the coefficients of a `q`-series; `(2πi)⁻¹ d/dz` on the imaginary axis; Ramanujan's identities for `E₂, E₄, E₆` in `ℝ⟦X⟧` from Mathlib's; the nine relations at level 6 by a closed linear system under `θ`; the logarithmic derivative of the truncated eta product; **rung E″**; `rv6_of_bessel` |
 | 8 | `BesselI`, `BesselK`, `BesselW`, `BesselR` | `I₀' = I₁`, `(t I₁)' = t I₀`; `K₁`, `K₀' = -K₁`, `(t K₁)' = -t K₀`; `e^{-t} ≤ t K₁ ≤ 1`; the Wronskian `I₀K₁ + I₁K₀ = 1/t`; `I₀ ≤ cosh`, `I₁ ≤ sinh`, `K₀ > 0`; `I₀ ≤ e^t` and `I₁K₀ ≤ 1/t` (from the Wronskian); `K₀(t) ≤ e^{-t}√(π/(2t))`, `K₀(t) ≤ log(1 + 2/t)`; **`I₀² I₁ K₀⁵` is integrable on `(0, ∞)` and `R₆,₂ > 0`** |
+| 9 | `BesselJ` | `J₀' = -J₁`, `(t J₁)' = t J₀`, `J₁' = J₀ - J₁/t`; `J₀² + J₁² ≤ 1` on `t ≥ 0`; the energy `E = tJ₀² + tJ₁² - J₀J₁ + J₀²/(2t)` with `E' = -J₀²/(2t²)` and `J₀(t)² ≤ E(1)/t` for `t ≥ 1`; **the integrand of the walk side is integrable on `(0, ∞)`** |
+| 10 | `Laplace`, `LogInt` | `lapl φ δ = ∫₀^∞ e^{-δt} φ(t) dt`: integrability, differentiation in `δ`, integration by parts; **`∫₀^∞ e^{-δt} J₀(at) dt = 1/√(a² + δ²)`** (from the two derivative formulas: `(a² + δ²) L' = -δ L`, so `(a² + δ²) L²` is constant); **`∫₀^∞ (e^{-t} - e^{-δt} J₀(at)) dt/t = log(δ + √(a² + δ²)) - log 2`** for `a ≥ 0`, `δ > 0` |
 
 ## Plan by rung
 
@@ -61,14 +63,20 @@ of `Defs.lean`; the bounds `I₀ ≤ e^t`, `I₁K₀ ≤ 1/t`, `K₀(t) ≤ e^{1
 `K₀(t) ≤ log(1 + 2/t)`; the integrability of `I₀² I₁ K₀⁵` on `(0, ∞)`.  `R₆,₂` of `Defs.lean` is a
 convergent positive integral (a Bochner integral of a non-integrable function would be `0`).
 
-**A1.**  In this order.  (1) `J₀' = -J₁` and `(t J₁)' = t J₀` from the series;
-`J₀² + J₁² ≤ 1` on `t ≥ 0` (its derivative is `-2J₁²/t`); the energy
-`E = t J₀² + t J₁² - J₀J₁ + J₀²/(2t)` of `√t J₀` has `E' = -J₀²/(2t²)`, so `J₀(t)² ≤ E(1)/t` for
-`t ≥ 1`; the integrand of the walk side is integrable.  (2) `∫₀^∞ e^{-δt} J₀(at) dt = (δ² + a²)^{-1/2}`
-from the two derivative formulas, hence `∫₀^∞ (e^{-t} - J₀(at)) dt/t = log a - log 2`.
-(3) Bessel's integral `J₀(t) = ∫₀¹ cos(t cos 2πθ) dθ` (both sides solve the same first-order
-system and the difference has non-increasing energy); the characteristic function of the
-six-step walk; exchange with the expectation over the torus.  Real analysis only; several waves.
+**A1.**  Steps 1 and 2 are done (waves 9 and 10): the calculus and decay of `J₀`, the
+convergence of the walk-side integral, the Laplace transform of `J₀`, and the logarithm formula
+with the damping factor `e^{-δt}`, valid for every `a ≥ 0`.  Step 3, in this order:
+(a) Bessel's integral `J₀(x) = ∫₀¹ cos(x cos 2πθ) dθ` (both sides solve `A' = -B`, `(xB)' = xA`
+with the same values at `0`, and `a² + b²` of the difference is nonincreasing), in the form
+`J₀(s‖z‖) = ∫₀¹ exp(i s Re(z e(θ))) dθ` for `z ∈ ℂ`;
+(b) `∫_{[0,1]⁵} J₀(s ‖1 + Σ e(t_j)‖) dt = J₀(s)⁶` (Fubini once, then the integral of a product
+over the cube);
+(c) `log ‖1 + Σ e(t_j)‖` is integrable on the cube (the last coordinate by Mathlib's formula
+`circleAverage (log ‖· + a‖) 0 1 = log⁺ ‖a‖`, which bounds `∫ |log|` by `2 log 6`);
+(d) the formula of step 2 with `a = ‖1 + Σ e(t_j)‖` integrated over the cube, and `δ → 0`:
+on the walk side by dominated convergence with the bound of wave 9, on the Mahler side in the
+last coordinate first.  The undamped formula `∫ (e^{-t} - J₀(at)) dt/t = log a - log 2` is not
+needed.
 
 **A2.**  Lemma 2.1 (with the Wronskian, now available); Hankel functions `J₀ ± iY₀` in a half
 plane and the rotation of `∫ J₀⁶ t^{s-1} dt`; the Mellin expansions (2.6).  Needs conditionally
@@ -112,3 +120,10 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   `rw [neg_pow]` the first match is worked out by hand, or the lemma is given its arguments.
 * `Continuous.mul`, `HasDerivAt.mul`, `Continuous.pow`, `HasDerivAt.div` are stated for `f * g`,
   `f ^ n`, `f / g` as functions; a typed `have` written with `fun x => f x * g x` accepts them.
+* What the five files of waves 8 (second session) to 10 had in common, all green at the first
+  compile: every combinator result (`.mul`, `.comp`, `.sub`, `.fun_div`, …) is restated by a typed
+  `have` before it is used; no `field_simp` (cancellations are `linear_combination` with
+  `x * x⁻¹ = 1` or `a / b * b = a` as a hypothesis); no `positivity` on a goal that needs a
+  hypothesis; a `by` block is never left inside a `rw [...]` term without a type ascription;
+  nonlinear steps are given to `linarith` as explicit products (`mul_le_mul …`), not left to
+  `nlinarith`.
