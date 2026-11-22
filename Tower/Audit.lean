@@ -23,6 +23,10 @@ import Tower.RV6.DEInv
 import Tower.RV6.PsiW
 import Tower.RV6.RungC2
 import Tower.RV6.Ladder3
+import Tower.RV6.Ser
+import Tower.RV6.Level6
+import Tower.RV6.Ramanujan
+import Tower.RV6.EtaRec
 
 /-!
 # Axiom audit
@@ -130,3 +134,19 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.D01_eq_modular
 #print axioms Tower.RV6.rv6_psiW_of_bessel
 #print axioms Tower.RV6.rv6_of_bessel_and_E
+#print axioms Tower.RV6.theta_mul
+#print axioms Tower.RV6.rel_all_zero
+#print axioms Tower.RV6.thetaGam_scaled
+#print axioms Tower.RV6.qa_coeff_unique
+#print axioms Tower.RV6.D_axis
+#print axioms Tower.RV6.E6_axis
+#print axioms Tower.RV6.c2_zero
+#print axioms Tower.RV6.c6_zero
+#print axioms Tower.RV6.ram6
+#print axioms Tower.RV6.Rf9_eq_zero
+#print axioms Tower.RV6.theta_PsiS
+#print axioms Tower.RV6.rec_psi
+#print axioms Tower.RV6.theta_HN
+#print axioms Tower.RV6.rec_HN
+#print axioms Tower.RV6.rungEW
+#print axioms Tower.RV6.rv6_of_bessel
