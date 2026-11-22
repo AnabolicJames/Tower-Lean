@@ -73,6 +73,14 @@ theorem continuousOn_qa {C : ℕ → ℝ} {B : ℝ} {K : ℕ} (hC : ∀ n, |C n|
     have h3 := mul_le_mul_of_nonneg_left hx' h2
     linarith
 
+/-- The shifted series is summable.  (Stated separately and proved through `have … ; exact`:
+the conclusion contains `C (n + 1)`, which must not be unified against an expected type.) -/
+theorem summable_qa_shift {C : ℕ → ℝ} {B : ℝ} {K : ℕ} (hC : ∀ n, |C n| ≤ B * (n : ℝ) ^ K)
+    {x : ℝ} (hx : 0 < x) :
+    Summable fun n : ℕ => C (n + 1) * Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * x)) := by
+  have h := (summable_nat_add_iff 1).mpr (summable_qa hC hx)
+  exact h
+
 /-- The partial Eichler integral `T(a) = ∫_a^∞ t S₃(t) dt`. -/
 noncomputable def Tint (a : ℝ) : ℝ := ∫ t in Set.Ioi a, t * qa (sig 3) t
 
@@ -123,11 +131,13 @@ theorem Tint_eq {a : ℝ} (ha : 0 < a) :
     rw [Real.norm_of_nonneg
       (mul_nonneg (sig_nonneg 3 _) (mul_nonneg (Real.exp_pos _).le (pow_nonneg ht0 1)))]
   have hU1 : Summable fun n : ℕ => sig 3 (n + 1) / ((n + 1 : ℕ) : ℝ)
-      * Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * a)) :=
-    (summable_nat_add_iff 1).mpr (summable_qa bound_sig3_div ha)
+      * Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * a)) := by
+    have h := summable_qa_shift bound_sig3_div ha
+    exact h
   have hU2 : Summable fun n : ℕ => sig 3 (n + 1) / ((n + 1 : ℕ) : ℝ) ^ 2
-      * Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * a)) :=
-    (summable_nat_add_iff 1).mpr (summable_qa bound_sig3_div_sq ha)
+      * Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * a)) := by
+    have h := summable_qa_shift bound_sig3_div_sq ha
+    exact h
   have hH := (hU1.hasSum.mul_left (a / (2 * π))).add (hU2.hasSum.mul_left (1 / (4 * π ^ 2)))
   have hsumInt : Summable fun n : ℕ => ∫ t in Set.Ioi a,
       ‖sig 3 (n + 1) * (Real.exp (-(2 * π * ((n + 1 : ℕ) : ℝ) * t)) * t ^ 1)‖ :=
@@ -252,7 +262,7 @@ theorem Tint_inv_of_one_le {a : ℝ} (ha : 1 ≤ a) :
     fun ε hε => (hcont ε hε).add (continuous_id.div_const 240).continuousOn
   have hadd : ∀ b c : ℝ, 0 < b → b ≤ c →
       ∫ x in b..c, (x * qa (sig 3) x + x / 240)
-        = ∫ x in b..c, x * qa (sig 3) x + (c ^ 2 - b ^ 2) / 2 / 240 := by
+        = (∫ x in b..c, x * qa (sig 3) x) + (c ^ 2 - b ^ 2) / 2 / 240 := by
     intro b c hb hbc
     have hsub : Set.uIcc b c ⊆ Set.Ici b := by
       rw [Set.uIcc_of_le hbc]
