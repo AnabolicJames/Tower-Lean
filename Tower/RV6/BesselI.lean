@@ -201,6 +201,8 @@ theorem continuous_Bser : Continuous Bser :=
 theorem besselI0_eq (t : ℝ) : besselI0 t = Aser (t / 2 * (t / 2)) := by
   unfold besselI0 Aser
   refine tsum_congr (fun k => ?_)
+  have e : (t / 2) ^ (2 * k) = (t / 2 * (t / 2)) ^ k := by rw [pow_mul, pow_two]
+  rw [e]
   unfold cA
   ring
 
@@ -208,6 +210,9 @@ theorem besselI1_eq (t : ℝ) : besselI1 t = t / 2 * Bser (t / 2 * (t / 2)) := b
   unfold besselI1 Bser
   rw [← tsum_mul_left]
   refine tsum_congr (fun k => ?_)
+  have e : (t / 2) ^ (2 * k + 1) = (t / 2 * (t / 2)) ^ k * (t / 2) := by
+    rw [pow_succ, pow_mul, pow_two]
+  rw [e]
   unfold cB
   ring
 
