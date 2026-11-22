@@ -61,7 +61,7 @@ theorem theta_natCast (m : ℕ) : theta (m : PowerSeries ℝ) = 0 := by
   rw [← map_natCast (PowerSeries.C : ℝ →+* PowerSeries ℝ) m]
   exact theta_C _
 
-theorem theta_ofNat (m : ℕ) [m.AtLeastTwo] : theta (OfNat.ofNat m : PowerSeries ℝ) = 0 := by
+theorem theta_ofNat (m : ℕ) [m.AtLeastTwo] : theta (ofNat(m) : PowerSeries ℝ) = 0 := by
   rw [← Nat.cast_ofNat (R := PowerSeries ℝ)]
   exact theta_natCast _
 
