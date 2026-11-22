@@ -11,6 +11,8 @@ import Tower.RV6.Regroup
 import Tower.RV6.Arith
 import Tower.RV6.Dirichlet
 import Tower.RV6.Fricke6
+import Tower.RV6.PhiKernel
+import Tower.RV6.Interchange
 
 /-!
 # Axiom audit
@@ -74,3 +76,12 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.tsum_sig1_div_pow5
 #print axioms Tower.RV6.g4E_fricke
 #print axioms Tower.RV6.Gcal_fricke
+#print axioms Tower.RV6.PhiN_le
+#print axioms Tower.RV6.PhiN_scale
+#print axioms Tower.RV6.PhiN_pos
+#print axioms Tower.RV6.integral_qa_mul
+#print axioms Tower.RV6.integral_qa_mul_regroup
+#print axioms Tower.RV6.swap_qa
+#print axioms Tower.RV6.integrable_qa_mul
+#print axioms Tower.RV6.interchange_three
+#print axioms Tower.RV6.interchange_four
