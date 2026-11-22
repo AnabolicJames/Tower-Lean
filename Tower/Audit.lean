@@ -58,3 +58,4 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rv6_psi_of_rungs
 #print axioms Tower.RV6.rv6_of_rungs'
 #print axioms Tower.RV6.E4im_inv
+#print axioms Tower.RV6.E2im_inv
