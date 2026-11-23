@@ -73,6 +73,7 @@ import Tower.RV6.HankelDeriv
 import Tower.RV6.HankelODEF
 import Tower.RV6.HankelTaylor
 import Tower.RV6.HankelZeroF
+import Tower.RV6.PullbackF
 
 /-!
 # Axiom audit
@@ -540,3 +541,13 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.hk_mom2F
 #print axioms Tower.RV6.uF_small
 #print axioms Tower.RV6.uF_zero
+#print axioms Tower.RV6.hasDerivAt_Pax
+#print axioms Tower.RV6.hasDerivAt_hkxm_thF0
+#print axioms Tower.RV6.hasDerivAt_hkxm_thF1
+#print axioms Tower.RV6.hasDerivAt_hkxm_thF2
+#print axioms Tower.RV6.hasDerivAt_hF0
+#print axioms Tower.RV6.hasDerivAt_hF1
+#print axioms Tower.RV6.hasDerivAt_hF2
+#print axioms Tower.RV6.hasDerivAt_hF2_zero
+#print axioms Tower.RV6.quad_of_third_deriv_zero
+#print axioms Tower.RV6.hjF_xm_quad
