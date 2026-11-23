@@ -78,6 +78,7 @@ import Tower.RV6.ZhouFa0
 import Tower.RV6.CuspBesselF
 import Tower.RV6.CuspModF
 import Tower.RV6.LaplaceIK
+import Tower.RV6.LaplaceP
 
 /-!
 # Axiom audit
@@ -618,3 +619,31 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.laplace_K0_pt
 #print axioms Tower.RV6.laplace_K0
 #print axioms Tower.RV6.integrableOn_laplace_K0
+#print axioms Tower.RV6.rhoKp
+#print axioms Tower.RV6.nuP
+#print axioms Tower.RV6.rhoI_nonneg
+#print axioms Tower.RV6.rhoK_nonneg
+#print axioms Tower.RV6.rhoKp_nonneg
+#print axioms Tower.RV6.nuP_nonneg
+#print axioms Tower.RV6.measurable_rhoI
+#print axioms Tower.RV6.measurable_rhoK
+#print axioms Tower.RV6.measurable_rhoKp
+#print axioms Tower.RV6.rhoKp_mul
+#print axioms Tower.RV6.nuP_eq_zero_of_nonpos
+#print axioms Tower.RV6.integral_shift_K
+#print axioms Tower.RV6.integrable_conv
+#print axioms Tower.RV6.integral_conv_inner
+#print axioms Tower.RV6.laplace_P
+#print axioms Tower.RV6.integrableOn_laplace_P
+#print axioms Tower.RV6.Hnu
+#print axioms Tower.RV6.image_mul_sin_sq
+#print axioms Tower.RV6.injOn_mul_sin_sq
+#print axioms Tower.RV6.hasDerivWithinAt_mul_sin_sq
+#print axioms Tower.RV6.nuP_pt
+#print axioms Tower.RV6.nuP_eq_Ioo
+#print axioms Tower.RV6.nuP_eq_theta
+#print axioms Tower.RV6.two_le_Hnu
+#print axioms Tower.RV6.abs_Hnu_inv_sqrt_sub_le
+#print axioms Tower.RV6.integral_cos_sq_sub_sin_sq_half_pi
+#print axioms Tower.RV6.continuous_Hnu_inv_sqrt
+#print axioms Tower.RV6.abs_nuP_sub_half_le
