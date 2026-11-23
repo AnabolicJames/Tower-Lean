@@ -76,6 +76,7 @@ import Tower.RV6.HankelZeroF
 import Tower.RV6.PullbackF
 import Tower.RV6.ZhouFa0
 import Tower.RV6.CuspBesselF
+import Tower.RV6.CuspModF
 
 /-!
 # Axiom audit
@@ -570,3 +571,30 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_thF4_div
 #print axioms Tower.RV6.x2_hk_thF2_eq
 #print axioms Tower.RV6.tendsto_x2_hk_thF2
+#print axioms Tower.RV6.Xc_pos
+#print axioms Tower.RV6.Xc_eq
+#print axioms Tower.RV6.hasDerivAt_Xc
+#print axioms Tower.RV6.tendsto_Xc_atTop
+#print axioms Tower.RV6.hasDerivAt_Phi0
+#print axioms Tower.RV6.hasDerivAt_Phi1
+#print axioms Tower.RV6.hasDerivAt_g0
+#print axioms Tower.RV6.hasDerivAt_g1
+#print axioms Tower.RV6.Uax_inv_six
+#print axioms Tower.RV6.g0_eq
+#print axioms Tower.RV6.tendsto_sq_E2im_sub
+#print axioms Tower.RV6.tendsto_sq_Eax
+#print axioms Tower.RV6.tendsto_sq_Uax
+#print axioms Tower.RV6.tendsto_div_w
+#print axioms Tower.RV6.tendsto_mul_Eax
+#print axioms Tower.RV6.tendsto_mul_Uax
+#print axioms Tower.RV6.tendsto_Eax_atTop
+#print axioms Tower.RV6.tendsto_Uax_atTop
+#print axioms Tower.RV6.tendsto_inv_Pax_atTop
+#print axioms Tower.RV6.hasDerivAt_m1F
+#print axioms Tower.RV6.phi1_eq
+#print axioms Tower.RV6.phi2_eq
+#print axioms Tower.RV6.tendsto_m2F
+#print axioms Tower.RV6.a0_pi_sq
+#print axioms Tower.RV6.integral_t_I0_K0_cube
+#print axioms Tower.RV6.zhouF
+#print axioms Tower.RV6.rv6_of_zhou3
