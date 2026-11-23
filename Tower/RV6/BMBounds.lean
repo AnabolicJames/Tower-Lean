@@ -235,7 +235,7 @@ theorem pow_six_exp_le {w : ℝ} (hw : 0 ≤ w) :
     w ^ 6 * Real.exp (-(2 * π * w)) ≤ 720 / (2 * π) ^ 6 := by
   have h2pi : 0 < 2 * π := mul_pos (by norm_num) Real.pi_pos
   have hx : 0 ≤ 2 * π * w := mul_nonneg h2pi.le hw
-  have h := Real.pow_div_factorial_le_exp hx 6
+  have h := Real.pow_div_factorial_le_exp (2 * π * w) hx 6
   have h6 : ((Nat.factorial 6 : ℕ) : ℝ) = 720 := by norm_num [Nat.factorial]
   rw [h6, div_le_iff₀ (by norm_num : (0 : ℝ) < 720)] at h
   have hEE : Real.exp (2 * π * w) * Real.exp (-(2 * π * w)) = 1 := by
@@ -254,7 +254,7 @@ theorem pow_six_exp_le {w : ℝ} (hw : 0 ≤ w) :
 noncomputable def Sq6 : ℝ := ∑' n : ℕ, |sigq n| * Real.exp (-(2 * π * (n : ℝ) * (1 / 6)))
 
 theorem Sq6_nonneg : 0 ≤ Sq6 :=
-  tsum_nonneg (fun n => mul_nonneg (abs_nonneg _) (Real.exp_pos _).le)
+  tsum_nonneg (fun _ => mul_nonneg (abs_nonneg _) (Real.exp_pos _).le)
 
 /-- **The pole part is bounded near `y = 0`.** -/
 theorem pole_part_le : ∃ Kb : ℝ, ∀ y : ℝ, y ∈ Set.Ioc (0 : ℝ) 1 → ∀ s : ℝ, 0 ≤ s → s ≤ 1 →
@@ -423,7 +423,7 @@ theorem continuousAt_FS (s : ℝ) {y : ℝ} (hy : 0 < y) : ContinuousAt (FS s) y
   exact k
 
 theorem continuousOn_FS (s : ℝ) : ContinuousOn (FS s) (Set.Ioi 0) :=
-  fun y hy => (continuousAt_FS s (Set.mem_Ioi.mp hy)).continuousWithinAt
+  fun _ hy => (continuousAt_FS s (Set.mem_Ioi.mp hy)).continuousWithinAt
 
 /-- `FS s y → f0 y` as `s → 0+`. -/
 theorem tendsto_FS {y : ℝ} (hy : 0 < y) :
