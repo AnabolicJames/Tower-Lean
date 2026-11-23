@@ -107,7 +107,7 @@ theorem integral_exp_div_pow_six {a : ℝ} (ha : 0 < a) :
   refine setIntegral_congr_fun measurableSet_Ioi (fun u hu => ?_)
   have hu0 : 0 < u := Set.mem_Ioi.mp hu
   show |-(u ^ 2)⁻¹| * (Real.exp (-(a / u⁻¹)) / u⁻¹ ^ 6) = Real.exp (-(a * u)) * u ^ 4
-  have h1 : a / u⁻¹ = a * u := div_inv_eq_mul
+  have h1 : a / u⁻¹ = a * u := div_inv_eq_mul a u
   have hinv : u ^ 2 * (u ^ 2)⁻¹ = 1 := mul_inv_cancel₀ (pow_pos hu0 2).ne'
   rw [abs_neg, abs_of_pos (inv_pos.mpr (pow_pos hu0 2)), h1, inv_pow, div_inv_eq_mul]
   linear_combination (Real.exp (-(a * u)) * u ^ 4) * hinv
