@@ -83,7 +83,6 @@ theorem hasDerivAt_ldF0 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldF1
   ring
@@ -106,7 +105,6 @@ theorem hasDerivAt_ldF1 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldF2 ldF0
   ring
@@ -129,7 +127,6 @@ theorem hasDerivAt_ldF2 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldF3 ldF1
   ring
@@ -152,7 +149,6 @@ theorem hasDerivAt_ldF3 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldF4 ldF2
   ring
@@ -171,7 +167,6 @@ theorem hasDerivAt_ldF4 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldF3
   ring
@@ -209,7 +204,6 @@ theorem hasDerivAt_thF0 {t : ℝ} (ht : 0 < t) : HasDerivAt thF0 (thF1 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thF1
   linear_combination (1 * ldF1 t) * hinv
@@ -221,7 +215,6 @@ theorem hasDerivAt_thF1 {t : ℝ} (ht : 0 < t) : HasDerivAt thF1 (thF2 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thF2
   linear_combination (2 * ldF2 t + 4 * t ^ 2 * ldF0 t) * hinv
@@ -238,7 +231,6 @@ theorem hasDerivAt_thF2 {t : ℝ} (ht : 0 < t) : HasDerivAt thF2 (thF3 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thF3
   linear_combination (6 * ldF3 t + 10 * t ^ 2 * ldF1 t) * hinv
@@ -257,7 +249,6 @@ theorem hasDerivAt_thF3 {t : ℝ} (ht : 0 < t) : HasDerivAt thF3 (thF4 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thF4
   linear_combination (24 * ldF4 t + 32 * t ^ 2 * ldF2 t + 8 * t ^ 2 * ldF1 t +
@@ -282,7 +273,6 @@ theorem hasDerivAt_thF4 {t : ℝ} (ht : 0 < t) : HasDerivAt thF4 (thF5 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thF5
   linear_combination (120 * t ^ 2 * ldF3 t + 56 * t ^ 2 * ldF2 t + 16 * t ^ 2 * ldF1 t +
@@ -349,7 +339,6 @@ theorem hasDerivAt_ldG0 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldG1
   ring
@@ -372,7 +361,6 @@ theorem hasDerivAt_ldG1 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldG2 ldG0
   ring
@@ -397,7 +385,6 @@ theorem hasDerivAt_ldG2 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldG3 ldG1
   ring
@@ -420,7 +407,6 @@ theorem hasDerivAt_ldG3 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldG4 ldG2
   ring
@@ -439,7 +425,6 @@ theorem hasDerivAt_ldG4 {t : ℝ} (ht : 0 < t) :
     ring
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold ldG3
   ring
@@ -477,7 +462,6 @@ theorem hasDerivAt_thG0 {t : ℝ} (ht : 0 < t) : HasDerivAt thG0 (thG1 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thG1
   linear_combination (1 * ldG1 t) * hinv
@@ -489,7 +473,6 @@ theorem hasDerivAt_thG1 {t : ℝ} (ht : 0 < t) : HasDerivAt thG1 (thG2 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thG2
   linear_combination (2 * ldG2 t + 4 * t ^ 2 * ldG0 t) * hinv
@@ -506,7 +489,6 @@ theorem hasDerivAt_thG2 {t : ℝ} (ht : 0 < t) : HasDerivAt thG2 (thG3 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thG3
   linear_combination (6 * ldG3 t + 10 * t ^ 2 * ldG1 t) * hinv
@@ -525,7 +507,6 @@ theorem hasDerivAt_thG3 {t : ℝ} (ht : 0 < t) : HasDerivAt thG3 (thG4 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thG4
   linear_combination (24 * ldG4 t + 32 * t ^ 2 * ldG2 t + 8 * t ^ 2 * ldG1 t +
@@ -550,7 +531,6 @@ theorem hasDerivAt_thG4 {t : ℝ} (ht : 0 < t) : HasDerivAt thG4 (thG5 t / t) t 
   have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   rw [hfun]
   refine h0.congr_deriv ?_
-  beta_reduce
   rw [eq_div_iff ht.ne']
   unfold thG5
   linear_combination (120 * t ^ 2 * ldG3 t + 56 * t ^ 2 * ldG2 t + 16 * t ^ 2 * ldG1 t +

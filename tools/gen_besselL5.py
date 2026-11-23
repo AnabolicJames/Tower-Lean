@@ -277,7 +277,6 @@ def ladder_section(P, name_fun):
         L.append('    ring')
         L.append('  rw [hfun]')
         L.append('  refine h0.congr_deriv ?_')
-        L.append('  beta_reduce')
         L.append('  rw [eq_div_iff ht.ne\']')
         names = []
         if k < 4:
@@ -334,7 +333,6 @@ def chain_section(P, fname):
         L.append('  have hinv : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne\'')
         L.append('  rw [hfun]')
         L.append('  refine h0.congr_deriv ?_')
-        L.append('  beta_reduce')
         L.append('  rw [eq_div_iff ht.ne\']')
         L.append('  unfold th%s%d' % (P, k + 1))
         ct_terms = cert_text(c, P).split(' + ')
