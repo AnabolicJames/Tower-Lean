@@ -259,7 +259,7 @@ theorem nuP_pt {w θ : ℝ} (hw : 0 < w) (hw1 : w ≤ 1) (hθ : θ ∈ Set.Ioo 0
   have hwa : 0 < w * Real.sin θ ^ 2 * (2 - w * Real.sin θ ^ 2) :=
     mul_pos (mul_pos hw (pow_pos ha 2)) hX
   have hwc : 0 < (w - w * Real.sin θ ^ 2) * (w - w * Real.sin θ ^ 2 + 2) := by
-    have e : w - w * Real.sin θ ^ 2 = w * Real.cos θ ^ 2 := by linear_combination w * hsc
+    have e : w - w * Real.sin θ ^ 2 = w * Real.cos θ ^ 2 := by linear_combination (-w) * hsc
     rw [e]
     exact mul_pos (mul_pos hw (pow_pos hc 2)) (by linarith)
   have hH : 0 < Hnu w θ := mul_pos hX hY
@@ -378,7 +378,9 @@ theorem abs_Hnu_inv_sqrt_sub_le {w : ℝ} (hw : 0 < w) (hw1 : w ≤ 1) (θ : ℝ
     div_nonneg (mul_nonneg (mul_nonneg (sq_nonneg _) (by linarith)) hv0) (by norm_num)
   have hq : (s + 4) * s⁻¹ ≤ (s + 2) ^ 2 := by
     have h1 : (s + 4) * s⁻¹ ≤ (s + 4) * 1 := mul_le_mul_of_nonneg_left hvi (by linarith)
-    nlinarith
+    have h2 : 0 ≤ s * (s + 3) := mul_nonneg (by linarith) (by linarith)
+    have e : (s + 2) ^ 2 = s * (s + 3) + (s + 4) := by ring
+    linarith
   have hE1 : (s - 2) ^ 2 * (s + 4) * s⁻¹ / 16 ≤ (s ^ 2 - 4) ^ 2 / 16 := by
     have h1 : (s - 2) ^ 2 * ((s + 4) * s⁻¹) ≤ (s - 2) ^ 2 * (s + 2) ^ 2 :=
       mul_le_mul_of_nonneg_left hq (sq_nonneg _)
@@ -390,26 +392,39 @@ theorem abs_Hnu_inv_sqrt_sub_le {w : ℝ} (hw : 0 < w) (hw1 : w ≤ 1) (θ : ℝ
   -- |s² - 4| ≤ 9w/4
   have hp0 : 0 ≤ Real.sin θ ^ 2 * Real.cos θ ^ 2 := mul_nonneg hsn hcn
   have hp1 : Real.sin θ ^ 2 * Real.cos θ ^ 2 ≤ 1 / 4 := by
-    nlinarith [sq_nonneg (Real.sin θ ^ 2 - Real.cos θ ^ 2)]
+    have e1 : (Real.sin θ ^ 2 + Real.cos θ ^ 2) ^ 2 = 1 := by rw [hsc]; norm_num
+    have e2 := sq_nonneg (Real.sin θ ^ 2 - Real.cos θ ^ 2)
+    have e3 : 4 * (Real.sin θ ^ 2 * Real.cos θ ^ 2)
+        = (Real.sin θ ^ 2 + Real.cos θ ^ 2) ^ 2 - (Real.sin θ ^ 2 - Real.cos θ ^ 2) ^ 2 := by ring
+    linarith
   have hc2 : |Real.cos θ ^ 2 - Real.sin θ ^ 2| ≤ 1 := by
     rw [abs_le]
-    constructor <;> nlinarith
+    constructor <;> linarith
+  have hA := abs_le.mp hc2
+  have hwc1 : w * (Real.cos θ ^ 2 - Real.sin θ ^ 2) ≤ w * 1 := mul_le_mul_of_nonneg_left hA.2 hw.le
+  have hwc2 : w * (-1) ≤ w * (Real.cos θ ^ 2 - Real.sin θ ^ 2) := mul_le_mul_of_nonneg_left hA.1 hw.le
+  have hpw : 0 ≤ w ^ 2 * (Real.sin θ ^ 2 * Real.cos θ ^ 2) := mul_nonneg (sq_nonneg w) hp0
+  have hpw2 : w ^ 2 * (Real.sin θ ^ 2 * Real.cos θ ^ 2) ≤ w ^ 2 * (1 / 4) :=
+    mul_le_mul_of_nonneg_left hp1 (sq_nonneg w)
+  have hww : w ^ 2 ≤ w * 1 := by
+    rw [pow_two]
+    exact mul_le_mul_of_nonneg_left hw1 hw.le
   have hd : |s ^ 2 - 4| ≤ 9 * w / 4 := by
     rw [hs2, hHexp, abs_le]
-    have hc2' := abs_le.mp hc2
-    constructor <;> nlinarith
+    constructor <;> linarith
   have hd2 : (s ^ 2 - 4) ^ 2 ≤ (9 * w / 4) ^ 2 := by
     have h := abs_le.mp hd
-    nlinarith
+    exact sq_le_sq' h.1 h.2
   -- the target is E + w² sin²cos²/16
   have hT : (s⁻¹ - 1 / 2 + w / 8 * (Real.cos θ ^ 2 - Real.sin θ ^ 2))
       = (s - 2) ^ 2 * (s + 4) * s⁻¹ / 16 + w ^ 2 * (Real.sin θ ^ 2 * Real.cos θ ^ 2) / 16 := by
     rw [← hE, hs2, hHexp]
     ring
+  have hsq : (9 * w / 4) ^ 2 = 81 / 16 * w ^ 2 := by ring
   rw [hT, abs_le]
   constructor
-  · nlinarith
-  · nlinarith
+  · linarith
+  · linarith
 
 /-- `∫₀^{π/2} (cos²θ - sin²θ) dθ = 0`. -/
 theorem integral_cos_sq_sub_sin_sq_half_pi :
@@ -456,7 +471,7 @@ theorem abs_nuP_sub_half_le {w : ℝ} (hw : 0 < w) (hw1 : w ≤ 1) : |nuP w - 1 
   have e : 2 * π⁻¹ * (∫ θ in (0 : ℝ)..(π / 2), (Real.sqrt (Hnu w θ))⁻¹) - 1 / 2
       = 2 * π⁻¹ * ((∫ θ in (0 : ℝ)..(π / 2), (Real.sqrt (Hnu w θ))⁻¹) - π / 2 * (1 / 2)
         + w / 8 * 0) := by
-    linear_combination (-1 / 2 : ℝ) * hpi
+    linear_combination (1 / 2 : ℝ) * hpi
   rw [e, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * π⁻¹)]
   have h2 : 2 * π⁻¹ * |(∫ θ in (0 : ℝ)..(π / 2), (Real.sqrt (Hnu w θ))⁻¹) - π / 2 * (1 / 2)
         + w / 8 * 0| ≤ 2 * π⁻¹ * (w ^ 2 * (π / 2 - 0)) :=
