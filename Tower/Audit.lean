@@ -77,6 +77,7 @@ import Tower.RV6.PullbackF
 import Tower.RV6.ZhouFa0
 import Tower.RV6.CuspBesselF
 import Tower.RV6.CuspModF
+import Tower.RV6.LaplaceIK
 
 /-!
 # Axiom audit
@@ -598,3 +599,22 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_t_I0_K0_cube
 #print axioms Tower.RV6.zhouF
 #print axioms Tower.RV6.rv6_of_zhou3
+#print axioms Tower.RV6.hasSum_integral_cosh_mul_sin
+#print axioms Tower.RV6.I0_series_term
+#print axioms Tower.RV6.besselI0_eq_integral
+#print axioms Tower.RV6.integral_exp_mul_sin_symm
+#print axioms Tower.RV6.besselI0_eq_poisson
+#print axioms Tower.RV6.rhoI
+#print axioms Tower.RV6.rhoK
+#print axioms Tower.RV6.image_one_sub_sin
+#print axioms Tower.RV6.injOn_one_sub_sin
+#print axioms Tower.RV6.hasDerivWithinAt_one_sub_sin
+#print axioms Tower.RV6.laplace_I0_pt
+#print axioms Tower.RV6.laplace_I0
+#print axioms Tower.RV6.integrableOn_laplace_I0
+#print axioms Tower.RV6.image_cosh_sub_one
+#print axioms Tower.RV6.injOn_cosh_sub_one
+#print axioms Tower.RV6.hasDerivWithinAt_cosh_sub_one
+#print axioms Tower.RV6.laplace_K0_pt
+#print axioms Tower.RV6.laplace_K0
+#print axioms Tower.RV6.integrableOn_laplace_K0
