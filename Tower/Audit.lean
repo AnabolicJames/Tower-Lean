@@ -55,6 +55,8 @@ import Tower.RV6.RotRect
 import Tower.RV6.RotSides
 import Tower.RV6.RungA2R
 import Tower.RV6.LadderB
+import Tower.RV6.AxisEv
+import Tower.RV6.ModAxis
 
 /-!
 # Axiom audit
@@ -330,3 +332,14 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.mu6_eq_bessel
 #print axioms Tower.RV6.rungB_of_PM
 #print axioms Tower.RV6.rv6_of_PM
+#print axioms Tower.RV6.evA_qform
+#print axioms Tower.RV6.axis_Rf1
+#print axioms Tower.RV6.axis_Rf2
+#print axioms Tower.RV6.axis_Rf3
+#print axioms Tower.RV6.axis_Rf4
+#print axioms Tower.RV6.axis_Rf9
+#print axioms Tower.RV6.Pax_sq
+#print axioms Tower.RV6.hasDerivAt_Zax
+#print axioms Tower.RV6.hasDerivAt_Uax
+#print axioms Tower.RV6.hasDerivAt_Eax
+#print axioms Tower.RV6.g4_eq_UP

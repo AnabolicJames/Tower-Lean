@@ -68,4 +68,6 @@ import Tower.RV6.RotRect
 import Tower.RV6.RotSides
 import Tower.RV6.RungA2R
 import Tower.RV6.LadderB
+import Tower.RV6.AxisEv
+import Tower.RV6.ModAxis
 import Tower.Audit
