@@ -3,6 +3,7 @@ import Tower.RV6.LaplaceP
 import Tower.RV6.MellinSeries
 import Tower.RV6.BesselW
 import Tower.RV6.BesselL5
+import Tower.RV6.MellinU
 
 /-!
 # Decay of `θʲ(I₀ K₀)` at infinity, from the Laplace representation
@@ -10,7 +11,7 @@ import Tower.RV6.BesselL5
 With `I₀(t) K₀(t) = ∫₀^∞ e^{-tw} ν(w) dw` (`laplace_P`) and the moments
 `M_m(t) = ∫₀^∞ w^m e^{-tw} ν(w) dw` (`momP`):
 
-* `momP_le`: `t^{m+1} M_m(t) ≤ m! 2^{m+1}` (`w^m e^{-tw} ≤ m! (2/t)^m e^{-tw/2}` and `I₀K₀(s) ≤ 1/s`);
+* `momP_le`: `t^{m+1} M_m(t) ≤ m! 2^{m+1}` (`w^m e^{-tw} ≤ m! (2/t)^m e^{-tw/2}` and `I₀K₀(s) ≤ 1/s`, `besselI0_mul_besselK0_le` of `MellinU.lean`);
 * `hasDerivAt_momP`: `M_m' = -M_{m+1}` (dominated differentiation);
 * **`abs_momP_sub_le`**: `|t^{k+3} M_k(t) - (k!/2) t²| ≤ (k+2)! (3/2 + 2^{k+3})`, because
   `|ν(w) - 1/2| ≤ w² (3/2 + ν(w))` (`abs_nuP_sub_half_le'`) and `∫₀^∞ w^k e^{-tw} dw = k!/t^{k+1}`;
@@ -30,14 +31,6 @@ open Real MeasureTheory
 /-- The moments `M_m(t) = ∫₀^∞ w^m e^{-tw} ν(w) dw`. -/
 noncomputable def momP (m : ℕ) (t : ℝ) : ℝ :=
   ∫ w in Set.Ioi (0 : ℝ), w ^ m * Real.exp (-t * w) * nuP w
-
-/-- `I₀(t) K₀(t) ≤ 1/t`. -/
-theorem besselI0_mul_besselK0_le {t : ℝ} (ht : 0 < t) : besselI0 t * besselK0 t ≤ 1 / t := by
-  have hw := wronskian ht
-  have h1 : 0 ≤ besselI1 t * besselK0 t := mul_nonneg (besselI1_nonneg ht.le) (besselK0_nonneg t)
-  have h2 : besselI0 t * besselK0 t ≤ besselI0 t * besselK1 t :=
-    mul_le_mul_of_nonneg_left (besselK0_le_besselK1 ht) (besselI0_pos t).le
-  linarith
 
 /-- `w^m e^{-tw} ≤ m! (2/t)^m e^{-tw/2}`. -/
 theorem pow_mul_exp_le (m : ℕ) {t w : ℝ} (ht : 0 < t) (hw : 0 ≤ w) :

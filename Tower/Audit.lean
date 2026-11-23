@@ -649,7 +649,6 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.continuous_Hnu_inv_sqrt
 #print axioms Tower.RV6.abs_nuP_sub_half_le
 #print axioms Tower.RV6.momP
-#print axioms Tower.RV6.besselI0_mul_besselK0_le
 #print axioms Tower.RV6.pow_mul_exp_le
 #print axioms Tower.RV6.integrableOn_momP
 #print axioms Tower.RV6.momP_nonneg
