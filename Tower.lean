@@ -82,4 +82,5 @@ import Tower.RV6.HankelDom
 import Tower.RV6.HankelDomF
 import Tower.RV6.HankelIBP
 import Tower.RV6.HankelRelF
+import Tower.RV6.HankelDeriv
 import Tower.Audit

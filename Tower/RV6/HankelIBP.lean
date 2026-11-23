@@ -48,7 +48,7 @@ theorem continuousOn_mul_besselJ1_mul (x : ℝ) :
 
 theorem abs_besselJ0_mul_le {x : ℝ} (hx : 0 ≤ x) :
     ∀ t : ℝ, 0 < t → |besselJ0 (x * t)| ≤ 1 :=
-  fun t ht => abs_besselJ0_le_one (mul_nonneg hx ht.le)
+  fun _ ht => abs_besselJ0_le_one (mul_nonneg hx ht.le)
 
 theorem abs_mul_besselJ1_mul_le {x : ℝ} (hx : 0 ≤ x) :
     ∀ t : ℝ, 0 < t → |x * besselJ1 (x * t)| ≤ x := by

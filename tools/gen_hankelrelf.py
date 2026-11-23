@@ -165,9 +165,9 @@ def main():
         L.append('        + 4 * (t ^ 2 * (thF%d t + 2 * thF%d t)) + 4 * (t ^ 2 * thF%d t)) x' % (b, c, c))
         L.append('      = hk (fun t => t ^ 2 * thF%d t + 8 * (t ^ 2 * thF%d t) + 16 * (t ^ 2 * thF%d t)) x :='
                  % (a, b, c))
-        L.append('    hk_congr (fun t => by beta_reduce; ring) x')
+        L.append('    hk_congr (fun t => by ring) x')
         L.append('  have e2 : hk (fun t => t ^ 2 * (t ^ 2 * thF%d t)) x = %s :=' % (c, C(c)))
-        L.append('    hk_congr (fun t => by beta_reduce; ring) x')
+        L.append('    hk_congr (fun t => by ring) x')
         L.append('  rw [e1, e2, hk_add_cmul (hdom_add (hdom_pow_mul 2 hdom_thF%d)' % a)
         L.append('      (hdom_const_mul 8 (hdom_pow_mul 2 hdom_thF%d))) (hdom_pow_mul 2 hdom_thF%d) 16 hx,' % (b, c))
         L.append('    hk_add_cmul (hdom_pow_mul 2 hdom_thF%d) (hdom_pow_mul 2 hdom_thF%d) 8 hx] at h' % (a, b))
@@ -190,7 +190,7 @@ def main():
     L.append('theorem hk_rel_L5 {x : ℝ} (hx : 0 ≤ x) :')
     L.append('    ' + stmt.replace(' + ', '\n      + ', 6).replace('\n      + ', ' + ', 0) + ' = 0 := by')
     L.append('  have h0 : hk (fun t => %s) x' % lam)
-    L.append('      = hk (fun _ => 0) x := hk_congr (fun t => by beta_reduce; linear_combination L5_thF t) x')
+    L.append('      = hk (fun _ => 0) x := hk_congr (fun t => by linear_combination L5_thF t) x')
     L.append('  rw [hk_zero] at h0')
     # prefix HDom proofs
     Q = [hdom(L5TERMS[0][1], L5TERMS[0][2])]

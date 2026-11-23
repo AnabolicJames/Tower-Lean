@@ -86,9 +86,9 @@ theorem hk_rel_b0 {x : ℝ} (hx : 0 ≤ x) :
   have e1 : hk (fun t => t ^ 2 * (thF2 t + 2 * thF1 t + 2 * (thF1 t + 2 * thF0 t))
         + 4 * (t ^ 2 * (thF1 t + 2 * thF0 t)) + 4 * (t ^ 2 * thF0 t)) x
       = hk (fun t => t ^ 2 * thF2 t + 8 * (t ^ 2 * thF1 t) + 16 * (t ^ 2 * thF0 t)) x :=
-    hk_congr (fun t => by beta_reduce; ring) x
+    hk_congr (fun t => by ring) x
   have e2 : hk (fun t => t ^ 2 * (t ^ 2 * thF0 t)) x = hk (fun t => t ^ 4 * thF0 t) x :=
-    hk_congr (fun t => by beta_reduce; ring) x
+    hk_congr (fun t => by ring) x
   rw [e1, e2, hk_add_cmul (hdom_add (hdom_pow_mul 2 hdom_thF2)
       (hdom_const_mul 8 (hdom_pow_mul 2 hdom_thF1))) (hdom_pow_mul 2 hdom_thF0) 16 hx,
     hk_add_cmul (hdom_pow_mul 2 hdom_thF2) (hdom_pow_mul 2 hdom_thF1) 8 hx] at h
@@ -105,9 +105,9 @@ theorem hk_rel_b1 {x : ℝ} (hx : 0 ≤ x) :
   have e1 : hk (fun t => t ^ 2 * (thF3 t + 2 * thF2 t + 2 * (thF2 t + 2 * thF1 t))
         + 4 * (t ^ 2 * (thF2 t + 2 * thF1 t)) + 4 * (t ^ 2 * thF1 t)) x
       = hk (fun t => t ^ 2 * thF3 t + 8 * (t ^ 2 * thF2 t) + 16 * (t ^ 2 * thF1 t)) x :=
-    hk_congr (fun t => by beta_reduce; ring) x
+    hk_congr (fun t => by ring) x
   have e2 : hk (fun t => t ^ 2 * (t ^ 2 * thF1 t)) x = hk (fun t => t ^ 4 * thF1 t) x :=
-    hk_congr (fun t => by beta_reduce; ring) x
+    hk_congr (fun t => by ring) x
   rw [e1, e2, hk_add_cmul (hdom_add (hdom_pow_mul 2 hdom_thF3)
       (hdom_const_mul 8 (hdom_pow_mul 2 hdom_thF2))) (hdom_pow_mul 2 hdom_thF1) 16 hx,
     hk_add_cmul (hdom_pow_mul 2 hdom_thF3) (hdom_pow_mul 2 hdom_thF2) 8 hx] at h
@@ -122,7 +122,7 @@ theorem hk_rel_L5 {x : ℝ} (hx : 0 ≤ x) :
       + 64 * hk (fun t => t ^ 4 * thF1 t) x
       + 128 * hk (fun t => t ^ 4 * thF0 t) x = 0 := by
   have h0 : hk (fun t => thF5 t + (-20) * (t ^ 2 * thF3 t) + (-60) * (t ^ 2 * thF2 t) + (-72) * (t ^ 2 * thF1 t) + (-32) * (t ^ 2 * thF0 t) + 64 * (t ^ 4 * thF1 t) + 128 * (t ^ 4 * thF0 t)) x
-      = hk (fun _ => 0) x := hk_congr (fun t => by beta_reduce; linear_combination L5_thF t) x
+      = hk (fun _ => 0) x := hk_congr (fun t => by linear_combination L5_thF t) x
   rw [hk_zero] at h0
   rw [hk_add_cmul (hdom_add (hdom_add (hdom_add (hdom_add (hdom_add hdom_thF5 (hdom_const_mul (-20) (hdom_pow_mul 2 hdom_thF3))) (hdom_const_mul (-60) (hdom_pow_mul 2 hdom_thF2))) (hdom_const_mul (-72) (hdom_pow_mul 2 hdom_thF1))) (hdom_const_mul (-32) (hdom_pow_mul 2 hdom_thF0))) (hdom_const_mul (64) (hdom_pow_mul 4 hdom_thF1))) (hdom_pow_mul 4 hdom_thF0) (128) hx,
     hk_add_cmul (hdom_add (hdom_add (hdom_add (hdom_add hdom_thF5 (hdom_const_mul (-20) (hdom_pow_mul 2 hdom_thF3))) (hdom_const_mul (-60) (hdom_pow_mul 2 hdom_thF2))) (hdom_const_mul (-72) (hdom_pow_mul 2 hdom_thF1))) (hdom_const_mul (-32) (hdom_pow_mul 2 hdom_thF0))) (hdom_pow_mul 4 hdom_thF1) (64) hx,
