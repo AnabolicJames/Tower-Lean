@@ -270,6 +270,24 @@ theorem rungA2R : RungA2R := by
 theorem rv6_of_B (hB : RungB) : mu6 = 648 / π ^ 6 * Lf5 :=
   rv6_of_A2R_B rungA2R hB
 
+/-! ## The Bessel side of the Mahler measure, with no hypotheses -/
+
+/-- **Rung A2: `log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t = (30/π⁴) R₆,₂`.** -/
+theorem rungA2 : RungA2 := rungA2_of_subrungs rungA2R rungA2N rungA2M rungA2P rungA2T
+
+/-- **Rung A: `μ₆ = (30/π⁴) R₆,₂`.** -/
+theorem rungA : RungA := rungA_of rungA1 rungA2
+
+/-- **`m(1 + x₁ + ⋯ + x₅) = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`.** -/
+theorem mu6_eq_bessel :
+    mu6 = 48 / π ^ 4
+      * ∫ t in Set.Ioi (0 : ℝ), besselI0 t ^ 2 * besselI1 t * besselK0 t ^ 5 := by
+  have h : mu6 = 30 / π ^ 4 * R62 := rungA
+  have hR : R62
+      = 8 / 5 * ∫ t in Set.Ioi (0 : ℝ), besselI0 t ^ 2 * besselI1 t * besselK0 t ^ 5 := rfl
+  rw [h, hR]
+  ring
+
 end Tower.RV6
 '''
 for tok, val in TOK.items():

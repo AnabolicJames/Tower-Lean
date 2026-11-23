@@ -324,3 +324,6 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.rot_real_identity
 #print axioms Tower.RV6.rungA2R
 #print axioms Tower.RV6.rv6_of_B
+#print axioms Tower.RV6.rungA2
+#print axioms Tower.RV6.rungA
+#print axioms Tower.RV6.mu6_eq_bessel
