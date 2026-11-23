@@ -126,9 +126,13 @@ open quadrant by Cauchy's theorem for `e^{z sinh w}`); two rectangles with a com
 
 **B, the one rung left.**  `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)`: Sections 3 and 4 of the paper.
 Cut (wave 23) into BP and BM above.  The same regulator `x^{-s}` is used on both sides, so the
-rung is the uniqueness of one limit and no constant can be lost between two cutoffs.  Every
-identity and every asymptotic statement below was checked numerically from the Lean definitions
-before the cut was made; what is listed is what remains to be *proved*.
+rung is the uniqueness of one limit and no constant can be lost between two cutoffs.  Checked
+numerically from the Lean definitions before the cut was made: the two sub-rungs, Zhou's two
+parametrisations, the calculus of `x` and the Fricke forms (BM 2 and the Fricke part of BM 1), the
+two asymptotics at the cusp in BM 4, and all of BP.  Derived by hand in the same wave and **not
+yet checked by a program**: the four identities for `θZ`, `θU`, `θE`, `g₄` and the identification
+of the quadratic relation in BM 1, and the operator identities of BM 3 and BM 4.  They are
+checked in wave 24 before anything is built on them.
 
 *BM, the modular side.*  No eta products: with `e_d = E₂(i d y)`,
 
