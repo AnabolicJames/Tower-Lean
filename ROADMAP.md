@@ -6,10 +6,11 @@ Today: the modular side is proved, including the identification with the eta pro
 the whole Bessel side of the Mahler measure: the random-walk representation of `μ₆` (`rungA1`,
 wave 13) and the rotation of the contour (`rungA2`, waves 14 to 22), which together are
 **`Tower.RV6.mu6_eq_bessel : μ₆ = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`** with no hypotheses.
-**`Tower.RV6.rv6_of_B` takes the one hypothesis that is left, `RungB`** (the Bessel-side
-evaluation of the double Eisenstein integral), and gives `μ₆ = (648/π⁶) L(f, 5)`.  This file is
-the plan for removing that hypothesis and is updated with every wave.  "Proved" means: in this
-repository, kernel-checked, no hypotheses.
+One rung is left, `RungB` (the Bessel-side evaluation of the double Eisenstein integral).  Since
+wave 23 it is cut into two statements about one function of a real variable, `RungBP` and
+`RungBM`; **`Tower.RV6.rv6_of_PM` takes these two hypotheses and no other** and gives
+`μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing them and is updated with every wave.
+"Proved" means: in this repository, kernel-checked, no hypotheses.
 
 ## Architecture
 
@@ -28,7 +29,7 @@ and nothing is continued analytically.
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | **proved** (`rungA1`, wave 13) |
 | A2 | that side `= (30/π⁴) R₆,₂` | **proved** (`rungA2`, wave 22), through five sub-rungs (`rungA2_of_subrungs`, wave 15), table below |
-| B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | **open**: the one hypothesis left (plan below) |
+| B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | **open**: cut into two sub-rungs (`rungB_of_PM`, wave 23), table below |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
 | D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | **proved** (`lambdaPsiW5_eq`, wave 6) |
@@ -46,6 +47,15 @@ The sub-rungs of A2 (`LadderA2.lean`).  `mellU h s = ∫ h(e^u) e^{su} du` is th
 | A2M | `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` bounded on `0 < s ≤ 1` for `(a,b) = (1,5), (3,3), (3,5)` | **proved** (`rungA2M`, wave 19) |
 | A2P | for `0 < s ≤ 1`: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)`; `(8/5) P(s) → R₆,₂` as `s → 0+` | **proved** (`rungA2P`, wave 18) |
 | A2T | `(1440/π⁵) sin(πs/2)/s⁶ - (720/π⁴) cos(πs/2)/s⁵ - (120/π³) sin(πs/2)/s⁴ - 1/s → 0` as `s → 0+` | **proved** (`rungA2T`, wave 16) |
+
+The sub-rungs of B (`LadderB.lean`).  `f = I₀K₀³`, `g = I₀²K₀²`,
+`hjF x = ∫₀^∞ J₀(xt) f(t) t dt`, `ajG x = x ∫₀^∞ J₁(xt) g(t) dt`,
+`pairS s = ∫₀^∞ hjF(x) ajG(x) x^{1-s} dx`.
+
+| sub-rung | statement | status |
+|---|---|---|
+| BP | `pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)` as `s → 0+` | **open** (the logarithmic Hankel pairing) |
+| BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **open** (Zhou's parametrisations and `x = x(y)`) |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -78,6 +88,7 @@ C1 and C2″ together are `D01_eq_modular`:
 
 | 21 | `CKernel`, `CJSeries`, `CKZero`, `HAgree` | `J₀` on `ℂ`: `cJ0 z = (2/π) ∫₀^{π/2} cos(z sin t) dt`, entire, with its power series by termwise integration, so `cJ0 x = J₀(x)` and `cJ0 (iy) = I₀(y)`; `K₀` on the right half-plane (`cK0`); the two forms `hE` (for `Re z > 0`) and `hK` (for `Im z > 0`) of `H₀⁽¹⁾`, with `Re hE(x) = J₀(x)`, `hK(iy) = -(2i/π) K₀(y)`, `‖hK z‖ ≤ (2/π) K₀(Im z)`; **`hE_eq_hK`** on the open quadrant (Cauchy on `[-R, 0] × [0, π/2]` for `e^{z sinh w}`) |
 | 22 | `GPoly`, `RotRect`, `RotSides`, `RungA2R` | `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³` with `Re G(J, H) = J⁶` for real `J = Re H` and its value on the imaginary axis (two certificates modulo `i² + 1`); `‖J₀(z)‖ ≤ I₀(Im z)`; Cauchy's theorem for `G(J₀, H₀⁽¹⁾)(e^w) e^{sw}` on `[-R, R] × [0, π/4]` and `[-R, R] × [π/4, π/2]`; the vertical sides are `≤ K e^{(s-δ)U}` (`sin y ≥ 2y/π`, the majorant `y^{-δ}`); real parts at finite `R`, then `R → ∞`; **sub-rung A2R**, **`rungA2`**, **`rungA`**, **`mu6_eq_bessel`**, **`rv6_of_B`** |
+| 23 | `LadderB` | Rung B cut into two evaluations of one pairing: `hjF`, `ajG`, `pairS`; the sub-rungs `RungBP`, `RungBM`, stated after every step of the plan for both had been checked numerically from the definitions (24 criteria; the pairing at `s = 0` from the Bessel integrals alone to ten digits, Zhou's parametrisations to twenty); **`rungB_of_PM`** (a function has one limit), **`rv6_of_PM`** |
 
 ## Plan by rung
 
@@ -114,32 +125,54 @@ open quadrant by Cauchy's theorem for `e^{z sinh w}`); two rectangles with a com
 `‖J₀(z)‖ ≤ I₀(Im z)` and `‖H₀⁽¹⁾(z)‖ ≤ (2/π) K₀(Im z)`.
 
 **B, the one rung left.**  `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)`: Sections 3 and 4 of the paper.
-With `f = I₀K₀³`, `g = I₀²K₀²`,
+Cut (wave 23) into BP and BM above.  The same regulator `x^{-s}` is used on both sides, so the
+rung is the uniqueness of one limit and no constant can be lost between two cutoffs.  Every
+identity and every asymptotic statement below was checked numerically from the Lean definitions
+before the cut was made; what is listed is what remains to be *proved*.
 
-`HJ[f](x) = ∫₀^∞ J₀(xt) f(t) t dt`,  `AJ[g](x) = x ∫₀^∞ J₁(xt) g(t) dt`
+*BM, the modular side.*  No eta products: with `e_d = E₂(i d y)`,
 
-(both absolutely convergent; the paper's conditionally convergent `HJ[g]` enters only through its
-cumulative `AJ[g]`), the rung needs five things, none of which is in Mathlib:
+`Z = (e₁ - 4e₂ - 3e₃ + 12e₆)/6`,  `U = (-e₁ + e₂ + 3e₃ - 3e₆)/24`,  `P = -e₁ + 2e₂ - 3e₃ + 6e₆`,  `x = 8 √(U/Z)`,
 
-1. *Zhou's parametrisation for `f`*: `HJ[f](x(y)) = (π²/16) Z(iy)`.
-2. *The same for the cumulative of `g`*: `AJ[g](x(y)) = (π²/2) 𝒜₁(y)`.
-3. *The modular calculus of the variable `x`*: `x' = -(π/4) P x`, `x² Z P = 8 g₄`,
-   `x(y) x(1/(6y)) = 8`, `x` decreasing from `∞` to `0`.  Planned with `Z`, `P`, `U = x²Z/64` as
-   Eisenstein combinations and `log x` as a `q`-series, so that it stays inside the `q`-series and
-   Fricke machinery of waves 2 to 7 (no eta products).
-4. *The logarithmic Hankel pairing* (Lemma 3.1 and Proposition 3.2):
-   `∫₀^X HJ[f] AJ[g] x dx - (3/5) log⁵ X → R₆,₂/2 + (3/20) ζ(5)` as `X → ∞`.  The largest item:
-   a Parseval identity whose two sides diverge, with an anomaly that contains `ζ(5)`.
-5. *The change of cutoff*: `log x(ε) = π/(6ε) + O(e^{-π/(3ε)})`, so that `(3/5) log⁵ x(ε)` and
-   `(π⁵/16)/(810 ε⁵)` agree up to `o(1)`.
+and the one quadratic relation of `Level6.lean` among the four series is
+`P² = 16Z² + 320ZU + 1024U²`, that is `P = (Z/2) √((x²+4)(x²+16))`.
 
-Then `D₀₁ = (16/π⁵) lim (∫₀^X HJ[f] AJ[g] x dx - (3/5) log⁵ X)` by the substitution `x = x(y)`.
-The sub-rungs will be stated in Lean, each checked numerically from the definitions first, and
-`RungB` derived from them, before any of them is proved (as for A2 in wave 15).  Two remarks that
-shape the proofs: `f` and `g` are Laplace transforms of positive measures (`I₀` and `K₀` are),
-so `HJ[f](x) = ∫ λ (λ² + x²)^{-3/2} dν_f(λ)` and `AJ[g](x) = ∫ (1 - μ (μ² + x²)^{-1/2}) dν_g(μ)` are
-positive and monotone; and items 1 and 2 are statements about solutions of one third-order
-equation, to be identified at the cusp `x = ∞` from the singular parts of `f` and `g` at `t = 0`.
+1. *The calculus on the axis.*  The relations of `Level6.lean` evaluated at `q = e^{-2πy}`;
+   `θZ = ZE`, `θU = U(E + P/4)`, `2θE - E² = -8ZU - 64U²`, `g₄ = 8UP` (`E = θ log Z`,
+   `θ = q d/dq`); the Fricke forms `Z(iy) = 48 y'² U(iy')`, `P(iy') = 6y² P(iy)` (`y' = 1/(6y)`);
+   `U, Z, P > 0`.
+2. *The variable `x`.*  `x' = -(π/4) P x`, decreasing from `∞` to `0`, `x(y) x(1/(6y)) = 8`,
+   `log x(y) = π/(6y) + O(e^{-π/(3y)})`.
+3. *The equation on the Bessel side.*  `f` and `g` are annihilated by the symmetric fourth power
+   `θ⁵ - 4t²(5θ³ + 15θ² + 18θ + 8) + 64t⁴(θ + 2)` of the Bessel operator (`θ = t d/dt`).  Its
+   Hankel dual is `(ϑ - 2)² L₃` with `L₃ = x⁴(ϑ+2)³ + 4x²(ϑ+1)(5ϑ²+10ϑ+8) + 64ϑ³` (`ϑ = x d/dx`),
+   every integral absolutely convergent; the kernel of `(ϑ - 2)²` is excluded at `x → ∞`.  For
+   `g` the same through `ajG`, whose `ϑ`-derivatives are transforms of `θ^k g`.
+4. *The pull-back.*  `L₃` is `256/σ` times the symmetric square of `∂² + x²(x²+8)/256`, `∂ = σϑ`,
+   `σ = √((x²+4)(x²+16))/16`, and `d³/dy³ [(a∘x)/Z] = -(2π)³ Z² (σ/256) (L₃a)∘x` for every `a`.
+   So a solution is `Z (c₁ + c₂y + c₃y²)`, and the constants are read off at the cusp `y → 0`
+   from `x² hjF = 3 log²x + o(1)` and `x · ajG' = 2 log x + o(1)`:
+   `hjF(x(y)) = (π²/16) Z(iy)` and `ajG(x(y)) = (π²/2) 𝒜₁(y)` (Zhou's parametrisations).
+5. *The limit.*  The substitution `x = x(y)`; `∫₀^∞ y⁻⁶ e^{-πs/(6y)} dy/162 = (16/π⁵) · 72/s⁵`;
+   dominated convergence.
+
+*BP, the Bessel side.*  Real variables only: no contour and no Mellin inversion.
+
+1. `hjF x = x⁻² ∫ F₂(t)(1 - J₀(xt)) dt` and `ajG x = ∫ G(t)(1 - J₀(xt)) dt`, with `F₂ = (t f')' > 0`
+   and `G = -g' > 0` (two integrations by parts).
+2. The kernel: `∫₀^∞ (1 - J₀(xτ))(1 - J₀(xt)) x^{-1-s} dx = j(s) [min^s - max^s h_s((min/max)²)]`,
+   `h_s(w) = mean_θ |1 - √w e^{iθ}|^s - 1`, `0 ≤ h_s(w) ≤ C s² w`,
+   `j(s) = ∫₀^∞ (1 - J₀(y)) y^{-1-s} dy` (the product formula of `J₀`).
+3. By Tonelli, `pairS s = R(s) (B(s) - H_s/s)` with `R = s j`,
+   `B(s) = -∫ f' g t^s dt = (4/5) ∫ I₀²I₁K₀⁵ t^s dt + (3/5) s ∫ I₀³K₀⁵ t^{s-1} dt` (its expansion
+   is sub-rungs A2M and A2P) and `H_s = ∫∫ F₂(τ) G(t) max^s h_s`.
+4. `H_s = 12 [T₀ (2/s³ + 2a₀/s² + a₀²/s) + T₁ (1/s² + a₀/s)] + O(s²)`: only the singular parts
+   `6(a₀ - log τ)/τ` and `2(a₀ - log t)/t` matter, and `T₀`, `T₁` are the value and the derivative
+   at `u = 0` of the two-sided Mellin transform `s/(u(s-u)) - j(u) j(s-u)/j(s)` of the remainder
+   kernel.
+5. `R(s) = 2^{-s} Γ(1 - s/2)/Γ(1 + s/2) = exp(-a₀ s + ζ(3) s³/12 + ζ(5) s⁵/80 + O(s⁷))`, with two
+   derivatives: the only place where `ζ(5)` enters.  Then every pole and every `a₀` cancels, and
+   the limit is `R₆,₂/2 + 12 · ζ(5)/80`.
 
 ## Notes on compiling without a local Lean
 
@@ -231,3 +264,7 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   named like a definition of the development (`hE`, `hK`); a norm bound for a quotient of Gamma
   type is avoided altogether when a pointwise bound by a real integrand does the job
   (`‖cos w‖ ≤ cosh (Im w)`).
+* Wave 23 (one file, green at the first compile): a cancellation by `π⁵` is `linear_combination`
+  with `π ^ 5 * (π ^ 5)⁻¹ = 1` as a hypothesis (`ring` normalises `(π ^ 5)⁻¹` and
+  `12 / (5 * π ^ 5)` to the same atom); two `Tendsto` hypotheses about the same lambda give the
+  equality of their limits by `tendsto_nhds_unique` with no further unfolding.

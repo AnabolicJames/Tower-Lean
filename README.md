@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (the modular side and the Bessel side of the Mahler measure proved; one rung open)
+## The six-step Mahler measure (the modular side and the Bessel side of the Mahler measure proved; one rung open, cut into two sub-rungs)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -82,10 +82,11 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/GPoly.lean` (generated) | `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³`: **`gpoly_re`** (`Re G(J, H) = J⁶` for real `J = Re H`), **`gpoly_I_axis_mul_re`** (its real part on the imaginary axis); **`norm_cJ0_le_besselI0`**: `‖J₀(z)‖ ≤ I₀(Im z)`; the majorant `sidePhi` of the vertical sides and its decay |
 | `Tower/RV6/RotRect.lean`, `RotSides.lean` (generated) | the rotated integrands `rotE`, `rotK` in `w = log z`; Cauchy's theorem on `[-R, R] × [0, π/4]` and `[-R, R] × [π/4, π/2]`; **`rect_rot`**: the rotated contour at finite `R`; `‖sideInt s U‖ ≤ K e^{(s-δ)U}` for `0 < δ < 1`, so both vertical sides tend to `0` |
 | `Tower/RV6/RungA2R.lean` (generated) | **`rungA2R : RungA2R`**; **`rungA2`**, **`rungA`**: `μ₆ = (30/π⁴) R₆,₂`; **`mu6_eq_bessel`**: `m(1 + x₁ + ⋯ + x₅) = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`, with no hypotheses; **`rv6_of_B`**: `RungB` implies `μ₆ = (648/π⁶) L(f, 5)` |
+| `Tower/RV6/LadderB.lean` | the last rung cut into two evaluations of one pairing: `hjF x = ∫₀^∞ J₀(xt) I₀K₀³ t dt`, `ajG x = x ∫₀^∞ J₁(xt) I₀²K₀² dt`, `pairS s = ∫₀^∞ hjF · ajG · x^{1-s} dx`; the sub-rungs `RungBP` (`pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)`) and `RungBM` (`pairS s - 72/s⁵ → (π⁵/16) D₀₁`); **`rungB_of_PM`**, **`rv6_of_PM`**: the two sub-rungs imply `RungB` and `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, and `gen_gpoly.py` the two cofactors modulo `i² + 1`, all computed in exact arithmetic; Lean checks them) |
 
-**Status: this is not yet a Lean proof of the theorem.**  One hypothesis is left.
+**Status: this is not yet a Lean proof of the theorem.**  One rung is left, stated as two hypotheses.
 
 Proved with no hypotheses:
 
@@ -104,11 +105,19 @@ Proved with no hypotheses:
 `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)`, the Bessel-side evaluation of the double Eisenstein integral
 (Sections 3 and 4 of the paper: the logarithmic Hankel pairing and Zhou's modular parametrisations
 of two Hankel transforms).  It was checked numerically from the Lean definitions before it was
-stated.  `ROADMAP.md` has the plan and the state by rung.
+stated.
+
+**`rv6_of_PM`** cuts that rung in two (`LadderB.lean`): with `hjF`, `ajG` the two Hankel
+transforms above and `pairS s = ∫₀^∞ hjF(x) ajG(x) x^{1-s} dx`, the hypotheses are
+`RungBP : pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)` and `RungBM : pairS s - 72/s⁵ → (π⁵/16) D₀₁`
+as `s → 0+`; `RungB` is the uniqueness of the limit.  Both sub-rungs, and every step of the plan
+for proving them, were checked numerically from the Lean definitions before they were stated (the
+pairing at `s = 0` computed from the Bessel integrals alone agrees with both limits to ten
+digits).  `ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* a proof of `RungB` (`ROADMAP.md`);
+* proofs of `RungBP` and `RungBM`, the two halves of `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
