@@ -460,7 +460,7 @@ theorem tendsto_hdom_zero {φ g : ℝ → ℝ} (hφ : HDom φ) {G : ℝ}
     Filter.Tendsto (fun t : ℝ => t ^ 2 * φ t * g t) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
   obtain ⟨_, C, hC0, _, hn, _⟩ := hφ
   have hlim : Filter.Tendsto (fun t : ℝ => C * G * t) (nhds 0) (nhds (C * G * 0)) :=
-    tendsto_id.const_mul (C * G)
+    Filter.tendsto_id.const_mul (C * G)
   rw [mul_zero] at hlim
   have hlim2 : Filter.Tendsto (fun t : ℝ => C * G * t) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
     hlim.mono_left nhdsWithin_le_nhds
