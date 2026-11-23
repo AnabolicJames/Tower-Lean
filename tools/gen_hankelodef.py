@@ -237,8 +237,8 @@ def main():
         ds = [dterm(c, k) for k, c in C.items()]
         L.append('  ' + ds[0] + ' +')
         for t in ds[1:-1]:
-            L.append('    ' + t + ' +')
-        L.append('    ' + ds[-1])
+            L.append('    (' + t + ') +')
+        L.append('    (' + ds[-1] + ')')
         L.append('')
         L.append('theorem hasDerivAt_%s {x : ℝ} (hx : 0 < x) : HasDerivAt %s (d%s x) x := by' % (name, name, name))
         ks = list(C.keys())

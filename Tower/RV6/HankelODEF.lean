@@ -95,9 +95,9 @@ noncomputable def uF (x : ℝ) : ℝ :=
 
 noncomputable def duF (x : ℝ) : ℝ :=
   ((-1) * (4 * x ^ 3) + (-20) * (2 * x)) * hk thF3 x + ((-1) * x ^ 4 + (-20) * x ^ 2 + (-64)) * (-(2 * hk thF3 x + hk thF4 x) / x) +
-    (0 * (4 * x ^ 3) + (-60) * (2 * x)) * hk thF2 x + (0 * x ^ 4 + (-60) * x ^ 2 + (-384)) * (-(2 * hk thF2 x + hk thF3 x) / x) +
-    (0 * (4 * x ^ 3) + (-72) * (2 * x)) * hk thF1 x + (0 * x ^ 4 + (-72) * x ^ 2 + (-768)) * (-(2 * hk thF1 x + hk thF2 x) / x) +
-    (0 * (4 * x ^ 3) + (-32) * (2 * x)) * hk thF0 x + (0 * x ^ 4 + (-32) * x ^ 2 + (-512)) * (-(2 * hk thF0 x + hk thF1 x) / x)
+    ((0 * (4 * x ^ 3) + (-60) * (2 * x)) * hk thF2 x + (0 * x ^ 4 + (-60) * x ^ 2 + (-384)) * (-(2 * hk thF2 x + hk thF3 x) / x)) +
+    ((0 * (4 * x ^ 3) + (-72) * (2 * x)) * hk thF1 x + (0 * x ^ 4 + (-72) * x ^ 2 + (-768)) * (-(2 * hk thF1 x + hk thF2 x) / x)) +
+    ((0 * (4 * x ^ 3) + (-32) * (2 * x)) * hk thF0 x + (0 * x ^ 4 + (-32) * x ^ 2 + (-512)) * (-(2 * hk thF0 x + hk thF1 x) / x))
 
 theorem hasDerivAt_uF {x : ℝ} (hx : 0 < x) : HasDerivAt uF (duF x) x := by
   have m1 := (hasDerivAt_quart (-1) (-20) (-64) x).mul (hasDerivAt_hk_thF3 hx)
@@ -123,10 +123,10 @@ noncomputable def wF (x : ℝ) : ℝ :=
 
 noncomputable def dwF (x : ℝ) : ℝ :=
   (1 * (4 * x ^ 3) + 20 * (2 * x)) * hk thF4 x + (1 * x ^ 4 + 20 * x ^ 2 + 64) * (-(2 * hk thF4 x + hk thF5 x) / x) +
-    (0 * (4 * x ^ 3) + 100 * (2 * x)) * hk thF3 x + (0 * x ^ 4 + 100 * x ^ 2 + 640) * (-(2 * hk thF3 x + hk thF4 x) / x) +
-    (0 * (4 * x ^ 3) + 192 * (2 * x)) * hk thF2 x + (0 * x ^ 4 + 192 * x ^ 2 + 2304) * (-(2 * hk thF2 x + hk thF3 x) / x) +
-    (0 * (4 * x ^ 3) + 176 * (2 * x)) * hk thF1 x + (0 * x ^ 4 + 176 * x ^ 2 + 3584) * (-(2 * hk thF1 x + hk thF2 x) / x) +
-    (0 * (4 * x ^ 3) + 64 * (2 * x)) * hk thF0 x + (0 * x ^ 4 + 64 * x ^ 2 + 2048) * (-(2 * hk thF0 x + hk thF1 x) / x)
+    ((0 * (4 * x ^ 3) + 100 * (2 * x)) * hk thF3 x + (0 * x ^ 4 + 100 * x ^ 2 + 640) * (-(2 * hk thF3 x + hk thF4 x) / x)) +
+    ((0 * (4 * x ^ 3) + 192 * (2 * x)) * hk thF2 x + (0 * x ^ 4 + 192 * x ^ 2 + 2304) * (-(2 * hk thF2 x + hk thF3 x) / x)) +
+    ((0 * (4 * x ^ 3) + 176 * (2 * x)) * hk thF1 x + (0 * x ^ 4 + 176 * x ^ 2 + 3584) * (-(2 * hk thF1 x + hk thF2 x) / x)) +
+    ((0 * (4 * x ^ 3) + 64 * (2 * x)) * hk thF0 x + (0 * x ^ 4 + 64 * x ^ 2 + 2048) * (-(2 * hk thF0 x + hk thF1 x) / x))
 
 theorem hasDerivAt_wF {x : ℝ} (hx : 0 < x) : HasDerivAt wF (dwF x) x := by
   have m1 := (hasDerivAt_quart (1) (20) (64) x).mul (hasDerivAt_hk_thF4 hx)
