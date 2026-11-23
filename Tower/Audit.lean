@@ -65,6 +65,8 @@ import Tower.RV6.BMReduce
 import Tower.RV6.BMBounds
 import Tower.RV6.LimBM
 import Tower.RV6.BesselL5
+import Tower.RV6.HankelDom
+import Tower.RV6.HankelDomF
 
 /-!
 # Axiom audit
@@ -435,3 +437,32 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.L5_thG
 #print axioms Tower.RV6.thG0_eq_gB
 #print axioms Tower.RV6.l5_gB
+#print axioms Tower.RV6.besselK1_le_of_one_le
+#print axioms Tower.RV6.sqrt_mul_one_add_log_cube_le
+#print axioms Tower.RV6.sinh_le_exp_self
+#print axioms Tower.RV6.kapK_nonneg
+#print axioms Tower.RV6.ity_besselI0
+#print axioms Tower.RV6.ity_mul_besselI1
+#print axioms Tower.RV6.kty_besselK0
+#print axioms Tower.RV6.kty_mul_besselK1
+#print axioms Tower.RV6.abs_mul4_le
+#print axioms Tower.RV6.hdom_prod4
+#print axioms Tower.RV6.hdom_add
+#print axioms Tower.RV6.hdom_const_mul
+#print axioms Tower.RV6.hdom_pow_mul
+#print axioms Tower.RV6.pow_mul_exp_neg_le
+#print axioms Tower.RV6.integrableOn_hdom
+#print axioms Tower.RV6.tendsto_hdom_zero
+#print axioms Tower.RV6.tendsto_hdom_atTop
+#print axioms Tower.RV6.integral_Ioi_deriv_eq_zero
+#print axioms Tower.RV6.hdom_ldF0
+#print axioms Tower.RV6.hdom_ldF1
+#print axioms Tower.RV6.hdom_ldF2
+#print axioms Tower.RV6.hdom_ldF3
+#print axioms Tower.RV6.hdom_ldF4
+#print axioms Tower.RV6.hdom_thF0
+#print axioms Tower.RV6.hdom_thF1
+#print axioms Tower.RV6.hdom_thF2
+#print axioms Tower.RV6.hdom_thF3
+#print axioms Tower.RV6.hdom_thF4
+#print axioms Tower.RV6.hdom_thF5
