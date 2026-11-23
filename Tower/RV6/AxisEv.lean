@@ -135,9 +135,8 @@ theorem evA_zero (y : ℝ) : evA 0 y = 0 := by
     unfold cfS
     rw [map_zero, zero_mul]
   unfold evA qa
-  first
-    | (rw [tsum_congr h]; exact tsum_zero)
-    | simp only [h, tsum_zero]
+  rw [tsum_congr h]
+  exact tsum_zero
 
 theorem evA_add {F G : PowerSeries ℝ} (hF : AbsS F) (hG : AbsS G) {y : ℝ} (hy : 0 < y) :
     evA (F + G) y = evA F y + evA G y := by
@@ -362,7 +361,7 @@ theorem axis_Rf1 {y : ℝ} (hy : 0 < y) :
     have h := Rf1_eq_zero ram6
     unfold Rf1 at h
     rw [e2_1_eq, e2_2_eq, e2_3_eq, e2_6_eq, e4_1_eq] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform (-240 : ℝ) (-1440 : ℝ) (4032 : ℝ) (-2304 : ℝ) (0 : ℝ) (-9792 : ℝ) (13824 : ℝ)
     (1728 : ℝ) (4032 : ℝ) (-1728 : ℝ) (38016 : ℝ) (15552 : ℝ) (-139968 : ℝ) (77760 : ℝ)
@@ -395,7 +394,7 @@ theorem axis_Rf2 {y : ℝ} (hy : 0 < y) :
     have h := Rf2_eq_zero ram6
     unfold Rf2 at h
     rw [e2_1_eq, e2_2_eq, e2_3_eq, e2_6_eq, e4_2_eq] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform (0 : ℝ) (-960 : ℝ) (1728 : ℝ) (-576 : ℝ) (0 : ℝ) (-1728 : ℝ) (3456 : ℝ) (-1728 : ℝ)
     (-4032 : ℝ) (1728 : ℝ) (31104 : ℝ) (10368 : ℝ) (-67392 : ℝ) (25920 : ℝ) (960 : ℝ)
@@ -427,7 +426,7 @@ theorem axis_Rf3 {y : ℝ} (hy : 0 < y) :
     have h := Rf3_eq_zero ram6
     unfold Rf3 at h
     rw [e2_1_eq, e2_2_eq, e2_3_eq, e2_6_eq, e4_3_eq] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform (0 : ℝ) (0 : ℝ) (-144 : ℝ) (288 : ℝ) (0 : ℝ) (-576 : ℝ) (1152 : ℝ) (-576 : ℝ)
     (576 : ℝ) (576 : ℝ) (-1152 : ℝ) (-5184 : ℝ) (12096 : ℝ) (-8640 : ℝ) (720 : ℝ)
@@ -458,7 +457,7 @@ theorem axis_Rf4 {y : ℝ} (hy : 0 < y) :
     have h := Rf4_eq_zero ram6
     unfold Rf4 at h
     rw [e2_1_eq, e2_2_eq, e2_3_eq, e2_6_eq, e4_6_eq] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform (0 : ℝ) (0 : ℝ) (-576 : ℝ) (1152 : ℝ) (0 : ℝ) (576 : ℝ) (-1152 : ℝ) (576 : ℝ)
     (-576 : ℝ) (-576 : ℝ) (1152 : ℝ) (-3456 : ℝ) (22464 : ℝ) (-25920 : ℝ) (2880 : ℝ)
@@ -488,7 +487,7 @@ theorem axis_Rf9 {y : ℝ} (hy : 0 < y) :
     have h := Rf9_eq_zero ram6
     unfold Rf9 at h
     rw [e2_1_eq, e2_2_eq, e2_3_eq, e2_6_eq] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform (0 : ℝ) (-576 : ℝ) (1152 : ℝ) (-576 : ℝ) (576 : ℝ) (-4608 : ℝ) (3456 : ℝ) (0 : ℝ)
     (2304 : ℝ) (0 : ℝ) (13824 : ℝ) (5184 : ℝ) (-41472 : ℝ) (20736 : ℝ) (0 : ℝ)

@@ -70,4 +70,6 @@ import Tower.RV6.RungA2R
 import Tower.RV6.LadderB
 import Tower.RV6.AxisEv
 import Tower.RV6.ModAxis
+import Tower.RV6.QTail
+import Tower.RV6.EtaForm
 import Tower.Audit

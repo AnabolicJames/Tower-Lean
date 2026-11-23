@@ -231,7 +231,7 @@ theorem axis_Rf{k} {{y : ℝ}} (hy : 0 < y) :
     have h := Rf{k}_eq_zero ram6
     unfold Rf{k} at h
     rw [{', '.join(rw_e)}] at h
-    simp only [map_neg, map_ofNat, map_zero, map_one]
+    simp only [map_neg, map_ofNat, map_zero]
     linear_combination h
   have hev := evA_qform {args}
     {ABSM[1]} {ABSM[2]} {ABSM[3]} {ABSM[6]} {ABSN[dN]} hy
@@ -419,9 +419,8 @@ theorem evA_zero (y : ℝ) : evA 0 y = 0 := by
     unfold cfS
     rw [map_zero, zero_mul]
   unfold evA qa
-  first
-    | (rw [tsum_congr h]; exact tsum_zero)
-    | simp only [h, tsum_zero]
+  rw [tsum_congr h]
+  exact tsum_zero
 
 theorem evA_add {F G : PowerSeries ℝ} (hF : AbsS F) (hG : AbsS G) {y : ℝ} (hy : 0 < y) :
     evA (F + G) y = evA F y + evA G y := by
