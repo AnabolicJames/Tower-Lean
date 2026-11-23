@@ -37,7 +37,7 @@ theorem pow_mul_exp_le (m : ℕ) {t w : ℝ} (ht : 0 < t) (hw : 0 ≤ w) :
     w ^ m * Real.exp (-t * w) ≤ (m.factorial : ℝ) * (2 / t) ^ m * Real.exp (-(t / 2) * w) := by
   have hf : (0 : ℝ) < (m.factorial : ℝ) := Nat.cast_pos.mpr (Nat.factorial_pos m)
   have hx : 0 ≤ t * w / 2 := div_nonneg (mul_nonneg ht.le hw) two_pos.le
-  have h := Real.pow_div_factorial_le_exp hx m
+  have h := Real.pow_div_factorial_le_exp (t * w / 2) hx m
   have h1 : (t * w / 2) ^ m ≤ Real.exp (t * w / 2) * (m.factorial : ℝ) := (div_le_iff₀ hf).mp h
   have hti : t * t⁻¹ = 1 := mul_inv_cancel₀ ht.ne'
   have e1 : w = 2 / t * (t * w / 2) := by
@@ -140,7 +140,7 @@ theorem integrableOn_pow_mul_exp (k : ℕ) {t : ℝ} (ht : 0 < t) :
 /-- `|ν(w) - 1/2| ≤ w² (3/2 + ν(w))` for every `w > 0`. -/
 theorem abs_nuP_sub_half_le' {w : ℝ} (hw : 0 < w) : |nuP w - 1 / 2| ≤ w ^ 2 * (3 / 2 + nuP w) := by
   have hn := nuP_nonneg w
-  rcases le_or_lt w 1 with h1 | h1
+  rcases le_or_gt w 1 with h1 | h1
   · have h := abs_nuP_sub_half_le hw h1
     have h3 : 0 ≤ w ^ 2 * (1 / 2 + nuP w) := mul_nonneg (sq_nonneg w) (by linarith)
     have e : w ^ 2 * (3 / 2 + nuP w) = w ^ 2 + w ^ 2 * (1 / 2 + nuP w) := by ring
