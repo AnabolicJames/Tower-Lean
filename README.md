@@ -88,9 +88,11 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/BMReduce.lean` | **`pairS_eq_JS`**: Zhou's parametrisations turn the pairing into `(π⁵/16) ∫₀^∞ g₄ 𝒜₁ xm^{-s} dy` (exact, every `s`); the pole `72/s⁵` as a Gamma integral; **`rungBM_of_zhou`**, **`rv6_of_zhou`** |
 | `Tower/RV6/BMBounds.lean`, `LimBM.lean` | explicit bounds for `g₄`, `𝒜₁`, `xm` at both cusps; **`limBM`**: `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` (dominated convergence); **`rungBM_of_zhou2`**, **`rv6_of_zhou2`** |
 | `Tower/RV6/BesselL5.lean` (generated) | the fifth-order equation of `f = I₀K₀³` and `g = I₀²K₀²`: with `θ = t d/dt`, `p = tI₁`, `q = tK₁`, the ladder `eₖ` of a product of four Bessel factors satisfies `θeₖ = (k+1)eₖ₊₁ + (5-k)t²eₖ₋₁` (`hasDerivAt_ldFk`, `hasDerivAt_ldGk`; no Wronskian); the θ-chains `thFk`, `thGk` with `HasDerivAt thₖ (thₖ₊₁ t / t) t` on `t > 0`; **`l5_fB`**, **`l5_gB`**: `θ⁵ - 4t²(5θ³ + 15θ² + 18θ + 8) + 64t⁴(θ + 2)` annihilates `f` and `g` |
+| `Tower/RV6/HankelDom.lean`, `HankelDomF.lean` (generated) | the class `HDom` of the Hankel transform (explicit bounds at `0` and at `∞`, closure rules, integrability, vanishing boundary terms); **`hdom_thF0 … hdom_thF5`**: `θᵏ f` is in it |
+| `Tower/RV6/HankelIBP.lean`, `HankelRelF.lean` (generated) | the Hankel transform `hk ψ x = ∫₀^∞ J₀(xt) ψ(t) t dt` (`hjF = hk fB`); two integrations by parts; **`hk_theta2`**: `hk((θ + 2)² φ) = -x² hk(t² φ)`; **`hk_relation_F`**: the linear relation among `hk(θᵏ f)(x)`, `k ≤ 5`, with coefficients in `x²` (leading coefficient `(x² + 4)(x² + 16)`) |
 | `Tower/RV6/LadderB.lean` | the last rung cut into two evaluations of one pairing: `hjF x = ∫₀^∞ J₀(xt) I₀K₀³ t dt`, `ajG x = x ∫₀^∞ J₁(xt) I₀²K₀² dt`, `pairS s = ∫₀^∞ hjF · ajG · x^{1-s} dx`; the sub-rungs `RungBP` (`pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)`) and `RungBM` (`pairS s - 72/s⁵ → (π⁵/16) D₀₁`); **`rungB_of_PM`**, **`rv6_of_PM`**: the two sub-rungs imply `RungB` and `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
-| `tools/gen_modaxis.py`, `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py`, `tools/gen_besselL5.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, `gen_gpoly.py` the two cofactors modulo `i² + 1`, and `gen_besselL5.py` the ladder, the θ-chain and its `linear_combination` cofactors, all computed in exact arithmetic; Lean checks them) |
+| `tools/gen_modaxis.py`, `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py`, `tools/gen_besselL5.py`, `tools/gen_hankeldomf.py`, `tools/gen_hankelrelf.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, `gen_gpoly.py` the two cofactors modulo `i² + 1`, and `gen_besselL5.py` the ladder, the θ-chain and its `linear_combination` cofactors, all computed in exact arithmetic; Lean checks them) |
 
 **Status: this is not yet a Lean proof of the theorem.**  One rung is left, stated as two hypotheses.
 
@@ -127,7 +129,8 @@ of a modular integral; **`rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimB
 modular that this needs (the level-six differential system on the axis, the eta forms and
 positivity of `Zax`, `Uax`, `Pax`, the Fricke relations, `xm` and its cusps) is proved with no
 hypotheses.  On the Bessel side of the two parametrisations, the first step is proved (wave 29):
-`f` and `g` satisfy the fifth-order equation (`l5_fB`, `l5_gB`).  `ROADMAP.md` has the plan and the
+`f` and `g` satisfy the fifth-order equation (`l5_fB`, `l5_gB`), and for `f` its Hankel dual holds
+at fixed `x` (`hk_relation_F`, waves 30 and 31).  `ROADMAP.md` has the plan and the
 state by rung.
 
 ## Not here yet

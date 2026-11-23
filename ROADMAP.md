@@ -14,7 +14,9 @@ two parametrisations `ZhouF`, `ZhouG` and one limit `LimBM`, after waves 24 to 2
 modular calculus it needs; **`Tower.RV6.rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimBM`.
 Wave 28 proved `LimBM` (`limBM`), so **`Tower.RV6.rv6_of_zhou2`** takes `RungBP`, `ZhouF`, `ZhouG`.
 Wave 29 proved the first step on the Bessel side of `ZhouF` and `ZhouG`: the fifth-order equation of
-`f = I₀K₀³` and `g = I₀²K₀²` (`l5_fB`, `l5_gB`).
+`f = I₀K₀³` and `g = I₀²K₀²` (`l5_fB`, `l5_gB`).  Waves 30 and 31 carried it through the Hankel
+transform at fixed `x`: `hk_relation_F`, a linear relation with coefficients in `x²` among
+`hk(θᵏ f)(x)`, `k ≤ 5`, which is `-(ϑ - 2)² L₃′ hjF = 0` once `ϑ` acts.
 This file is the plan for removing them and is updated with every wave.
 "Proved" means: in this repository, kernel-checked, no hypotheses.
 
@@ -62,7 +64,7 @@ The sub-rungs of B (`LadderB.lean`).  `f = I₀K₀³`, `g = I₀²K₀²`,
 |---|---|---|
 | BP | `pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)` as `s → 0+` | **open** (the logarithmic Hankel pairing) |
 | BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **reduced** (wave 27) to `ZhouF`, `ZhouG`, `LimBM`: `rungBM_of_zhou` |
-| ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open: `L₅ f = 0` proved (`l5_fB`, wave 29); left: the Hankel dual (`L₃′ hjF = 0`), the pull-back, the constant at the cusp |
+| ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open: `L₅ f = 0` proved (`l5_fB`, wave 29); the Hankel dual at fixed `x` proved (`hk_relation_F`, waves 30, 31); left: the `x`-derivative (`ϑ hk(ψ) = -hk((θ + 2)ψ)`), `L₃′ hjF = 0`, the pull-back, the constant at the cusp |
 | ZhouG | `ajG (xm y) = (π²/2) 𝒜₁(y)` for `y > 0` | open: `L₅ g = 0` proved (`l5_gB`, wave 29); left: the same steps through `ajG` |
 | LimBM | `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` | **proved** (wave 28): `limBM`; so `rungBM_of_zhou2 : ZhouF → ZhouG → RungBM` |
 
@@ -103,6 +105,8 @@ C1 and C2″ together are `D01_eq_modular`:
 | 27 | `BMReduce` | **`pairS_eq_JS`**: under Zhou's parametrisations, `pairS s = (π⁵/16) ∫₀^∞ g₄ 𝒜₁ xm^{-s} dy` for every `s` (Mathlib's change of variables; no integrability needed); the Gamma integral `∫₀^∞ e^{-a/y} y⁻⁶ dy = 24/a⁵` and `72/s⁵ = (π⁵/16) ∫ e^{-πs/(6y)}/(162y⁶)`; **`rungBM_of_zhou`**, **`rv6_of_zhou`** |
 | 28 | `BMBounds`, `LimBM` | explicit bounds with explicit constants: the tail bound at any base point, `log xm(y) = π/(6y) - 3 Wq(1/(6y))`, `1/xm ≤ e^{πy + 12 qb 1}`, `|g₄| ≤ 640 S₃ e^{-2π(y-1)}`, `|𝒜₁| ≤ 80 T(1)` (`y ≥ 1`), the pole part `|xm^{-s} - e^{-πs/(6y)}|/(162y⁶) ≤ K` on `(0, 1]`; continuity; integrability of the integrand of `D₀₁`; dominated convergence on `(0, 1]` and on `(1, ∞)`: **`limBM`**, **`rungBM_of_zhou2`**, **`rv6_of_zhou2`** |
 | 29 | `BesselL5` | the ladder of a product of four Bessel factors, `θeₖ = (k+1)eₖ₊₁ + (5-k)t²eₖ₋₁` (`θ = t d/dt`, from `I₀' = I₁`, `(tI₁)' = tI₀`, `K₀' = -K₁`, `(tK₁)' = -tK₀`; no Wronskian); the θ-chains of `f` and `g` as `HasDerivAt` statements on `t > 0`; **`l5_fB`**, **`l5_gB`**: `θ⁵ - 4t²(5θ³ + 15θ² + 18θ + 8) + 64t⁴(θ + 2)` annihilates `f = I₀K₀³` and `g = I₀²K₀²` (it is `5! e₅ = 0`) |
+| 30 | `HankelDom`, `HankelDomF` | `K₁(t) ≤ e^{1-t} K₁(1)`; `√t (1 + log(2/t))³ ≤ 343 √2`; the class `HDom` (`√t |φ| ≤ C` on `(0, 1]`, `|φ| ≤ C tᴺ e^{-t}` on `[1, ∞)`), closed under sums, constant multiples and `tⁿ`, containing every product of one of `I₀, tI₁` and three of `K₀, tK₁`; for `φ ∈ HDom`: `tʲ φ g` integrable on `(0, ∞)` (`j ≥ 1`, `g` bounded), `t² φ g → 0` at both ends; `∫₀^∞ F' = 0` when `F` vanishes at both ends; **`hdom_thF0 … hdom_thF5`** |
+| 31 | `HankelIBP`, `HankelRelF` | the Hankel transform `hk ψ x = ∫₀^∞ J₀(xt) ψ(t) t dt` (`hjF = hk fB`); two integrations by parts (against `J₀(xt)` and against `(xt) J₁(xt)`); **`hk_theta2`**: `hk((θ + 2)² φ) = -x² hk(t² φ)` for a chain in `HDom`; **`hk_relation_F`**: `(x⁴ + 20x² + 64) A₅ + (140x² + 896) A₄ + (392x² + 4864) A₃ + (560x² + 12800) A₂ + (416x² + 16384) A₁ + (128x² + 8192) A₀ = 0`, `A_k = hk(θᵏ f)(x)`, `x ≥ 0` |
 | 23 | `LadderB` | Rung B cut into two evaluations of one pairing: `hjF`, `ajG`, `pairS`; the sub-rungs `RungBP`, `RungBM`, stated after every step of the plan for both had been checked numerically from the definitions (24 criteria; the pairing at `s = 0` from the Bessel integrals alone to ten digits, Zhou's parametrisations to twenty); **`rungB_of_PM`** (a function has one limit), **`rv6_of_PM`** |
 
 ## Plan by rung
@@ -177,7 +181,8 @@ and the one quadratic relation of `Level6.lean` among the four series is
 
    State: items 1, 2 and 5 are proved (waves 24 to 28): `rungBM_of_zhou2 : ZhouF → ZhouG → RungBM`.
    Item 3 has begun: the fifth-order equation of `f` and of `g` is proved (wave 29, `l5_fB`,
-   `l5_gB`).  Left: the Hankel duals and the constants of item 3, and item 4, for `f` (`ZhouF`)
+   `l5_gB`), and for `f` its Hankel dual at fixed `x` (waves 30, 31, `hk_relation_F`); next the
+   `x`-derivative of `hk`, which turns that relation into `(ϑ - 2)² L₃′ hjF = 0`.  Left: the Hankel duals and the constants of item 3, and item 4, for `f` (`ZhouF`)
    and for `g` (`ZhouG`).
 
 *BP, the Bessel side.*  Real variables only: no contour and no Mellin inversion.
@@ -324,6 +329,18 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   lambda by its body is `rfl`, and `θ⁰f = fB` is `funext x; rfl` when the two bodies are the
   same text.  The arguments of a lemma instantiated with a lambda come back beta-reduced, so a
   `beta_reduce` after them is flagged by the unused-tactic linter (removed in the next commit).
+* Waves 30 and 31 (four files; two green at the first compile, two at the second).  The failed
+  runs: `tendsto_id` is `Filter.tendsto_id` (the file opened only `MeasureTheory`), and a lemma
+  of another new file (`hasDerivAt_sqx`) was used without importing that file.  Also: a predicate
+  that is a conjunction of bounds is an `abbrev`, so that anonymous constructors and `obtain`
+  see through it; a goal that comes out of such a predicate with a lambda argument is restated by
+  `show` before `rw`; `integral_Ioi_deriv_eq_zero` (and any lemma whose conclusion contains a
+  function variable applied to a bound variable) is called with `(F := …) (F' := …)` given, and its
+  result restated by a typed `have` before `rw [integral_sub …] at`; `Filter.Tendsto.congr` takes
+  the pointwise equality first (`(tendsto…).congr heq`); a continuous kernel `t ↦ x * t` is
+  `continuous_const.mul continuous_id` inside a typed `have`; linearity of `hk` over long sums is
+  a chain of `rw [hk_add_cmul …]` with the `HDom` proof of each prefix written out by the
+  generator.
 * Wave 23 (one file, green at the first compile): a cancellation by `π⁵` is `linear_combination`
   with `π ^ 5 * (π ^ 5)⁻¹ = 1` as a hypothesis (`ring` normalises `(π ^ 5)⁻¹` and
   `12 / (5 * π ^ 5)` to the same atom); two `Tendsto` hypotheses about the same lambda give the
