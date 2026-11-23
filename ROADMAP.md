@@ -12,6 +12,7 @@ wave 23 it is cut into two statements about one function of a real variable, `Ru
 `μ₆ = (648/π⁶) L(f, 5)`.  Since wave 27 `RungBM` is itself derived (`rungBM_of_zhou`) from Zhou's
 two parametrisations `ZhouF`, `ZhouG` and one limit `LimBM`, after waves 24 to 26 built the whole
 modular calculus it needs; **`Tower.RV6.rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimBM`.
+Wave 28 proved `LimBM` (`limBM`), so **`Tower.RV6.rv6_of_zhou2`** takes `RungBP`, `ZhouF`, `ZhouG`.
 This file is the plan for removing them and is updated with every wave.
 "Proved" means: in this repository, kernel-checked, no hypotheses.
 
@@ -61,7 +62,7 @@ The sub-rungs of B (`LadderB.lean`).  `f = I₀K₀³`, `g = I₀²K₀²`,
 | BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **reduced** (wave 27) to `ZhouF`, `ZhouG`, `LimBM`: `rungBM_of_zhou` |
 | ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open (the Bessel side: the third-order equation and the cusp) |
 | ZhouG | `ajG (xm y) = (π²/2) 𝒜₁(y)` for `y > 0` | open (the same for `g`) |
-| LimBM | `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` | open (bounds and dominated convergence; wave 28) |
+| LimBM | `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` | **proved** (wave 28): `limBM`; so `rungBM_of_zhou2 : ZhouF → ZhouG → RungBM` |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -98,6 +99,7 @@ C1 and C2″ together are `D01_eq_modular`:
 | 25 | `QTail`, `EtaForm` | a tail bound for `q`-series and limits at the cusp; **`Zax_eq_exp`, `Uax_eq_exp`**: `Zax`, `Uax` are exponentials of explicit `q`-series in `qb = Σ (σ₁(n)/n) qⁿ` (the eta quotients, without eta), hence **`Zax_pos`, `Uax_pos`** |
 | 26 | `FrickeAx`, `XMod` | the Fricke relations `Zax(1/(6w)) = 48w² Uax(w)`, `Pax(1/(6w)) = 6w² Pax(w)`; **`Pax_pos`**; the Hauptmodul **`xm = 8 exp((lgU - lgZ)/2)`** with `xm² = 64U/Z`, `log xm = log 8 - πy + 3(qb(y) - qb(2y) + qb(3y) - qb(6y))`, **`xm' = -(π/4) Pax xm`**, **`xm(y) xm(1/(6y)) = 8`**, both cusps, and **`image_xm`** (a decreasing bijection of `(0, ∞)`) |
 | 27 | `BMReduce` | **`pairS_eq_JS`**: under Zhou's parametrisations, `pairS s = (π⁵/16) ∫₀^∞ g₄ 𝒜₁ xm^{-s} dy` for every `s` (Mathlib's change of variables; no integrability needed); the Gamma integral `∫₀^∞ e^{-a/y} y⁻⁶ dy = 24/a⁵` and `72/s⁵ = (π⁵/16) ∫ e^{-πs/(6y)}/(162y⁶)`; **`rungBM_of_zhou`**, **`rv6_of_zhou`** |
+| 28 | `BMBounds`, `LimBM` | explicit bounds with explicit constants: the tail bound at any base point, `log xm(y) = π/(6y) - 3 Wq(1/(6y))`, `1/xm ≤ e^{πy + 12 qb 1}`, `|g₄| ≤ 640 S₃ e^{-2π(y-1)}`, `|𝒜₁| ≤ 80 T(1)` (`y ≥ 1`), the pole part `|xm^{-s} - e^{-πs/(6y)}|/(162y⁶) ≤ K` on `(0, 1]`; continuity; integrability of the integrand of `D₀₁`; dominated convergence on `(0, 1]` and on `(1, ∞)`: **`limBM`**, **`rungBM_of_zhou2`**, **`rv6_of_zhou2`** |
 | 23 | `LadderB` | Rung B cut into two evaluations of one pairing: `hjF`, `ajG`, `pairS`; the sub-rungs `RungBP`, `RungBM`, stated after every step of the plan for both had been checked numerically from the definitions (24 criteria; the pairing at `s = 0` from the Bessel integrals alone to ten digits, Zhou's parametrisations to twenty); **`rungB_of_PM`** (a function has one limit), **`rv6_of_PM`** |
 
 ## Plan by rung
@@ -170,10 +172,8 @@ and the one quadratic relation of `Level6.lean` among the four series is
 5. *The limit.*  The substitution `x = x(y)`; `∫₀^∞ y⁻⁶ e^{-πs/(6y)} dy/162 = (16/π⁵) · 72/s⁵`;
    dominated convergence.
 
-   State: items 1 and 2 are proved (waves 24 to 26), and the substitution and the Gamma integral
-   of item 5 (wave 27): `rungBM_of_zhou`.  Left: `LimBM` (wave 28; numerically
-   `K(s) = D₀₁ + C₁s + C₂s² + …` with `C₁ ≈ 0.087`, and the quadratic extrapolants converge to
-   `D₀₁` at third order), then items 3 and 4 for `f` (`ZhouF`) and for `g` (`ZhouG`).
+   State: items 1, 2 and 5 are proved (waves 24 to 28): `rungBM_of_zhou2 : ZhouF → ZhouG → RungBM`.
+   Left: items 3 and 4 for `f` (`ZhouF`) and for `g` (`ZhouG`).
 
 *BP, the Bessel side.*  Real variables only: no contour and no Mellin inversion.
 
@@ -297,6 +297,19 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   `linear_combination` with `x * x⁻¹ = 1`; a Bochner integral over an image is moved by
   `integral_image_eq_integral_abs_deriv_smul` with `f'` given by name and `smul_eq_mul` simplified
   in the result before it is restated; deprecated in this version: `if_pos`, `if_neg` (warnings).
+* Wave 28 (two files; `LimBM.lean` green at the first compile, `BMBounds.lean` at the second):
+  `Real.pow_div_factorial_le_exp` takes `x` explicitly (`variable (x y : ℝ)` in its file), so a
+  lemma stated under `variable (x)` is called with `x` first.  Also: a domination for dominated
+  convergence is cleanest when the domain is split into pieces on each of which one explicit
+  integrable majorant holds (here `(0, 1]` and `(1, ∞)`), with `setIntegral_union` at the end;
+  `tendsto_integral_filter_of_dominated_convergence` is given `(F := FS) (f := f0)` by name, the
+  three hypotheses as typed `have`s, and the result taken by `have hD := …; exact hD`;
+  integrability of an integrand whose integral is a non-zero number is
+  `Integrable.of_integral_ne_zero` (here the pole integrand, through `pole_eq`); `ContinuousAt`
+  of a combination is built from typed `have`s with `ContinuousAt.const_mul c` and
+  `ContinuousAt.div_const c` (constants given), never with `continuousAt_const.mul`; a long
+  expression from an earlier file (the integrand of `D01E_integrand`) is inserted by a script, not
+  retyped.
 * Wave 23 (one file, green at the first compile): a cancellation by `π⁵` is `linear_combination`
   with `π ^ 5 * (π ^ 5)⁻¹ = 1` as a hypothesis (`ring` normalises `(π ^ 5)⁻¹` and
   `12 / (5 * π ^ 5)` to the same atom); two `Tendsto` hypotheses about the same lambda give the

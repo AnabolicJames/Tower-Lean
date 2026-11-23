@@ -86,6 +86,7 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/QTail.lean`, `EtaForm.lean` | a tail bound for `q`-series; `Zax`, `Uax` as exponentials of explicit `q`-series (the eta quotients); `Zax > 0`, `Uax > 0` |
 | `Tower/RV6/FrickeAx.lean`, `XMod.lean` | the Fricke relations; `Pax > 0`; the Hauptmodul `xm = 8 √(Uax/Zax)` with `xm' = -(π/4) Pax xm`, `xm(y) xm(1/(6y)) = 8`, both cusps, and `xm` a decreasing bijection of `(0, ∞)` |
 | `Tower/RV6/BMReduce.lean` | **`pairS_eq_JS`**: Zhou's parametrisations turn the pairing into `(π⁵/16) ∫₀^∞ g₄ 𝒜₁ xm^{-s} dy` (exact, every `s`); the pole `72/s⁵` as a Gamma integral; **`rungBM_of_zhou`**, **`rv6_of_zhou`** |
+| `Tower/RV6/BMBounds.lean`, `LimBM.lean` | explicit bounds for `g₄`, `𝒜₁`, `xm` at both cusps; **`limBM`**: `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` (dominated convergence); **`rungBM_of_zhou2`**, **`rv6_of_zhou2`** |
 | `Tower/RV6/LadderB.lean` | the last rung cut into two evaluations of one pairing: `hjF x = ∫₀^∞ J₀(xt) I₀K₀³ t dt`, `ajG x = x ∫₀^∞ J₁(xt) I₀²K₀² dt`, `pairS s = ∫₀^∞ hjF · ajG · x^{1-s} dx`; the sub-rungs `RungBP` (`pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)`) and `RungBM` (`pairS s - 72/s⁵ → (π⁵/16) D₀₁`); **`rungB_of_PM`**, **`rv6_of_PM`**: the two sub-rungs imply `RungB` and `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_modaxis.py`, `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, and `gen_gpoly.py` the two cofactors modulo `i² + 1`, all computed in exact arithmetic; Lean checks them) |
@@ -120,14 +121,15 @@ pairing at `s = 0` computed from the Bessel integrals alone agrees with both lim
 digits).  Since wave 27, `RungBM` is derived (`rungBM_of_zhou`, `BMReduce.lean`) from three sharper
 statements: Zhou's two parametrisations `ZhouF : hjF (xm y) = (π²/16) Zax y`,
 `ZhouG : ajG (xm y) = (π²/2) 𝒜₁(y)` for the Hauptmodul `xm` of `XMod.lean`, and the limit `LimBM`
-of a modular integral; **`rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimBM`.  Everything
+of a modular integral; **`rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimBM`.  Since wave 28
+`LimBM` is proved (`limBM`), and **`rv6_of_zhou2`** takes `RungBP`, `ZhouF`, `ZhouG`.  Everything
 modular that this needs (the level-six differential system on the axis, the eta forms and
 positivity of `Zax`, `Uax`, `Pax`, the Fricke relations, `xm` and its cusps) is proved with no
 hypotheses.  `ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of `RungBP` and of the three statements `ZhouF`, `ZhouG`, `LimBM` from which `RungBM` is
+* proofs of `RungBP` and of Zhou's two parametrisations `ZhouF`, `ZhouG`, from which `RungBM` is
   proved (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
