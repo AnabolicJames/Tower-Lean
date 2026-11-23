@@ -64,7 +64,7 @@ The sub-rungs of B (`LadderB.lean`).  `f = I₀K₀³`, `g = I₀²K₀²`,
 |---|---|---|
 | BP | `pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)` as `s → 0+` | **open** (the logarithmic Hankel pairing) |
 | BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **reduced** (wave 27) to `ZhouF`, `ZhouG`, `LimBM`: `rungBM_of_zhou` |
-| ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open: `L₅ f = 0` proved (`l5_fB`, wave 29); the Hankel dual at fixed `x` proved (`hk_relation_F`, waves 30, 31); left: the `x`-derivative (`ϑ hk(ψ) = -hk((θ + 2)ψ)`), `L₃′ hjF = 0`, the pull-back, the constant at the cusp |
+| ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open: `L₅ f = 0` proved (`l5_fB`, wave 29); the Hankel dual at fixed `x` proved (`hk_relation_F`, waves 30, 31) and the `x`-derivative `ϑ hk(ψ) = -hk((θ + 2)ψ)` (`hasDerivAt_hk`, wave 32); left: `L₃′ hjF = 0` (solve `(ϑ - 2)² u = 0`, constants from `x → 0+`), the pull-back, the constant at the cusp |
 | ZhouG | `ajG (xm y) = (π²/2) 𝒜₁(y)` for `y > 0` | open: `L₅ g = 0` proved (`l5_gB`, wave 29); left: the same steps through `ajG` |
 | LimBM | `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` | **proved** (wave 28): `limBM`; so `rungBM_of_zhou2 : ZhouF → ZhouG → RungBM` |
 
@@ -107,6 +107,7 @@ C1 and C2″ together are `D01_eq_modular`:
 | 29 | `BesselL5` | the ladder of a product of four Bessel factors, `θeₖ = (k+1)eₖ₊₁ + (5-k)t²eₖ₋₁` (`θ = t d/dt`, from `I₀' = I₁`, `(tI₁)' = tI₀`, `K₀' = -K₁`, `(tK₁)' = -tK₀`; no Wronskian); the θ-chains of `f` and `g` as `HasDerivAt` statements on `t > 0`; **`l5_fB`**, **`l5_gB`**: `θ⁵ - 4t²(5θ³ + 15θ² + 18θ + 8) + 64t⁴(θ + 2)` annihilates `f = I₀K₀³` and `g = I₀²K₀²` (it is `5! e₅ = 0`) |
 | 30 | `HankelDom`, `HankelDomF` | `K₁(t) ≤ e^{1-t} K₁(1)`; `√t (1 + log(2/t))³ ≤ 343 √2`; the class `HDom` (`√t |φ| ≤ C` on `(0, 1]`, `|φ| ≤ C tᴺ e^{-t}` on `[1, ∞)`), closed under sums, constant multiples and `tⁿ`, containing every product of one of `I₀, tI₁` and three of `K₀, tK₁`; for `φ ∈ HDom`: `tʲ φ g` integrable on `(0, ∞)` (`j ≥ 1`, `g` bounded), `t² φ g → 0` at both ends; `∫₀^∞ F' = 0` when `F` vanishes at both ends; **`hdom_thF0 … hdom_thF5`** |
 | 31 | `HankelIBP`, `HankelRelF` | the Hankel transform `hk ψ x = ∫₀^∞ J₀(xt) ψ(t) t dt` (`hjF = hk fB`); two integrations by parts (against `J₀(xt)` and against `(xt) J₁(xt)`); **`hk_theta2`**: `hk((θ + 2)² φ) = -x² hk(t² φ)` for a chain in `HDom`; **`hk_relation_F`**: `(x⁴ + 20x² + 64) A₅ + (140x² + 896) A₄ + (392x² + 4864) A₃ + (560x² + 12800) A₂ + (416x² + 16384) A₁ + (128x² + 8192) A₀ = 0`, `A_k = hk(θᵏ f)(x)`, `x ≥ 0` |
+| 32 | `HankelDeriv` | **`hasDerivAt_hk`**: `(hk ψ)'(x) = -(2 hk ψ x + hk (θψ) x)/x` for a chain in `HDom` and `x > 0` (differentiation under the integral sign with the majorant `t² |ψ|`, then the first integration by parts), i.e. `ϑ hk(ψ) = -hk((θ + 2)ψ)`; `hasDerivAt_hk_thF0 … 4`: `A_{k+1} = -(ϑ + 2) A_k` |
 | 23 | `LadderB` | Rung B cut into two evaluations of one pairing: `hjF`, `ajG`, `pairS`; the sub-rungs `RungBP`, `RungBM`, stated after every step of the plan for both had been checked numerically from the definitions (24 criteria; the pairing at `s = 0` from the Bessel integrals alone to ten digits, Zhou's parametrisations to twenty); **`rungB_of_PM`** (a function has one limit), **`rv6_of_PM`** |
 
 ## Plan by rung
