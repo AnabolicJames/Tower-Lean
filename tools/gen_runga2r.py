@@ -69,9 +69,7 @@ open Real MeasureTheory
 /-- The real part of an interval integral. -/
 theorem re_intervalIntegral {f : ℝ → ℂ} {a b : ℝ} (hf : IntervalIntegrable f volume a b) :
     (∫ x in a..b, f x).re = ∫ x in a..b, (f x).re := by
-  first
-    | exact (Complex.reCLM.intervalIntegral_comp_comm hf).symm
-    | (have h := Complex.reCLM.intervalIntegral_comp_comm hf; simp only [Complex.reCLM_apply] at h; exact h.symm)
+  exact (Complex.reCLM.intervalIntegral_comp_comm hf).symm
 
 /-- A function differentiable at every point of a horizontal line is continuous along it. -/
 theorem continuous_comp_line (F : ℂ → ℂ) (b : ℝ)
