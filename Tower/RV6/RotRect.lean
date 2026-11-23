@@ -78,18 +78,17 @@ theorem differentiableAt_rotE (s : ℝ) {w : ℂ} (hw : 0 < (Complex.exp w).re) 
   have hexp : HasDerivAt Complex.exp (Complex.exp w) w := Complex.hasDerivAt_exp w
   have hJ0 : HasDerivAt cJ0 (deriv cJ0 (Complex.exp w)) (Complex.exp w) :=
     (differentiable_cJ0 (Complex.exp w)).hasDerivAt
-  have hJ : HasDerivAt (fun y : ℂ => cJ0 (Complex.exp y))
-      (deriv cJ0 (Complex.exp w) * Complex.exp w) w := HasDerivAt.comp w hJ0 hexp
+  have hJ1 := HasDerivAt.comp w hJ0 hexp
+  have dJ : DifferentiableAt ℂ (fun y : ℂ => cJ0 (Complex.exp y)) w := hJ1.differentiableAt
   have hH0 : HasDerivAt hE (deriv hE (Complex.exp w)) (Complex.exp w) :=
     (differentiableAt_hE hw).hasDerivAt
-  have hH : HasDerivAt (fun y : ℂ => hE (Complex.exp y))
-      (deriv hE (Complex.exp w) * Complex.exp w) w := HasDerivAt.comp w hH0 hexp
+  have hH1 := HasDerivAt.comp w hH0 hexp
+  have dH : DifferentiableAt ℂ (fun y : ℂ => hE (Complex.exp y)) w := hH1.differentiableAt
   have hs : HasDerivAt (fun y : ℂ => (s : ℂ) * y) ((s : ℂ) * 1) w :=
     (hasDerivAt_id' w).const_mul (s : ℂ)
   have hEx : HasDerivAt (fun y : ℂ => Complex.exp ((s : ℂ) * y))
       (Complex.exp ((s : ℂ) * w) * ((s : ℂ) * 1)) w := hs.cexp
-  have h := differentiableAt_gpoly_mul hJ.differentiableAt hH.differentiableAt
-    hEx.differentiableAt
+  have h := differentiableAt_gpoly_mul dJ dH hEx.differentiableAt
   show DifferentiableAt ℂ (fun y : ℂ =>
     gpoly (cJ0 (Complex.exp y)) (hE (Complex.exp y)) * Complex.exp ((s : ℂ) * y)) w
   exact h
@@ -100,18 +99,17 @@ theorem differentiableAt_rotK (s : ℝ) {w : ℂ} (hw : 0 < (Complex.exp w).im) 
   have hexp : HasDerivAt Complex.exp (Complex.exp w) w := Complex.hasDerivAt_exp w
   have hJ0 : HasDerivAt cJ0 (deriv cJ0 (Complex.exp w)) (Complex.exp w) :=
     (differentiable_cJ0 (Complex.exp w)).hasDerivAt
-  have hJ : HasDerivAt (fun y : ℂ => cJ0 (Complex.exp y))
-      (deriv cJ0 (Complex.exp w) * Complex.exp w) w := HasDerivAt.comp w hJ0 hexp
+  have hJ1 := HasDerivAt.comp w hJ0 hexp
+  have dJ : DifferentiableAt ℂ (fun y : ℂ => cJ0 (Complex.exp y)) w := hJ1.differentiableAt
   have hH0 : HasDerivAt hK (deriv hK (Complex.exp w)) (Complex.exp w) :=
     (differentiableAt_hK hw).hasDerivAt
-  have hH : HasDerivAt (fun y : ℂ => hK (Complex.exp y))
-      (deriv hK (Complex.exp w) * Complex.exp w) w := HasDerivAt.comp w hH0 hexp
+  have hH1 := HasDerivAt.comp w hH0 hexp
+  have dH : DifferentiableAt ℂ (fun y : ℂ => hK (Complex.exp y)) w := hH1.differentiableAt
   have hs : HasDerivAt (fun y : ℂ => (s : ℂ) * y) ((s : ℂ) * 1) w :=
     (hasDerivAt_id' w).const_mul (s : ℂ)
   have hEx : HasDerivAt (fun y : ℂ => Complex.exp ((s : ℂ) * y))
       (Complex.exp ((s : ℂ) * w) * ((s : ℂ) * 1)) w := hs.cexp
-  have h := differentiableAt_gpoly_mul hJ.differentiableAt hH.differentiableAt
-    hEx.differentiableAt
+  have h := differentiableAt_gpoly_mul dJ dH hEx.differentiableAt
   show DifferentiableAt ℂ (fun y : ℂ =>
     gpoly (cJ0 (Complex.exp y)) (hK (Complex.exp y)) * Complex.exp ((s : ℂ) * y)) w
   exact h

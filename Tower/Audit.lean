@@ -53,6 +53,7 @@ import Tower.RV6.HAgree
 import Tower.RV6.GPoly
 import Tower.RV6.RotRect
 import Tower.RV6.RotSides
+import Tower.RV6.RungA2R
 
 /-!
 # Axiom audit
@@ -309,3 +310,17 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.tendsto_zero_of_norm_le_exp
 #print axioms Tower.RV6.tendsto_sideInt_atTop
 #print axioms Tower.RV6.tendsto_sideInt_neg
+#print axioms Tower.RV6.re_intervalIntegral
+#print axioms Tower.RV6.continuous_comp_line
+#print axioms Tower.RV6.continuous_rotE_bottom
+#print axioms Tower.RV6.rotE_bottom_re
+#print axioms Tower.RV6.continuous_rotK_top
+#print axioms Tower.RV6.cexp_add_half_pi_mul_I
+#print axioms Tower.RV6.cexp_mul_add_half_pi_mul_I
+#print axioms Tower.RV6.rotK_top_re
+#print axioms Tower.RV6.topRe_eq
+#print axioms Tower.RV6.integrable_topRe
+#print axioms Tower.RV6.integral_topRe
+#print axioms Tower.RV6.rot_real_identity
+#print axioms Tower.RV6.rungA2R
+#print axioms Tower.RV6.rv6_of_B

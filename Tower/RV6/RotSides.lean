@@ -108,8 +108,9 @@ theorem tendsto_zero_of_norm_le_exp {F : ℝ → ℂ} {K c : ℝ} (hc : 0 < c)
     Filter.Tendsto F Filter.atTop (nhds 0) := by
   have hlim0 : Filter.Tendsto (fun R : ℝ => c * R) Filter.atTop Filter.atTop :=
     Filter.Tendsto.const_mul_atTop hc Filter.tendsto_id
+  have hlim1' := Real.tendsto_exp_neg_atTop_nhds_zero.comp hlim0
   have hlim1 : Filter.Tendsto (fun R : ℝ => Real.exp (-(c * R))) Filter.atTop (nhds 0) :=
-    Real.tendsto_exp_neg_atTop_nhds_zero.comp hlim0
+    hlim1'
   have hlim2 : Filter.Tendsto (fun R : ℝ => K * Real.exp (-(c * R))) Filter.atTop
       (nhds (K * 0)) := hlim1.const_mul K
   rw [mul_zero] at hlim2
