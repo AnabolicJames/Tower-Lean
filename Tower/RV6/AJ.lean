@@ -114,13 +114,15 @@ noncomputable def pbnd (C x s : ℝ) : ℝ :=
 
 theorem integrable_pbnd {C x : ℝ} (hx : 0 < x) :
     Integrable (fun s : ℝ => pbnd C x s) (volume.restrict (Set.Ioi (0 : ℝ))) := by
+  have h1a : IntegrableOn (fun s : ℝ => C * Real.sqrt (2 * x) * (Real.sqrt s)⁻¹) (Set.Ioc 0 (2 * x)) :=
+    (integrableOn_inv_sqrt (by linarith : (0 : ℝ) ≤ 2 * x)).const_mul (C * Real.sqrt (2 * x))
+  have h2a : IntegrableOn (fun s : ℝ => C * (4 * x ^ 2) * (s ^ 2)⁻¹) (Set.Ioi (x / 2)) :=
+    (integrableOn_inv_sq_Ioi (by linarith : (0 : ℝ) < x / 2)).const_mul (C * (4 * x ^ 2))
   have h1 : Integrable ((Set.Ioc 0 (2 * x)).indicator
       (fun s : ℝ => C * Real.sqrt (2 * x) * (Real.sqrt s)⁻¹)) :=
-    ((integrableOn_inv_sqrt (by linarith : (0 : ℝ) ≤ 2 * x)).const_mul
-      (C * Real.sqrt (2 * x))).integrable_indicator measurableSet_Ioc
+    IntegrableOn.integrable_indicator h1a measurableSet_Ioc
   have h2 : Integrable ((Set.Ioi (x / 2)).indicator (fun s : ℝ => C * (4 * x ^ 2) * (s ^ 2)⁻¹)) :=
-    ((integrableOn_inv_sq_Ioi (by linarith : (0 : ℝ) < x / 2)).const_mul
-      (C * (4 * x ^ 2))).integrable_indicator measurableSet_Ioi
+    IntegrableOn.integrable_indicator h2a measurableSet_Ioi
   exact (h1.add h2).restrict
 
 theorem pdom_bound {ψ : ℝ → ℝ} {C : ℝ} (hC : 0 ≤ C)
@@ -247,8 +249,10 @@ theorem hasDerivAt_AJ {ψ ψ1 : ℝ → ℝ} (hψ : PDom ψ) (hψ1 : PDom ψ1)
     refine h4.congr_deriv ?_
     have hsi : s * s⁻¹ = 1 := mul_inv_cancel₀ hs0.ne'
     have hyi : y * y⁻¹ = 1 := mul_inv_cancel₀ hy0.ne'
+    have hii : y⁻¹⁻¹ = y := inv_inv y
     linear_combination (-(besselJ1 s * ψ1 (s / y) * y⁻¹) * (y * y⁻¹)) * hsi
       + (-(besselJ1 s * ψ1 (s / y) * y⁻¹)) * hyi
+      + (-(besselJ1 s * ψ1 (s / y) * s * y⁻¹ ^ 2 * s⁻¹)) * hii
   have key := hasDerivAt_integral_of_dominated_loc_of_deriv_le
     (μ := volume.restrict (Set.Ioi (0 : ℝ)))
     (F := fun y s => besselJ1 s * ψ (s / y))
