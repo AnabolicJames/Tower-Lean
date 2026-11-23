@@ -3,13 +3,13 @@
 Target: `Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5` with no hypotheses.
 
 Today: the modular side is proved, including the identification with the eta product, and so is
-the first rung of the Bessel side, the random-walk representation of `μ₆` (`rungA1`, wave 13).
-`Tower.RV6.rv6_of_A2_B` takes the two rungs that are left (`RungA2`, `RungB`) and gives
-`μ₆ = (648/π⁶) L(f, 5)`.  `RungA2` is cut into five sub-rungs about a real parameter `s > 0`
-(wave 15), and four of the five are proved (waves 16 to 20).  **`Tower.RV6.rv6_of_A2R_B` takes
-the two hypotheses that are left, `RungA2R` (the rotation of the contour) and `RungB`.**  This file is the plan for
-removing these hypotheses and is updated with every wave.  "Proved" means: in this repository,
-kernel-checked, no hypotheses.
+the whole Bessel side of the Mahler measure: the random-walk representation of `μ₆` (`rungA1`,
+wave 13) and the rotation of the contour (`rungA2`, waves 14 to 22), which together are
+**`Tower.RV6.mu6_eq_bessel : μ₆ = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`** with no hypotheses.
+**`Tower.RV6.rv6_of_B` takes the one hypothesis that is left, `RungB`** (the Bessel-side
+evaluation of the double Eisenstein integral), and gives `μ₆ = (648/π⁶) L(f, 5)`.  This file is
+the plan for removing that hypothesis and is updated with every wave.  "Proved" means: in this
+repository, kernel-checked, no hypotheses.
 
 ## Architecture
 
@@ -27,8 +27,8 @@ and nothing is continued analytically.
 | rung | statement | status |
 |---|---|---|
 | A1 | `μ₆ = log 2 + ∫ (e^{-t} - J₀⁶) dt/t` | **proved** (`rungA1`, wave 13) |
-| A2 | that side `= (30/π⁴) R₆,₂` | open; **reduced to five sub-rungs** (`rungA2_of_subrungs`, wave 15), four of them proved, table below |
-| B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | open |
+| A2 | that side `= (30/π⁴) R₆,₂` | **proved** (`rungA2`, wave 22), through five sub-rungs (`rungA2_of_subrungs`, wave 15), table below |
+| B  | `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)` | **open**: the one hypothesis left (plan below) |
 | C1 | `D₀₁ = -(104/(27π³)) ζ(5) + (64/9)(J₁/(2π) + J₂/(4π²))` | **proved** (`rungC1`, wave 5) |
 | C2″ | `(64/9)(J₁/(2π) + J₂/(4π²)) = (104/(27π³) + 12/(5π⁵)) ζ(5) + (1152/(5π²)) Λ(Ψ^W, 5)` | **proved** (`rungC2W`, wave 6) |
 | D″ | `Λ(Ψ^W, 5) = (3/(4π⁵)) Σ psiW(n)/n⁵` | **proved** (`lambdaPsiW5_eq`, wave 6) |
@@ -41,7 +41,7 @@ The sub-rungs of A2 (`LadderA2.lean`).  `mellU h s = ∫ h(e^u) e^{su} du` is th
 
 | sub-rung | statement | status |
 |---|---|---|
-| A2R | for `0 < s < 1`: `N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)` | **open** (rotation of the contour; plan below) |
+| A2R | for `0 < s < 1`: `N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)` | **proved** (`rungA2R`, waves 21 and 22) |
 | A2N | `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+` | **proved** (`rungA2N`, wave 20) |
 | A2M | `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` bounded on `0 < s ≤ 1` for `(a,b) = (1,5), (3,3), (3,5)` | **proved** (`rungA2M`, wave 19) |
 | A2P | for `0 < s ≤ 1`: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)`; `(8/5) P(s) → R₆,₂` as `s → 0+` | **proved** (`rungA2P`, wave 18) |
@@ -76,6 +76,9 @@ C1 and C2″ together are `D01_eq_modular`:
 | 19 | `PoleM`, `RungA2M` | **sub-rung A2M**: reflection `u = a₀ - y`; `∫₀^∞ y^b e^{-sy} dy = b!/s^{b+1}` (Mathlib's Gamma integral); `|I₀^a K₀^b (e^{a₀-y}) - y^b| ≤ D e^{-y/2}` for `y ≥ 0` from `|K₀(t) - (a₀ - log t)| ≤ t/2`; `I₀^a K₀^b ≤ t^{-b}` on the other half-line |
 | 20 | `RungA2N` | **sub-rung A2N**: `N(s) - 1/s = ∫_{u ≤ 0} (j - 1) e^{su} + ∫_{u > 0} j e^{su}` (`j(u) = J₀(e^u)⁶`), dominated convergence on each half-line, and `∫_{u ≤ 0} (j - 1) + ∫_{u > 0} j = eulerW - (walkSide - log 2)` by the substitutions `t = e^u` on `ℝ` and `w = e^u` on `u ≤ 0` (Mathlib's change of variables); `rv6_of_A2R_B` |
 
+| 21 | `CKernel`, `CJSeries`, `CKZero`, `HAgree` | `J₀` on `ℂ`: `cJ0 z = (2/π) ∫₀^{π/2} cos(z sin t) dt`, entire, with its power series by termwise integration, so `cJ0 x = J₀(x)` and `cJ0 (iy) = I₀(y)`; `K₀` on the right half-plane (`cK0`); the two forms `hE` (for `Re z > 0`) and `hK` (for `Im z > 0`) of `H₀⁽¹⁾`, with `Re hE(x) = J₀(x)`, `hK(iy) = -(2i/π) K₀(y)`, `‖hK z‖ ≤ (2/π) K₀(Im z)`; **`hE_eq_hK`** on the open quadrant (Cauchy on `[-R, 0] × [0, π/2]` for `e^{z sinh w}`) |
+| 22 | `GPoly`, `RotRect`, `RotSides`, `RungA2R` | `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³` with `Re G(J, H) = J⁶` for real `J = Re H` and its value on the imaginary axis (two certificates modulo `i² + 1`); `‖J₀(z)‖ ≤ I₀(Im z)`; Cauchy's theorem for `G(J₀, H₀⁽¹⁾)(e^w) e^{sw}` on `[-R, R] × [0, π/4]` and `[-R, R] × [π/4, π/2]`; the vertical sides are `≤ K e^{(s-δ)U}` (`sin y ≥ 2y/π`, the majorant `y^{-δ}`); real parts at finite `R`, then `R → ∞`; **sub-rung A2R**, **`rungA2`**, **`rungA`**, **`mu6_eq_bessel`**, **`rv6_of_B`** |
+
 ## Plan by rung
 
 **E″.**  Done (wave 7), by power series and without the valence formula at level six:
@@ -99,43 +102,44 @@ continuous integrands.  The right side stays bounded as `δ → 0`; the integran
 on the cube (monotone convergence), and the two limits agree.  No change of variables on the cube
 and no circle average was needed.
 
-**A2.**  `walkSide = (30/π⁴) R₆,₂`.  The proof keeps `s` real and small and never continues a
-Mellin transform analytically.  Done: the constant `eulerW` and `K₀(t) = a₀ - log t + O(t)` at `0`
-(wave 14; the constant is never identified with Euler's, it cancels); the reduction to the five
-sub-rungs (wave 15); A2T, A2P, A2M, A2N (waves 16 to 20, table above).
+**A2.**  Done (waves 14 to 22).  `walkSide = (30/π⁴) R₆,₂`.  The proof keeps `s` real and small
+and never continues a Mellin transform analytically: the constant `eulerW` and
+`K₀(t) = a₀ - log t + O(t)` at `0` (wave 14; the constant is never identified with Euler's, it
+cancels); the reduction to five sub-rungs (wave 15); A2T, A2P, A2M, A2N (waves 16 to 20); A2R
+(waves 21 and 22).  A2R is the rotation of the contour, done in `w = log z` with real parts taken
+at finite `R`, so that no decay of `Y₀` on the real axis is used: `J₀` and `H₀⁽¹⁾` at complex
+arguments from integral representations (`hE` on `Re z > 0`, `hK` on `Im z > 0`, equal on the
+open quadrant by Cauchy's theorem for `e^{z sinh w}`); two rectangles with a common side at
+`Im w = π/4`; the vertical sides bounded by the Mellin integrands themselves through
+`‖J₀(z)‖ ≤ I₀(Im z)` and `‖H₀⁽¹⁾(z)‖ ≤ (2/π) K₀(Im z)`.
 
-**A2R, the one sub-rung left.**  For `0 < s < 1`:
-`N(s) = (12/π⁵) sin(πs/2) M₁,₅(s) - (30/π⁴) cos(πs/2) M₂,₄(s) - (20/π³) sin(πs/2) M₃,₃(s)`.
-Plan, fixed after wave 20 (it replaces the earlier sketch; every item is a convergent integral):
+**B, the one rung left.**  `D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)`: Sections 3 and 4 of the paper.
+With `f = I₀K₀³`, `g = I₀²K₀²`,
 
-1. *Kernels.*  `cJ0 z = (1/π) ∫₀^π cos(z sin θ) dθ`, entire, `|cJ0 z| ≤ e^{|Im z|}`; termwise
-   integration with Mathlib's `∫₀^π sin^{2k}` gives `cJ0 z = Σ (-1)^k (z/2)^{2k}/(k!)²`, hence
-   `cJ0 x = J₀(x)` and `cJ0 (iy) = I₀(y)`.  `cK0 w = ∫₀^∞ exp(-w cosh u) du` on `Re w > 0`:
-   holomorphic, `|cK0 w| ≤ K₀(Re w)`, `cK0 t = K₀(t)`.
-2. *Two forms of `H⁺ = J₀ + iY₀`.*  `hK z = (2/(πi)) cK0(-iz)` on `Im z > 0`, and
-   `hE z = (1/π) ∫₀^π e^{iz sin θ} dθ - (2i/π) ∫₀^∞ e^{-z sinh u} du` on `Re z > 0`; both
-   holomorphic.  On the real axis `hE x = J₀(x) + i·(real)`; on the imaginary axis
-   `hK (iy) = (2/(πi)) K₀(y)`.
-3. *Agreement* `hE = hK` on the open quadrant: Cauchy's theorem for `w ↦ e^{z sinh w}` on the
-   rectangle `[-R, 0] × [0, π/2]`, the side `Re w = -R` tends to `0`
-   (`Re(z sinh(-R + iθ)) ≤ -min(Re z, Im z) sinh R`), and `θ ↦ π - θ`.
-4. *The rotation at finite `R`*, in `w = log z`: with
-   `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³`, Cauchy on `[-R, R] × [0, π/4]` for
-   `G(cJ0, hE)(e^w) e^{sw}` and on `[-R, R] × [π/4, π/2]` for `G(cJ0, hK)(e^w) e^{sw}`; the
-   common side cancels by 3.  Take real parts *before* letting `R → ∞`: the bottom side is
-   `∫_{-R}^R J₀(e^u)⁶ e^{su} du` (`Re G(J, J + iY) = J⁶`, `sixteen_mul_pow_six`), the top side is
-   the combination of `I₀^a K₀^b`; both converge absolutely (`MellinU.lean`).  The decay of `Y₀`
-   on the real axis is never needed.
-5. *The two vertical sides vanish.*  `|G| ≤ Φ(Im z)`,
-   `Φ(y) = Σ c_k e^{ky} ((2/π) K₀(y))^{6-k}` (`k = 1, 2, 3`); for every `δ ∈ (0, 1)`,
-   `Φ(y) ≤ C_δ y^{-δ}` on `y > 0` (`K₀(y) ≤ 2 - log y` for `y ≤ 1`; `e^y K₀(y) ≤ √(π/(2y))` from
-   `cosh u - 1 = 2 sinh²(u/2) ≥ u²/2` and the Gaussian integral); `sin θ ≥ 2θ/π`; so the side at
-   `|z| = r` is `≤ C r^{s-δ}`: take `δ > s` for `r → ∞` and `δ < s` for `r → 0`.
+`HJ[f](x) = ∫₀^∞ J₀(xt) f(t) t dt`,  `AJ[g](x) = x ∫₀^∞ J₁(xt) g(t) dt`
 
-**B.**  Lemma 3.1 (Mellin–Parseval and one contour shift), Proposition 3.2 (the Wronskian
-identity), Lemma 4.1, and Zhou's parametrisations (4.4) of the Hankel transforms of `I₀K₀³` and
-`(I₀K₀)²`, which the paper quotes and which would have to be proved here.  The largest item by
-far; to be split into sub-rungs with convergent integrals when reached.
+(both absolutely convergent; the paper's conditionally convergent `HJ[g]` enters only through its
+cumulative `AJ[g]`), the rung needs five things, none of which is in Mathlib:
+
+1. *Zhou's parametrisation for `f`*: `HJ[f](x(y)) = (π²/16) Z(iy)`.
+2. *The same for the cumulative of `g`*: `AJ[g](x(y)) = (π²/2) 𝒜₁(y)`.
+3. *The modular calculus of the variable `x`*: `x' = -(π/4) P x`, `x² Z P = 8 g₄`,
+   `x(y) x(1/(6y)) = 8`, `x` decreasing from `∞` to `0`.  Planned with `Z`, `P`, `U = x²Z/64` as
+   Eisenstein combinations and `log x` as a `q`-series, so that it stays inside the `q`-series and
+   Fricke machinery of waves 2 to 7 (no eta products).
+4. *The logarithmic Hankel pairing* (Lemma 3.1 and Proposition 3.2):
+   `∫₀^X HJ[f] AJ[g] x dx - (3/5) log⁵ X → R₆,₂/2 + (3/20) ζ(5)` as `X → ∞`.  The largest item:
+   a Parseval identity whose two sides diverge, with an anomaly that contains `ζ(5)`.
+5. *The change of cutoff*: `log x(ε) = π/(6ε) + O(e^{-π/(3ε)})`, so that `(3/5) log⁵ x(ε)` and
+   `(π⁵/16)/(810 ε⁵)` agree up to `o(1)`.
+
+Then `D₀₁ = (16/π⁵) lim (∫₀^X HJ[f] AJ[g] x dx - (3/5) log⁵ X)` by the substitution `x = x(y)`.
+The sub-rungs will be stated in Lean, each checked numerically from the definitions first, and
+`RungB` derived from them, before any of them is proved (as for A2 in wave 15).  Two remarks that
+shape the proofs: `f` and `g` are Laplace transforms of positive measures (`I₀` and `K₀` are),
+so `HJ[f](x) = ∫ λ (λ² + x²)^{-3/2} dν_f(λ)` and `AJ[g](x) = ∫ (1 - μ (μ² + x²)^{-1/2}) dν_g(μ)` are
+positive and monotone; and items 1 and 2 are statements about solutions of one third-order
+equation, to be identified at the cusp `x = ∞` from the singular parts of `f` and `g` at `t = 0`.
 
 ## Notes on compiling without a local Lean
 
@@ -208,3 +212,22 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   (`integral_image_eq_integral_abs_deriv_smul`, `integral_comp_exp`) is given as a typed `have`
   whose two sides are written out, and the pointwise simplification is a separate function
   equality (`funext`, `show`, `rw`).
+* Waves 21 and 22 (nine files, eight green at the first compile).  The one failed run: the chain
+  rule `HasDerivAt.comp x h₂ h₁` was given against a typed `have` with the composite written as
+  a lambda; the outer function was a definition of the form `c * g (a * z)`, the unifier unfolded
+  it and split the composite at the wrong place.  A composition lemma is therefore called with no
+  expected type (`have h := HasDerivAt.comp x h₂ h₁`) and the lambda form is stated afterwards
+  through `.differentiableAt` or a typed `have`.  Also: Mathlib's `@[to_fun]` generates the
+  lambda forms `DifferentiableAt.fun_mul`, `fun_pow`, `fun_add`, `fun_sub`; an identity in `ℂ`
+  with real inputs is `push_cast` followed by `linear_combination q * Complex.I_sq`, the cofactor
+  `q` being the quotient by `i² + 1` computed in exact arithmetic by the generator; the real part
+  of `↑a + ↑b * I` is the chain `Complex.add_re, Complex.ofReal_re, Complex.mul_I_re,
+  Complex.ofReal_im, neg_zero, add_zero`; Mathlib's rectangle theorem is instantiated with corners
+  `(⟨a, b⟩ : ℂ)` and restated by a typed `have` (the projections reduce by definition);
+  `re (∫ f) = ∫ re f` on an interval is `Complex.reCLM.intervalIntegral_comp_comm` (the
+  application of `reCLM` unfolds by definition); a definition is unfolded inside a typed `have`
+  (`have d : mellM 1 5 s = ∫ x, … := rfl`); an integral over a lambda that could be eta-reduced
+  is transported by `congrArg (fun F => ∫ x, F x) hfun`, not by `rw`; a local hypothesis is never
+  named like a definition of the development (`hE`, `hK`); a norm bound for a quotient of Gamma
+  type is avoided altogether when a pointwise bound by a real integrand does the job
+  (`‖cos w‖ ≤ cosh (Im w)`).

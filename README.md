@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (the modular side and the random-walk representation proved; two rungs open)
+## The six-step Mahler measure (the modular side and the Bessel side of the Mahler measure proved; one rung open)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -77,30 +77,38 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/RungA2P.lean` (generated) | **`rungA2P : RungA2P`**: `M₂,₄(s) = (8/5) P(s) + (s/5) M₃,₅(s)` (the Wronskian, integrated in `u = log t`) and `(8/5) P(s) → R₆,₂` |
 | `Tower/RV6/PoleM.lean`, `RungA2M.lean` (generated) | **`rungA2M : RungA2M`**: `e^{-a₀ s} M_{a,b}(s) - b!/s^{b+1}` is bounded on `0 < s ≤ 1`; `∫₀^∞ y^b e^{-sy} dy = b!/s^{b+1}`; `I₀^a K₀^{a+d} ≤ t^{-(a+d)}` |
 | `Tower/RV6/RungA2N.lean` (generated) | **`rungA2N : RungA2N`**: `N(s) - 1/s → eulerW - (walkSide - log 2)` as `s → 0+`; **`rv6_of_A2R_B`**: `RungA2R` and `RungB` imply `μ₆ = (648/π⁶) L(f, 5)` |
+| `Tower/RV6/CKernel.lean`, `CJSeries.lean` (generated) | `J₀` on `ℂ`: `cJ0 z = (2/π) ∫₀^{π/2} cos(z sin t) dt`, entire, `‖cJ0 z‖ ≤ e^{|Im z|}`; its power series by termwise integration; **`cJ0_ofReal`**, **`cJ0_I_mul`**: `cJ0 x = J₀(x)`, `cJ0 (iy) = I₀(y)` for the series of `Defs.lean`; differentiation under the integral sign for `exp(w g)` |
+| `Tower/RV6/CKZero.lean`, `HAgree.lean` | `K₀` on the right half-plane (`cK0`); the two forms `hE` and `hK` of `H₀⁽¹⁾ = J₀ + iY₀`, differentiable on `Re z > 0` resp. `Im z > 0`; `Re hE(x) = J₀(x)`, `hK(iy) = -(2i/π) K₀(y)`, `‖hK z‖ ≤ (2/π) K₀(Im z)`; **`hE_eq_hK`**: they agree on the open first quadrant (Cauchy's theorem on a rectangle for `exp(z sinh w)`) |
+| `Tower/RV6/GPoly.lean` (generated) | `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³`: **`gpoly_re`** (`Re G(J, H) = J⁶` for real `J = Re H`), **`gpoly_I_axis_mul_re`** (its real part on the imaginary axis); **`norm_cJ0_le_besselI0`**: `‖J₀(z)‖ ≤ I₀(Im z)`; the majorant `sidePhi` of the vertical sides and its decay |
+| `Tower/RV6/RotRect.lean`, `RotSides.lean` (generated) | the rotated integrands `rotE`, `rotK` in `w = log z`; Cauchy's theorem on `[-R, R] × [0, π/4]` and `[-R, R] × [π/4, π/2]`; **`rect_rot`**: the rotated contour at finite `R`; `‖sideInt s U‖ ≤ K e^{(s-δ)U}` for `0 < δ < 1`, so both vertical sides tend to `0` |
+| `Tower/RV6/RungA2R.lean` (generated) | **`rungA2R : RungA2R`**; **`rungA2`**, **`rungA`**: `μ₆ = (30/π⁴) R₆,₂`; **`mu6_eq_bessel`**: `m(1 + x₁ + ⋯ + x₅) = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`, with no hypotheses; **`rv6_of_B`**: `RungB` implies `μ₆ = (648/π⁶) L(f, 5)` |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
-| `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py` | generators of the generated files (all but the third only substitute repeated expressions; the third writes the relations, the matrix and the cofactors, which were computed in exact arithmetic; Lean checks them) |
+| `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, and `gen_gpoly.py` the two cofactors modulo `i² + 1`, all computed in exact arithmetic; Lean checks them) |
 
-**Status: this is not yet a Lean proof of the theorem.**  The modular side is proved with no
-hypotheses: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
-`(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, that integral is
-`(3/(4π⁵)) Σ psiW(n)/n⁵`, and `psiW(n)` is the `n`-th coefficient of the eta product
-(Sections 5 and 6 of the paper; nothing is regularised and no convergence is assumed).
-The first rung of the Bessel side is proved as well: **`rungA1`**, the random-walk representation
-`μ₆ = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t`, for the Mahler measure defined in `Defs.lean` as an
-integral over `[0,1]⁵` (the integrability of `log ‖1 + Σ e(τ_j)‖` on the cube is part of the proof).
-**`rv6_of_A2_B`** therefore derives the theorem from two statements, which are still hypotheses:
-`RungA2` (`walkSide = (30/π⁴) R₆,₂`, the rotation of the contour) and `RungB` (the Bessel-side
-evaluation of the double Eisenstein integral).  Each was checked numerically from the Lean
-definitions before it was stated.  `RungA2` is in turn derived (**`rungA2_of_subrungs`**) from five
-sub-rungs about Mellin transforms at a real `s > 0`, each checked numerically first.  Four of the
-five are now proved with no hypotheses (`rungA2T`, `rungA2P`, `rungA2M`, `rungA2N`), so
-**`rv6_of_A2R_B`** derives the theorem from two statements that are still hypotheses: `RungA2R`
-(for `0 < s < 1`, `∫₀^∞ J₀⁶ t^{s-1} dt` as a combination of `∫₀^∞ I₀^a K₀^b t^{s-1} dt`: the rotation
-of the contour to the imaginary axis) and `RungB`.  `ROADMAP.md` has the plan and the state by rung.
+**Status: this is not yet a Lean proof of the theorem.**  One hypothesis is left.
+
+Proved with no hypotheses:
+
+* the modular side: the double Eisenstein integral `D₀₁` of `Defs.lean` equals
+  `(12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, that integral is `(3/(4π⁵)) Σ psiW(n)/n⁵`,
+  and `psiW(n)` is the `n`-th coefficient of the eta product (Sections 5 and 6 of the paper;
+  nothing is regularised and no convergence is assumed);
+* the Bessel side of the Mahler measure (Section 2 of the paper): **`rungA1`**, the random-walk
+  representation `μ₆ = log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t` for the Mahler measure defined in
+  `Defs.lean` as an integral over `[0,1]⁵` (the integrability of `log ‖1 + Σ e(τ_j)‖` on the cube
+  is part of the proof), and **`rungA2`**, the rotation of the contour to the imaginary axis,
+  `log 2 + ∫₀^∞ (e^{-t} - J₀(t)⁶) dt/t = (30/π⁴) R₆,₂`.  Together:
+  **`mu6_eq_bessel : m(1 + x₁ + ⋯ + x₅) = (48/π⁴) ∫₀^∞ I₀(t)² I₁(t) K₀(t)⁵ dt`**.
+
+**`rv6_of_B`** derives the theorem from the one statement that is still a hypothesis: `RungB`,
+`D₀₁ = (8/π⁵) R₆,₂ + (12/(5π⁵)) ζ(5)`, the Bessel-side evaluation of the double Eisenstein integral
+(Sections 3 and 4 of the paper: the logarithmic Hankel pairing and Zhou's modular parametrisations
+of two Hankel transforms).  It was checked numerically from the Lean definitions before it was
+stated.  `ROADMAP.md` has the plan and the state by rung.
 
 ## Not here yet
 
-* proofs of `RungA2R` and of `RungB` (`ROADMAP.md`);
+* a proof of `RungB` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
