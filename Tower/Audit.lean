@@ -64,6 +64,7 @@ import Tower.RV6.XMod
 import Tower.RV6.BMReduce
 import Tower.RV6.BMBounds
 import Tower.RV6.LimBM
+import Tower.RV6.BesselL5
 
 /-!
 # Axiom audit
@@ -405,3 +406,32 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.limBM
 #print axioms Tower.RV6.rungBM_of_zhou2
 #print axioms Tower.RV6.rv6_of_zhou2
+#print axioms Tower.RV6.hasDerivAt_prod4
+#print axioms Tower.RV6.hasDerivAt_sqx
+#print axioms Tower.RV6.hasDerivAt_powfour
+#print axioms Tower.RV6.hasDerivAt_ldF0
+#print axioms Tower.RV6.hasDerivAt_ldF1
+#print axioms Tower.RV6.hasDerivAt_ldF2
+#print axioms Tower.RV6.hasDerivAt_ldF3
+#print axioms Tower.RV6.hasDerivAt_ldF4
+#print axioms Tower.RV6.hasDerivAt_thF0
+#print axioms Tower.RV6.hasDerivAt_thF1
+#print axioms Tower.RV6.hasDerivAt_thF2
+#print axioms Tower.RV6.hasDerivAt_thF3
+#print axioms Tower.RV6.hasDerivAt_thF4
+#print axioms Tower.RV6.L5_thF
+#print axioms Tower.RV6.thF0_eq_fB
+#print axioms Tower.RV6.l5_fB
+#print axioms Tower.RV6.hasDerivAt_ldG0
+#print axioms Tower.RV6.hasDerivAt_ldG1
+#print axioms Tower.RV6.hasDerivAt_ldG2
+#print axioms Tower.RV6.hasDerivAt_ldG3
+#print axioms Tower.RV6.hasDerivAt_ldG4
+#print axioms Tower.RV6.hasDerivAt_thG0
+#print axioms Tower.RV6.hasDerivAt_thG1
+#print axioms Tower.RV6.hasDerivAt_thG2
+#print axioms Tower.RV6.hasDerivAt_thG3
+#print axioms Tower.RV6.hasDerivAt_thG4
+#print axioms Tower.RV6.L5_thG
+#print axioms Tower.RV6.thG0_eq_gB
+#print axioms Tower.RV6.l5_gB
