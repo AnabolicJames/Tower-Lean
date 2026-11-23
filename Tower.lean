@@ -75,4 +75,5 @@ import Tower.RV6.EtaForm
 import Tower.RV6.FrickeAx
 import Tower.RV6.XMod
 import Tower.RV6.BMReduce
+import Tower.RV6.BMBounds
 import Tower.Audit

@@ -62,6 +62,7 @@ import Tower.RV6.EtaForm
 import Tower.RV6.FrickeAx
 import Tower.RV6.XMod
 import Tower.RV6.BMReduce
+import Tower.RV6.BMBounds
 
 /-!
 # Axiom audit
@@ -381,3 +382,18 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.pole_eq
 #print axioms Tower.RV6.rungBM_of_zhou
 #print axioms Tower.RV6.rv6_of_zhou
+#print axioms Tower.RV6.qa_abs_le_tail_at
+#print axioms Tower.RV6.abs_Wq_le
+#print axioms Tower.RV6.log_xm_fricke
+#print axioms Tower.RV6.inv_xm_le
+#print axioms Tower.RV6.abs_g4_le
+#print axioms Tower.RV6.abs_A1_le
+#print axioms Tower.RV6.rpow_neg_le
+#print axioms Tower.RV6.abs_expm1_le_mul
+#print axioms Tower.RV6.pow_six_exp_le
+#print axioms Tower.RV6.pole_part_le
+#print axioms Tower.RV6.continuousAt_FS
+#print axioms Tower.RV6.tendsto_FS
+#print axioms Tower.RV6.FS_bound_Ioc
+#print axioms Tower.RV6.FS_bound_Ioi
+#print axioms Tower.RV6.integrableOn_f0
