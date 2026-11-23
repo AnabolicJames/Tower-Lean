@@ -392,15 +392,15 @@ theorem pB0_eq {t : ℝ} (ht : 0 < t) : pB0 t = lB0 t := by
 
 theorem pB1_eq {t : ℝ} (ht : 0 < t) : pB1 t = lB1 t := by
   have h := eq_of_hasDerivAt_of_eqOn ht (fun s hs => pB0_eq hs) (hasDerivAt_pB0 ht) (hasDerivAt_lB0 ht)
-  exact (div_left_inj' ht.ne').mp h
+  exact (div_left_inj₀ ht.ne').mp h
 
 theorem pB2_eq {t : ℝ} (ht : 0 < t) : pB2 t = lB2 t := by
   have h := eq_of_hasDerivAt_of_eqOn ht (fun s hs => pB1_eq hs) (hasDerivAt_pB1 ht) (hasDerivAt_lB1 ht)
-  exact (div_left_inj' ht.ne').mp h
+  exact (div_left_inj₀ ht.ne').mp h
 
 theorem pB3_eq {t : ℝ} (ht : 0 < t) : pB3 t = lB3 t := by
   have h := eq_of_hasDerivAt_of_eqOn ht (fun s hs => pB2_eq hs) (hasDerivAt_pB2 ht) (hasDerivAt_lB2 ht)
-  exact (div_left_inj' ht.ne').mp h
+  exact (div_left_inj₀ ht.ne').mp h
 
 /-! ## The bounds -/
 
