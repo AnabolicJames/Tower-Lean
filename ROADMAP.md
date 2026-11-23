@@ -9,7 +9,10 @@ wave 13) and the rotation of the contour (`rungA2`, waves 14 to 22), which toget
 One rung is left, `RungB` (the Bessel-side evaluation of the double Eisenstein integral).  Since
 wave 23 it is cut into two statements about one function of a real variable, `RungBP` and
 `RungBM`; **`Tower.RV6.rv6_of_PM` takes these two hypotheses and no other** and gives
-`μ₆ = (648/π⁶) L(f, 5)`.  This file is the plan for removing them and is updated with every wave.
+`μ₆ = (648/π⁶) L(f, 5)`.  Since wave 27 `RungBM` is itself derived (`rungBM_of_zhou`) from Zhou's
+two parametrisations `ZhouF`, `ZhouG` and one limit `LimBM`, after waves 24 to 26 built the whole
+modular calculus it needs; **`Tower.RV6.rv6_of_zhou`** takes `RungBP`, `ZhouF`, `ZhouG`, `LimBM`.
+This file is the plan for removing them and is updated with every wave.
 "Proved" means: in this repository, kernel-checked, no hypotheses.
 
 ## Architecture
@@ -55,7 +58,10 @@ The sub-rungs of B (`LadderB.lean`).  `f = I₀K₀³`, `g = I₀²K₀²`,
 | sub-rung | statement | status |
 |---|---|---|
 | BP | `pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)` as `s → 0+` | **open** (the logarithmic Hankel pairing) |
-| BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **open** (Zhou's parametrisations and `x = x(y)`) |
+| BM | `pairS s - 72/s⁵ → (π⁵/16) D₀₁` as `s → 0+` | **reduced** (wave 27) to `ZhouF`, `ZhouG`, `LimBM`: `rungBM_of_zhou` |
+| ZhouF | `hjF (xm y) = (π²/16) Zax y` for `y > 0` | open (the Bessel side: the third-order equation and the cusp) |
+| ZhouG | `ajG (xm y) = (π²/2) 𝒜₁(y)` for `y > 0` | open (the same for `g`) |
+| LimBM | `∫ g₄ 𝒜₁ xm^{-s} - ∫ e^{-πs/(6y)}/(162y⁶) → D₀₁` as `s → 0+` | open (bounds and dominated convergence; wave 28) |
 
 C1 and C2″ together are `D01_eq_modular`:
 `D₀₁ = (12/(5π⁵)) ζ(5) + (1152/(5π²)) ∫₀^∞ Ψ^W(iy) y⁴ dy`, with no hypotheses.
@@ -88,6 +94,10 @@ C1 and C2″ together are `D01_eq_modular`:
 
 | 21 | `CKernel`, `CJSeries`, `CKZero`, `HAgree` | `J₀` on `ℂ`: `cJ0 z = (2/π) ∫₀^{π/2} cos(z sin t) dt`, entire, with its power series by termwise integration, so `cJ0 x = J₀(x)` and `cJ0 (iy) = I₀(y)`; `K₀` on the right half-plane (`cK0`); the two forms `hE` (for `Re z > 0`) and `hK` (for `Im z > 0`) of `H₀⁽¹⁾`, with `Re hE(x) = J₀(x)`, `hK(iy) = -(2i/π) K₀(y)`, `‖hK z‖ ≤ (2/π) K₀(Im z)`; **`hE_eq_hK`** on the open quadrant (Cauchy on `[-R, 0] × [0, π/2]` for `e^{z sinh w}`) |
 | 22 | `GPoly`, `RotRect`, `RotSides`, `RungA2R` | `G(J, H) = (3/8) J H⁵ - (15/8) J² H⁴ + (5/2) J³ H³` with `Re G(J, H) = J⁶` for real `J = Re H` and its value on the imaginary axis (two certificates modulo `i² + 1`); `‖J₀(z)‖ ≤ I₀(Im z)`; Cauchy's theorem for `G(J₀, H₀⁽¹⁾)(e^w) e^{sw}` on `[-R, R] × [0, π/4]` and `[-R, R] × [π/4, π/2]`; the vertical sides are `≤ K e^{(s-δ)U}` (`sin y ≥ 2y/π`, the majorant `y^{-δ}`); real parts at finite `R`, then `R → ∞`; **sub-rung A2R**, **`rungA2`**, **`rungA`**, **`mu6_eq_bessel`**, **`rv6_of_B`** |
+| 24 | `AxisEv`, `ModAxis` | power series evaluated at `q = e^{-2πy}` (`evA`: additive, multiplicative, `X ↦ X^d`); the five relations of `Level6.lean` among `E₂`, `E₄` on the axis; `Zax`, `Uax`, `Pax`, `Eax` from `E₂(idy)` with **`Pax_sq`** (`P² = 16Z² + 320ZU + 1024U²`), the differential system **`Z' = -2πZE`, `U' = -2πU(E + P/4)`, `E' = -2π(E²/2 - 4ZU - 32U²)`**, and **`g4_eq_UP`** (`g₄ = 8UP`) |
+| 25 | `QTail`, `EtaForm` | a tail bound for `q`-series and limits at the cusp; **`Zax_eq_exp`, `Uax_eq_exp`**: `Zax`, `Uax` are exponentials of explicit `q`-series in `qb = Σ (σ₁(n)/n) qⁿ` (the eta quotients, without eta), hence **`Zax_pos`, `Uax_pos`** |
+| 26 | `FrickeAx`, `XMod` | the Fricke relations `Zax(1/(6w)) = 48w² Uax(w)`, `Pax(1/(6w)) = 6w² Pax(w)`; **`Pax_pos`**; the Hauptmodul **`xm = 8 exp((lgU - lgZ)/2)`** with `xm² = 64U/Z`, `log xm = log 8 - πy + 3(qb(y) - qb(2y) + qb(3y) - qb(6y))`, **`xm' = -(π/4) Pax xm`**, **`xm(y) xm(1/(6y)) = 8`**, both cusps, and **`image_xm`** (a decreasing bijection of `(0, ∞)`) |
+| 27 | `BMReduce` | **`pairS_eq_JS`**: under Zhou's parametrisations, `pairS s = (π⁵/16) ∫₀^∞ g₄ 𝒜₁ xm^{-s} dy` for every `s` (Mathlib's change of variables; no integrability needed); the Gamma integral `∫₀^∞ e^{-a/y} y⁻⁶ dy = 24/a⁵` and `72/s⁵ = (π⁵/16) ∫ e^{-πs/(6y)}/(162y⁶)`; **`rungBM_of_zhou`**, **`rv6_of_zhou`** |
 | 23 | `LadderB` | Rung B cut into two evaluations of one pairing: `hjF`, `ajG`, `pairS`; the sub-rungs `RungBP`, `RungBM`, stated after every step of the plan for both had been checked numerically from the definitions (24 criteria; the pairing at `s = 0` from the Bessel integrals alone to ten digits, Zhou's parametrisations to twenty); **`rungB_of_PM`** (a function has one limit), **`rv6_of_PM`** |
 
 ## Plan by rung
@@ -129,10 +139,10 @@ Cut (wave 23) into BP and BM above.  The same regulator `x^{-s}` is used on both
 rung is the uniqueness of one limit and no constant can be lost between two cutoffs.  Checked
 numerically from the Lean definitions before the cut was made: the two sub-rungs, Zhou's two
 parametrisations, the calculus of `x` and the Fricke forms (BM 2 and the Fricke part of BM 1), the
-two asymptotics at the cusp in BM 4, and all of BP.  Derived by hand in the same wave and **not
-yet checked by a program**: the four identities for `θZ`, `θU`, `θE`, `g₄` and the identification
-of the quadratic relation in BM 1, and the operator identities of BM 3 and BM 4.  They are
-checked in wave 24 before anything is built on them.
+two asymptotics at the cusp in BM 4, and all of BP.  The identities derived by hand in wave 23 (the
+four identities for `θZ`, `θU`, `θE`, `g₄`, the quadratic relation in BM 1, and the operator
+identities of BM 3 and BM 4) were checked exactly by a program in wave 24 (PREREG2 Addendum 131),
+and BM 1, BM 2 and the exact part of BM 5 are now proved in Lean (waves 24 to 27).
 
 *BM, the modular side.*  No eta products: with `e_d = E₂(i d y)`,
 
@@ -159,6 +169,11 @@ and the one quadratic relation of `Level6.lean` among the four series is
    `hjF(x(y)) = (π²/16) Z(iy)` and `ajG(x(y)) = (π²/2) 𝒜₁(y)` (Zhou's parametrisations).
 5. *The limit.*  The substitution `x = x(y)`; `∫₀^∞ y⁻⁶ e^{-πs/(6y)} dy/162 = (16/π⁵) · 72/s⁵`;
    dominated convergence.
+
+   State: items 1 and 2 are proved (waves 24 to 26), and the substitution and the Gamma integral
+   of item 5 (wave 27): `rungBM_of_zhou`.  Left: `LimBM` (wave 28; numerically
+   `K(s) = D₀₁ + C₁s + C₂s² + …` with `C₁ ≈ 0.087`, and the quadratic extrapolants converge to
+   `D₀₁` at third order), then items 3 and 4 for `f` (`ZhouF`) and for `g` (`ZhouG`).
 
 *BP, the Bessel side.*  Real variables only: no contour and no Mellin inversion.
 
@@ -268,6 +283,20 @@ Every compile is a CI run.  What has cost a run so far, so that it does not cost
   named like a definition of the development (`hE`, `hK`); a norm bound for a quotient of Gamma
   type is avoided altogether when a pointwise bound by a real integrand does the job
   (`‖cos w‖ ≤ cosh (Im w)`).
+* Waves 24 to 27 (seven files; six green at the first compile).  The one failed run: Mathlib's
+  `div_inv_eq_mul` takes `a` and `b` explicitly in this version, so `have h : a / u⁻¹ = a * u :=
+  div_inv_eq_mul` is a type mismatch; given as `div_inv_eq_mul a u`.  Also: files whose algebra is
+  long are written by a generator that checks every `linear_combination` in exact arithmetic
+  (`tools/gen_modaxis.py`); a power series is evaluated on the axis through its coefficient
+  sequence (`evA F y = qa (cfS F) y`), so that Mathlib's `PowerSeries.coeff_mul` and
+  `coeff_expand` and the repository's `qa_mul`, `qa_dilate` do all the work; positivity of a
+  solution of a linear equation `F' = a F` is obtained from an explicit primitive (`F e^{-A}` has
+  derivative `0` and limit `1`), never from a uniqueness theorem; a sign is obtained from "no zero
+  and positive somewhere" by `intermediate_value_Icc`; `ring` does not cancel `x * x⁻¹` and does not
+  simplify `(x⁻¹)⁻¹`, so such terms are rewritten (`div_inv_eq_mul`) or cancelled by
+  `linear_combination` with `x * x⁻¹ = 1`; a Bochner integral over an image is moved by
+  `integral_image_eq_integral_abs_deriv_smul` with `f'` given by name and `smul_eq_mul` simplified
+  in the result before it is restated; deprecated in this version: `if_pos`, `if_neg` (warnings).
 * Wave 23 (one file, green at the first compile): a cancellation by `π⁵` is `linear_combination`
   with `π ^ 5 * (π ^ 5)⁻¹ = 1` as a hypothesis (`ring` normalises `(π ^ 5)⁻¹` and
   `12 / (5 * π ^ 5)` to the same atom); two `Tendsto` hypotheses about the same lambda give the
