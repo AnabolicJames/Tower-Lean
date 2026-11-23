@@ -79,6 +79,7 @@ import Tower.RV6.CuspBesselF
 import Tower.RV6.CuspModF
 import Tower.RV6.LaplaceIK
 import Tower.RV6.LaplaceP
+import Tower.RV6.LaplaceDecay
 
 /-!
 # Axiom audit
@@ -647,3 +648,44 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_cos_sq_sub_sin_sq_half_pi
 #print axioms Tower.RV6.continuous_Hnu_inv_sqrt
 #print axioms Tower.RV6.abs_nuP_sub_half_le
+#print axioms Tower.RV6.momP
+#print axioms Tower.RV6.besselI0_mul_besselK0_le
+#print axioms Tower.RV6.pow_mul_exp_le
+#print axioms Tower.RV6.integrableOn_momP
+#print axioms Tower.RV6.momP_nonneg
+#print axioms Tower.RV6.momP_le
+#print axioms Tower.RV6.integral_pow_mul_exp
+#print axioms Tower.RV6.integrableOn_pow_mul_exp
+#print axioms Tower.RV6.abs_nuP_sub_half_le'
+#print axioms Tower.RV6.abs_momP_sub_le
+#print axioms Tower.RV6.hasDerivAt_momP
+#print axioms Tower.RV6.hasDerivAt_prod2
+#print axioms Tower.RV6.hasDerivAt_prod3
+#print axioms Tower.RV6.pB0
+#print axioms Tower.RV6.pB1
+#print axioms Tower.RV6.pB2
+#print axioms Tower.RV6.pB3
+#print axioms Tower.RV6.hasDerivAt_pB0
+#print axioms Tower.RV6.hasDerivAt_pB1
+#print axioms Tower.RV6.hasDerivAt_pB2
+#print axioms Tower.RV6.lB0
+#print axioms Tower.RV6.lB1
+#print axioms Tower.RV6.lB2
+#print axioms Tower.RV6.lB3
+#print axioms Tower.RV6.hasDerivAt_lB0
+#print axioms Tower.RV6.hasDerivAt_lB1
+#print axioms Tower.RV6.hasDerivAt_lB2
+#print axioms Tower.RV6.eq_of_hasDerivAt_of_eqOn
+#print axioms Tower.RV6.pB0_eq
+#print axioms Tower.RV6.pB1_eq
+#print axioms Tower.RV6.pB2_eq
+#print axioms Tower.RV6.pB3_eq
+#print axioms Tower.RV6.momP_bounds
+#print axioms Tower.RV6.abs_mul_pB0_le
+#print axioms Tower.RV6.abs_mul_pB1_le
+#print axioms Tower.RV6.abs_mul_pB2_le
+#print axioms Tower.RV6.abs_mul_pB3_le
+#print axioms Tower.RV6.abs_momP_sub_bounds
+#print axioms Tower.RV6.abs_pB01_le
+#print axioms Tower.RV6.abs_pB12_le
+#print axioms Tower.RV6.abs_pB23_le
