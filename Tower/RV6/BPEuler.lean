@@ -93,8 +93,7 @@ theorem integral_log_mul_exp_zero_one :
   set G : ℝ → ℝ := fun t => Real.log t * (1 - Real.exp (-t)) with hG
   have hderiv : ∀ t ∈ Ioo (0 : ℝ) 1, HasDerivAt G (psiE t + Real.log t * Real.exp (-t)) t := by
     intro t ht
-    have h1 := (Real.hasDerivAt_log ht.1.ne').mul ((hasDerivAt_const t (1 : ℝ)).sub
-      ((hasDerivAt_neg t).exp))
+    have h1 := (Real.hasDerivAt_log ht.1.ne').mul (((hasDerivAt_neg t).exp).const_sub 1)
     convert h1 using 1
     simp only [psiE]
     ring
