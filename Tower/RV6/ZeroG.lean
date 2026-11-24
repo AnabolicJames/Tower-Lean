@@ -232,7 +232,7 @@ theorem abs_thG5_div_le {t : ℝ} (ht : 0 < t) (ht1 : t ≤ 1) : |thG5 t / t| �
 theorem tendsto_thG4_zero : Tendsto thG4 (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
   have hb : Tendsto (fun t : ℝ => 384 * kG0 * t) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     have h : Tendsto (fun t : ℝ => 384 * kG0 * t) (nhds 0) (nhds (384 * kG0 * 0)) :=
-      (continuous_mul_left (384 * kG0)).tendsto 0
+      (by fun_prop : Continuous (fun t : ℝ => 384 * kG0 * t)).tendsto 0
     rw [mul_zero] at h
     exact h.mono_left nhdsWithin_le_nhds
   refine squeeze_zero_norm' ?_ hb
