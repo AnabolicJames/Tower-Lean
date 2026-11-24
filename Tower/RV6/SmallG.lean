@@ -135,10 +135,14 @@ theorem hasDerivAt_logq {x s : ℝ} (hx1 : x < 1) (hs : -x < s) (hs1' : -1 < s) 
   have hpos : (0 : ℝ) < 1 - x := by linarith
   have hsx : 0 < s + x := by linarith
   have hs1 : 0 < s + 1 := by linarith
-  have d1 : HasDerivAt (fun s : ℝ => Real.log (s + x)) ((s + x)⁻¹ * 1) s :=
-    (Real.hasDerivAt_log hsx.ne').comp s ((hasDerivAt_id' s).add_const x)
-  have d2 : HasDerivAt (fun s : ℝ => Real.log (s + 1)) ((s + 1)⁻¹ * 1) s :=
-    (Real.hasDerivAt_log hs1.ne').comp s ((hasDerivAt_id' s).add_const 1)
+  have l1 : HasDerivAt Real.log (s + x)⁻¹ (s + x) := Real.hasDerivAt_log hsx.ne'
+  have l2 : HasDerivAt Real.log (s + 1)⁻¹ (s + 1) := Real.hasDerivAt_log hs1.ne'
+  have a1 : HasDerivAt (fun y : ℝ => y + x) 1 s := (hasDerivAt_id' s).add_const x
+  have a2 : HasDerivAt (fun y : ℝ => y + 1) 1 s := (hasDerivAt_id' s).add_const 1
+  have d1' := l1.comp s a1
+  have d2' := l2.comp s a2
+  have d1 : HasDerivAt (fun s : ℝ => Real.log (s + x)) ((s + x)⁻¹ * 1) s := d1'
+  have d2 : HasDerivAt (fun s : ℝ => Real.log (s + 1)) ((s + 1)⁻¹ * 1) s := d2'
   have h := (d1.sub d2).div_const (1 - x)
   refine h.congr_deriv ?_
   have hA : (s + x) * (s + x)⁻¹ = 1 := mul_inv_cancel₀ hsx.ne'
@@ -152,7 +156,8 @@ theorem integrableOn_inv_mul_inv {x : ℝ} (hx : 0 < x) :
     refine ContinuousOn.inv₀ ?_ (fun s hs => ?_)
     · exact (by fun_prop : Continuous (fun s : ℝ => (s + x) * (s + 1))).continuousOn
     · have hs0 : (0 : ℝ) < s := hs
-      exact (mul_pos (by linarith) (by linarith)).ne'
+      have hp : 0 < (s + x) * (s + 1) := mul_pos (by linarith) (by linarith)
+      exact hp.ne'
   refine integrableOn_Ioi_of_bounds hc (A := x⁻¹) (B := 1) (fun t ht ht1 => ?_) (fun t ht => ?_)
   · have hP : x ≤ (t + x) * (t + 1) := by nlinarith
     have hpos : 0 < (t + x) * (t + 1) := mul_pos (by linarith) (by linarith)
