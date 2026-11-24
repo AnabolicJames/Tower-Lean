@@ -82,6 +82,7 @@ import Tower.RV6.LaplaceP
 import Tower.RV6.LaplaceDecay
 import Tower.RV6.AJ
 import Tower.RV6.DomG
+import Tower.RV6.AJODEG
 
 /-!
 # Axiom audit
@@ -815,3 +816,24 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.pdom4_gQ1
 #print axioms Tower.RV6.pdom4_gQ2
 #print axioms Tower.RV6.pdom4_gR
+#print axioms Tower.RV6.integrable_J1_mul_of_pdom
+#print axioms Tower.RV6.AJ_const_mul
+#print axioms Tower.RV6.AJ_lin3
+#print axioms Tower.RV6.AJ_lin4
+#print axioms Tower.RV6.AJ_lin5
+#print axioms Tower.RV6.pdom_tsq
+#print axioms Tower.RV6.hasDerivAt_AJ_thG0
+#print axioms Tower.RV6.hasDerivAt_AJ_thG1
+#print axioms Tower.RV6.hasDerivAt_AJ_thG2
+#print axioms Tower.RV6.hasDerivAt_AJ_thG3
+#print axioms Tower.RV6.hasDerivAt_AJ_thG4
+#print axioms Tower.RV6.AJ_R2_gQ1
+#print axioms Tower.RV6.AJ_R2_gQ2
+#print axioms Tower.RV6.AJ_R2_gR
+#print axioms Tower.RV6.AJ_tsq_gR
+#print axioms Tower.RV6.AJ_rel
+#print axioms Tower.RV6.uG
+#print axioms Tower.RV6.uGd
+#print axioms Tower.RV6.hasDerivAt_uG
+#print axioms Tower.RV6.uG_ode
+#print axioms Tower.RV6.uG_eq

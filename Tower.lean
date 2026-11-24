@@ -95,4 +95,5 @@ import Tower.RV6.LaplaceP
 import Tower.RV6.LaplaceDecay
 import Tower.RV6.AJ
 import Tower.RV6.DomG
+import Tower.RV6.AJODEG
 import Tower.Audit
