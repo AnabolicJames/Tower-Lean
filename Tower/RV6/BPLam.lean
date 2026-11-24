@@ -146,7 +146,7 @@ theorem tendsto_eS_div : Tendsto (fun s : ℝ => eS s / s ^ 4) (𝓝[>] 0) (𝓝
     have hK : (0 : ℝ) < (n : ℝ) + 1 := by positivity
     have hb := bk_sq_le hs.1.le (by linarith [hs.2]) n
     have hq : (bk s (n + 1) / s) ^ 2 ≤ 1 / 4 * (1 / ((n : ℝ) + 1) ^ 2) := by
-      rw [div_pow, div_le_iff₀ (by positivity : (0 : ℝ) < s ^ 2)]
+      rw [div_pow, div_le_iff₀ (pow_pos hs.1 2)]
       calc bk s (n + 1) ^ 2 ≤ s ^ 2 / 4 * (1 / ((n : ℝ) + 1) ^ 2) := hb
         _ = 1 / 4 * (1 / ((n : ℝ) + 1) ^ 2) * s ^ 2 := by ring
     have hD : 4 * ((n : ℝ) + 1) ^ 3 ≤ 4 * ((n : ℝ) + 1) ^ 2 * (2 * ((n : ℝ) + 1) - s) := by
