@@ -105,6 +105,7 @@ import Tower.RV6.BPModel
 import Tower.RV6.BPFubini
 import Tower.RV6.BPMin
 import Tower.RV6.BPH
+import Tower.RV6.BPHm
 
 /-!
 # Axiom audit
@@ -1183,3 +1184,27 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integrableOn_F2_gamG
 #print axioms Tower.RV6.integrableOn_G_min
 #print axioms Tower.RV6.pairS_eq_sB_sub_H
+#print axioms Tower.RV6.ftc_Ioc01
+#print axioms Tower.RV6.continuousOn_Icc01_of
+#print axioms Tower.RV6.rpow_tendsto_zero_nhdsGT
+#print axioms Tower.RV6.rpow_neg_log_facts
+#print axioms Tower.RV6.integrableOn_rpow_neg_log
+#print axioms Tower.RV6.integral_rpow_neg_log
+#print axioms Tower.RV6.rpow_log_sq_facts
+#print axioms Tower.RV6.integrableOn_rpow_log_sq
+#print axioms Tower.RV6.integral_rpow_log_sq
+#print axioms Tower.RV6.integrableOn_hS_log
+#print axioms Tower.RV6.integral_hS_log
+#print axioms Tower.RV6.gL
+#print axioms Tower.RV6.continuousOn_gL
+#print axioms Tower.RV6.measurable_gL
+#print axioms Tower.RV6.gL_nonneg
+#print axioms Tower.RV6.integrableOn_region
+#print axioms Tower.RV6.region_integral
+#print axioms Tower.RV6.hM
+#print axioms Tower.RV6.wM_eq
+#print axioms Tower.RV6.integral_wM
+#print axioms Tower.RV6.psiM
+#print axioms Tower.RV6.psiM_nonneg
+#print axioms Tower.RV6.psiM_inner
+#print axioms Tower.RV6.hM_eq
