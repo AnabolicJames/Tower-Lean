@@ -83,6 +83,7 @@ import Tower.RV6.LaplaceDecay
 import Tower.RV6.AJ
 import Tower.RV6.DomG
 import Tower.RV6.AJODEG
+import Tower.RV6.ZeroG
 
 /-!
 # Axiom audit
@@ -837,3 +838,30 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.hasDerivAt_uG
 #print axioms Tower.RV6.uG_ode
 #print axioms Tower.RV6.uG_eq
+#print axioms Tower.RV6.bG
+#print axioms Tower.RV6.Bser_one_nonneg
+#print axioms Tower.RV6.one_le_log_term
+#print axioms Tower.RV6.one_le_bG
+#print axioms Tower.RV6.near0_prim
+#print axioms Tower.RV6.abs_pB_small
+#print axioms Tower.RV6.abs_thG4_small
+#print axioms Tower.RV6.abs_thG5_small
+#print axioms Tower.RV6.kG0
+#print axioms Tower.RV6.mul_bG_pow4_le
+#print axioms Tower.RV6.abs_thG4_le_mul
+#print axioms Tower.RV6.abs_thG5_div_le
+#print axioms Tower.RV6.tendsto_thG4_zero
+#print axioms Tower.RV6.tendsto_thG4_atTop
+#print axioms Tower.RV6.continuousOn_thG5_div
+#print axioms Tower.RV6.integrableOn_thG5_div
+#print axioms Tower.RV6.AJ_thG4_eq
+#print axioms Tower.RV6.tendsto_AJ_thG4
+#print axioms Tower.RV6.abs_AJ_le
+#print axioms Tower.RV6.NG1
+#print axioms Tower.RV6.NG2
+#print axioms Tower.RV6.NG3
+#print axioms Tower.RV6.NG4
+#print axioms Tower.RV6.KG
+#print axioms Tower.RV6.abs_c_sub_le
+#print axioms Tower.RV6.uG_c_zero
+#print axioms Tower.RV6.uG_zero
