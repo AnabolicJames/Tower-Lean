@@ -101,4 +101,6 @@ import Tower.RV6.PullbackG
 import Tower.RV6.SmallG
 import Tower.RV6.CuspG
 import Tower.RV6.ZhouG
+import Tower.RV6.BPIbp
+import Tower.RV6.BPProd
 import Tower.Audit
