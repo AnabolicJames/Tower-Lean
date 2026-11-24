@@ -117,7 +117,7 @@ theorem jS_scale {s : ℝ} (hs0 : 0 < s) {a : ℝ} (ha : 0 ≤ a) :
     have e2 : a ^ (1 + s) * a⁻¹ = a ^ s := by
       rw [Real.rpow_add ha', Real.rpow_one, mul_comm a, mul_assoc, mul_inv_cancel₀ ha'.ne',
         mul_one]
-    rw [← mul_assoc, e2]
+    rw [smul_eq_mul, ← mul_assoc, e2]
     rfl
   · subst ha'
     simp [besselJ0_zero, Real.zero_rpow hs0.ne']
