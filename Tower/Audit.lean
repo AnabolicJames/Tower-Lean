@@ -98,6 +98,7 @@ import Tower.RV6.BPEuler
 import Tower.RV6.BPGammaRatio
 import Tower.RV6.BPQexp
 import Tower.RV6.BPPhi
+import Tower.RV6.BPLam
 
 /-!
 # Axiom audit
@@ -1059,3 +1060,15 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.phiS_zero
 #print axioms Tower.RV6.phiS_expansion
 #print axioms Tower.RV6.tendsto_ellQ_slope
+#print axioms Tower.RV6.lamS
+#print axioms Tower.RV6.t1S
+#print axioms Tower.RV6.eS
+#print axioms Tower.RV6.bk_sq_le
+#print axioms Tower.RV6.lam_term_le
+#print axioms Tower.RV6.summable_lam_term
+#print axioms Tower.RV6.summable_t1_term
+#print axioms Tower.RV6.continuousOn_lamS
+#print axioms Tower.RV6.e_term_eq
+#print axioms Tower.RV6.eS_eq_tsum
+#print axioms Tower.RV6.tendsto_bk_div_sq
+#print axioms Tower.RV6.tendsto_eS_div
