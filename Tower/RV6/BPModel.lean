@@ -204,7 +204,7 @@ theorem abs_thF2_le_log : ∃ C : ℝ, ∀ t : ℝ, 0 < t → t ≤ 1 → |thF2 
   have h := hC t ht ht1
   have hE := one_le_Eb ht ht1
   have hL := abs_Lc_le_Eb ht ht1
-  have hE3 : Eb t ≤ Eb t ^ 3 := by nlinarith
+  have hE3 : Eb t ≤ Eb t ^ 3 := le_self_pow₀ hE (by norm_num)
   have hE0 : 0 ≤ Eb t ^ 3 := by positivity
   have h1 : C * t * Eb t ^ 3 ≤ |C| * Eb t ^ 3 := by
     have := mul_le_mul_of_nonneg_right (le_abs_self C) (mul_nonneg ht.le hE0)
