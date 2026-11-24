@@ -74,6 +74,7 @@ theorem abs_exp_neg_quad_sub_le {x : ℝ} (hx0 : 0 ≤ x) :
       have h1 := (hasDerivAt_neg y).exp
       have h2 := (((hasDerivAt_id' y).mul (hasDerivAt_id' y)).add ((hasDerivAt_id' y).const_mul 2)).add_const 2
       convert h1.mul h2 using 1
+      simp only [Pi.add_apply, Pi.mul_apply]
       ring
     have hc : ContinuousOn (fun y : ℝ => Real.exp (-y) * (y * y + 2 * y + 2)) (Icc 0 x) := by
       fun_prop
@@ -104,9 +105,9 @@ theorem a0_lt_one : a0 < 1 := by
 theorem tendsto_of_abs_sub_le {f : ℝ → ℝ} {L C : ℝ}
     (h : ∀ s : ℝ, 0 < s → s ≤ 1 → |f s - L| ≤ C * s) : Tendsto f (𝓝[>] 0) (𝓝 L) := by
   have hlim : Tendsto (fun s : ℝ => C * s) (𝓝[>] 0) (𝓝 0) := by
-    have h0 := (((continuous_const : Continuous fun _ : ℝ => C).mul continuous_id).tendsto (0 : ℝ)).mono_left
-      (nhdsWithin_le_nhds (s := Ioi (0 : ℝ)))
-    simpa using h0
+    have h0 : Tendsto (fun s : ℝ => C * s) (𝓝[>] 0) (𝓝 (C * 0)) :=
+      ((tendsto_id : Tendsto (fun s : ℝ => s) (𝓝 0) (𝓝 0)).mono_left nhdsWithin_le_nhds).const_mul C
+    rwa [mul_zero] at h0
   have h1 : Tendsto (fun s : ℝ => f s - L) (𝓝[>] 0) (𝓝 0) := by
     refine squeeze_zero_norm' ?_ hlim
     filter_upwards [Ioo_mem_nhdsGT (by norm_num : (0 : ℝ) < 1)] with s hs
@@ -169,151 +170,164 @@ theorem pairS_decomp {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) :
   unfold b2F b3F errF
   linear_combination step1 - step2
 
-/-- **RungBP**: `pairS(s) - 72/s⁵ → R₆₂/2 + (3/20) ζ(5)` as `s → 0⁺`. -/
-theorem rungBP : RungBP := by
+theorem qF_bounds {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) :
+    0 < qF s ∧ qF s ≤ 2 + zN 3 + zeta5 ∧ |qF s - 1| ≤ (zN 3 / 12 + zeta5 / 80 + 1) * s ^ 3 := by
+  have hz3 := zN_nonneg 3
+  have hz5 : 0 ≤ zeta5 := by rw [← zN_five]; exact zN_nonneg 5
+  have hq' : |qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5| ≤ s ^ 6 := qQ_expansion hs0 hs1
+  have hpos : 0 < qF s := mul_pos (Real.exp_pos _) (mul_pos hs0 (jS_pos hs0 (by linarith)))
+  have h3 : s ^ 3 ≤ 1 := pow_le_one₀ hs0.le hs1
+  have h5 : s ^ 5 ≤ s ^ 3 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
+  have h6 : s ^ 6 ≤ s ^ 3 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
+  have h30 : 0 ≤ s ^ 3 := pow_nonneg hs0.le 3
+  have h50 : 0 ≤ s ^ 5 := pow_nonneg hs0.le 5
+  have m1 := mul_le_mul_of_nonneg_right h3 hz3
+  have m2 := mul_le_mul_of_nonneg_right (h5.trans h3) hz5
+  have m3 := mul_le_mul_of_nonneg_right h5 hz5
+  have m4 := mul_nonneg h30 hz3
+  have m5 := mul_nonneg h50 hz5
+  have m6 := mul_nonneg h30 hz5
+  rw [abs_le] at hq'
+  refine ⟨hpos, ?_, ?_⟩
+  · linarith [hq'.2]
+  · rw [abs_le]
+    constructor
+    · linarith [hq'.1]
+    · linarith [hq'.2]
+
+theorem b2F_bound {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) :
+    |b2F s - -(3 / 5 * zeta5)| ≤
+      (72 + zN 7 / 2 + (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * 24) * s := by
+  have hz3 := zN_nonneg 3
+  have hz5 : 0 ≤ zeta5 := by rw [← zN_five]; exact zN_nonneg 5
+  have hz7 := zN_nonneg 7
+  obtain ⟨_, _, hQ3⟩ := qF_bounds hs0 hs1
+  have hq' : |qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5| ≤ s ^ 6 := qQ_expansion hs0 hs1
+  have hph := phiS_expansion hs0.le hs1
+  rw [zN_five] at hph
+  obtain ⟨hp1, hp2⟩ := hph
+  have hs : s ≠ 0 := hs0.ne'
+  have e : b2F s - -(3 / 5 * zeta5) = 72 * ((qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5) / s ^ 5)
+      - 24 * ((phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5) / s ^ 4)
+      - 24 * ((qF s - 1) * phiS s / s ^ 4) := by
+    unfold b2F
+    field_simp
+    all_goals ring
+  have h20 : 0 ≤ s ^ 2 := pow_nonneg hs0.le 2
+  have h40 : 0 ≤ s ^ 4 := pow_nonneg hs0.le 4
+  have h42 : s ^ 4 ≤ s ^ 2 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
+  have h62 : s ^ 6 ≤ s ^ 2 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
+  have h65 : s ^ 6 ≤ s ^ 5 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
+  have n1 := mul_nonneg h20 hz3
+  have n2 := mul_nonneg h40 hz5
+  have n3 := mul_le_mul_of_nonneg_right h42 hz5
+  have n4 := mul_le_mul_of_nonneg_right h62 hz7
+  have n5 := mul_le_mul_of_nonneg_right h65 hz7
+  have hΦ0 : 0 ≤ phiS s := by linarith
+  have hΦ1 : phiS s ≤ (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s ^ 2 := by linarith
+  have b1 : |(qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5) / s ^ 5| ≤ s := by
+    rw [abs_div, abs_of_pos (pow_pos hs0 5), div_le_iff₀ (pow_pos hs0 5)]
+    calc _ ≤ s ^ 6 := hq'
+      _ = s * s ^ 5 := by ring
+  have b2 : |(phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5) / s ^ 4| ≤ zN 7 / 48 * s := by
+    rw [abs_div, abs_of_pos (pow_pos hs0 4), abs_of_nonneg hp1, div_le_iff₀ (pow_pos hs0 4)]
+    linarith
+  have b3 : |(qF s - 1) * phiS s / s ^ 4|
+      ≤ (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s := by
+    rw [abs_div, abs_mul, abs_of_nonneg hΦ0, abs_of_pos (pow_pos hs0 4), div_le_iff₀ (pow_pos hs0 4)]
+    calc |qF s - 1| * phiS s
+        ≤ ((zN 3 / 12 + zeta5 / 80 + 1) * s ^ 3) * ((zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s ^ 2) :=
+          mul_le_mul hQ3 hΦ1 hΦ0 (by positivity)
+      _ = (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s * s ^ 4 := by ring
+  have a1 := abs_le.1 b1
+  have a2 := abs_le.1 b2
+  have a3 := abs_le.1 b3
+  rw [e, abs_le]
+  constructor <;> linarith [a1.1, a1.2, a2.1, a2.2, a3.1, a3.2]
+
+theorem errF_bound : ∃ C : ℝ, ∀ s : ℝ, 0 < s → s ≤ 1 → |errF s - 0| ≤ C * s := by
   obtain ⟨K, hK⟩ := hH_sub_hM_le
   obtain ⟨-, -, ⟨C1, hC1⟩⟩ := rungA2M
   have hz3 := zN_nonneg 3
   have hz5 : 0 ≤ zeta5 := by rw [← zN_five]; exact zN_nonneg 5
-  have hz7 := zN_nonneg 7
   have ha0 := a0_pos
   have ha1 := a0_lt_one
-  -- `Q`
-  have hQ : ∀ s : ℝ, 0 < s → s ≤ 1 → 0 < qF s ∧ qF s ≤ 2 + zN 3 + zeta5 ∧
-      |qF s - 1| ≤ (zN 3 / 12 + zeta5 / 80 + 1) * s ^ 3 := by
-    intro s hs0 hs1
-    have hq' : |qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5| ≤ s ^ 6 := qQ_expansion hs0 hs1
-    have hpos : 0 < qF s := mul_pos (Real.exp_pos _) (mul_pos hs0 (jS_pos hs0 (by linarith)))
-    have h3 : s ^ 3 ≤ 1 := pow_le_one₀ hs0.le hs1
-    have h5 : s ^ 5 ≤ s ^ 3 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
-    have h6 : s ^ 6 ≤ s ^ 3 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
-    have h30 : 0 ≤ s ^ 3 := pow_nonneg hs0.le 3
-    have h50 : 0 ≤ s ^ 5 := pow_nonneg hs0.le 5
-    rw [abs_le] at hq'
-    refine ⟨hpos, ?_, ?_⟩
-    · nlinarith [mul_le_mul_of_nonneg_right h3 hz3, mul_le_mul_of_nonneg_right (h5.trans h3) hz5]
-    · rw [abs_le]
-      constructor
-      · nlinarith [mul_nonneg h30 hz3, mul_nonneg h50 hz5]
-      · nlinarith [mul_le_mul_of_nonneg_right h5 hz5]
-  -- `Φ`
-  have hΦ : ∀ s : ℝ, 0 < s → s ≤ 1 → 0 ≤ phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5 ∧
-      phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5 ≤ s ^ 6 / 48 * zN 7 := by
-    intro s hs0 hs1
-    have h := phiS_expansion hs0.le hs1
-    rw [zN_five] at h
-    exact h
-  -- `B₂`
-  have hB2 : ∀ s : ℝ, 0 < s → s ≤ 1 → |b2F s - -(3 / 5 * zeta5)| ≤
-      (72 + zN 7 / 2 + (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * 24) * s := by
-    intro s hs0 hs1
-    obtain ⟨_, _, hQ3⟩ := hQ s hs0 hs1
-    have hq' : |qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5| ≤ s ^ 6 := qQ_expansion hs0 hs1
-    obtain ⟨hp1, hp2⟩ := hΦ s hs0 hs1
-    have hs : s ≠ 0 := hs0.ne'
-    have e : b2F s - -(3 / 5 * zeta5) = 72 * ((qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5) / s ^ 5)
-        - 24 * ((phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5) / s ^ 4)
-        - 24 * ((qF s - 1) * phiS s / s ^ 4) := by
-      unfold b2F
-      field_simp
-      all_goals ring
-    have h20 : 0 ≤ s ^ 2 := pow_nonneg hs0.le 2
-    have h40 : 0 ≤ s ^ 4 := pow_nonneg hs0.le 4
-    have h42 : s ^ 4 ≤ s ^ 2 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
-    have h62 : s ^ 6 ≤ s ^ 2 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
-    have h65 : s ^ 6 ≤ s ^ 5 := pow_le_pow_of_le_one hs0.le hs1 (by norm_num)
-    have hΦ0 : 0 ≤ phiS s := by nlinarith [mul_nonneg h20 hz3, mul_nonneg h40 hz5]
-    have hΦ1 : phiS s ≤ (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s ^ 2 := by
-      nlinarith [mul_le_mul_of_nonneg_right h42 hz5, mul_le_mul_of_nonneg_right h62 hz7]
-    have b1 : |(qF s - 1 - s ^ 3 / 12 * zN 3 - s ^ 5 / 80 * zeta5) / s ^ 5| ≤ s := by
-      rw [abs_div, abs_of_pos (pow_pos hs0 5), div_le_iff₀ (pow_pos hs0 5)]
-      calc _ ≤ s ^ 6 := hq'
-        _ = s * s ^ 5 := by ring
-    have b2 : |(phiS s - s ^ 2 / 4 * zN 3 - s ^ 4 / 16 * zeta5) / s ^ 4| ≤ zN 7 / 48 * s := by
-      rw [abs_div, abs_of_pos (pow_pos hs0 4), abs_of_nonneg hp1, div_le_iff₀ (pow_pos hs0 4)]
-      nlinarith [mul_le_mul_of_nonneg_right h65 hz7]
-    have b3 : |(qF s - 1) * phiS s / s ^ 4|
-        ≤ (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s := by
-      rw [abs_div, abs_mul, abs_of_nonneg hΦ0, abs_of_pos (pow_pos hs0 4), div_le_iff₀ (pow_pos hs0 4)]
-      calc |qF s - 1| * phiS s
-          ≤ ((zN 3 / 12 + zeta5 / 80 + 1) * s ^ 3) * ((zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s ^ 2) :=
-            mul_le_mul hQ3 hΦ1 hΦ0 (by positivity)
-        _ = (zN 3 / 12 + zeta5 / 80 + 1) * (zN 3 / 4 + zeta5 / 16 + zN 7 / 48) * s * s ^ 4 := by ring
-    have a1 := abs_le.1 b1
-    have a2 := abs_le.1 b2
-    have a3 := abs_le.1 b3
-    rw [e, abs_le]
-    constructor <;> nlinarith [a1.1, a1.2, a2.1, a2.2, a3.1, a3.2]
-  -- the error
-  have hE : ∀ s : ℝ, 0 < s → s ≤ 1 → |errF s - 0| ≤
-      (3 / 5 * (2 + zN 3 + zeta5) * |C1| + 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2)
-        + (2 + zN 3 + zeta5) * |K|) * s := by
-    intro s hs0 hs1
-    obtain ⟨hQp, hQm, _⟩ := hQ s hs0 hs1
-    have hs2 : s ≤ 2 := by linarith
-    obtain ⟨hL0, hL1⟩ := lamS_zero_le hs0.le hs2
-    obtain ⟨hT0, hT1⟩ := t1S_le hs0.le hs2
-    have hx0 : 0 ≤ a0 * s := by positivity
-    have hx1 : a0 * s ≤ 1 := by nlinarith
-    have hX2 : |Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2| ≤ a0 ^ 3 * s ^ 3 := by
-      rw [neg_mul, ← mul_pow]
-      exact abs_exp_neg_quad_sub_le hx0
-    have hX1 : |Real.exp (-a0 * s) * (a0 * s + 1) - 1| ≤ 3 * a0 ^ 2 * s ^ 2 := by
-      rw [neg_mul]
-      have h := abs_exp_neg_lin_sub_le hx0 hx1
-      rw [mul_pow] at h
-      linarith
-    have bA : |lamS s 0 * (Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2) / s ^ 4|
-        ≤ a0 ^ 3 / 2 * s := by
-      rw [abs_div, abs_mul, abs_of_nonneg hL0, abs_of_pos (pow_pos hs0 4), div_le_iff₀ (pow_pos hs0 4)]
-      calc lamS s 0 * |Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2|
-          ≤ (s ^ 2 / 2) * (a0 ^ 3 * s ^ 3) := mul_le_mul hL1 hX2 (abs_nonneg _) (by positivity)
-        _ = a0 ^ 3 / 2 * s * s ^ 4 := by ring
-    have bB : |t1S s * (Real.exp (-a0 * s) * (a0 * s + 1) - 1) / s ^ 3| ≤ 3 * a0 ^ 2 / 2 * s := by
-      rw [abs_div, abs_mul, abs_of_nonneg hT0, abs_of_pos (pow_pos hs0 3), div_le_iff₀ (pow_pos hs0 3)]
-      calc t1S s * |Real.exp (-a0 * s) * (a0 * s + 1) - 1|
-          ≤ (s ^ 2 / 2) * (3 * a0 ^ 2 * s ^ 2) := mul_le_mul hT1 hX1 (abs_nonneg _) (by positivity)
-        _ = 3 * a0 ^ 2 / 2 * s * s ^ 3 := by ring
-    have p2 : |e2F s| ≤ 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2) * s := by
-      have hAB := (abs_add_le _ _).trans (add_le_add bA bB)
-      unfold e2F
-      rw [abs_mul, abs_mul, abs_of_pos hQp, abs_of_pos (by norm_num : (0 : ℝ) < 24)]
-      calc 24 * qF s * |lamS s 0 * (Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2) / s ^ 4
-            + t1S s * (Real.exp (-a0 * s) * (a0 * s + 1) - 1) / s ^ 3|
-          ≤ 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 * s + 3 * a0 ^ 2 / 2 * s) :=
-            mul_le_mul (by linarith) hAB (abs_nonneg _) (by positivity)
-        _ = 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2) * s := by ring
-    have p1 : |3 / 5 * s * qF s * (Real.exp (-a0 * s) * mellM 3 5 s - 120 / s ^ 6)|
-        ≤ 3 / 5 * (2 + zN 3 + zeta5) * |C1| * s := by
-      have hc := (hC1 s hs0 hs1).trans (le_abs_self C1)
-      rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 3 / 5 * s * qF s)]
-      calc 3 / 5 * s * qF s * |Real.exp (-a0 * s) * mellM 3 5 s - 120 / s ^ 6|
-          ≤ 3 / 5 * s * (2 + zN 3 + zeta5) * |C1| :=
-            mul_le_mul (mul_le_mul_of_nonneg_left hQm (by positivity)) hc (abs_nonneg _) (by positivity)
-        _ = 3 / 5 * (2 + zN 3 + zeta5) * |C1| * s := by ring
-    have p3 : |jS s * (hH s - hM s)| ≤ (2 + zN 3 + zeta5) * |K| * s := by
-      have hj := jS_pos hs0 (by linarith)
-      have hR : s * jS s ≤ 2 + zN 3 + zeta5 := by
-        rw [← qF_mul_exp]
-        have he : Real.exp (-a0 * s) ≤ 1 := Real.exp_le_one_iff.2 (by nlinarith)
-        have he0 := Real.exp_pos (-a0 * s)
-        nlinarith
-      have hD := (hK s hs0 hs1).trans (mul_le_mul_of_nonneg_right (le_abs_self K) (sq_nonneg s))
-      rw [abs_mul, abs_of_pos hj]
-      calc jS s * |hH s - hM s| ≤ jS s * (|K| * s ^ 2) := mul_le_mul_of_nonneg_left hD hj.le
-        _ = (s * jS s) * |K| * s := by ring
-        _ ≤ (2 + zN 3 + zeta5) * |K| * s :=
-            mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hR (abs_nonneg _)) hs0.le
-    have q1 := abs_le.1 p1
-    have q2 := abs_le.1 p2
-    have q3 := abs_le.1 p3
-    rw [sub_zero, abs_le]
-    unfold errF
-    constructor <;> nlinarith [q1.1, q1.2, q2.1, q2.2, q3.1, q3.2]
+  refine ⟨3 / 5 * (2 + zN 3 + zeta5) * |C1| + 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2)
+      + (2 + zN 3 + zeta5) * |K|, fun s hs0 hs1 => ?_⟩
+  obtain ⟨hQp, hQm, _⟩ := qF_bounds hs0 hs1
+  have hs2 : s ≤ 2 := by linarith
+  obtain ⟨hL0, hL1⟩ := lamS_zero_le hs0.le hs2
+  obtain ⟨hT0, hT1⟩ := t1S_le hs0.le hs2
+  have hx0 : 0 ≤ a0 * s := (mul_pos ha0 hs0).le
+  have hx1 : a0 * s ≤ 1 := by
+    calc a0 * s ≤ 1 * 1 := mul_le_mul ha1.le hs1 hs0.le zero_le_one
+      _ = 1 := one_mul 1
+  have hX2 : |Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2| ≤ a0 ^ 3 * s ^ 3 := by
+    rw [neg_mul, ← mul_pow]
+    exact abs_exp_neg_quad_sub_le hx0
+  have hX1 : |Real.exp (-a0 * s) * (a0 * s + 1) - 1| ≤ 3 * a0 ^ 2 * s ^ 2 := by
+    rw [neg_mul]
+    have h := abs_exp_neg_lin_sub_le hx0 hx1
+    rw [mul_pow] at h
+    linarith
+  have bA : |lamS s 0 * (Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2) / s ^ 4|
+      ≤ a0 ^ 3 / 2 * s := by
+    rw [abs_div, abs_mul, abs_of_nonneg hL0, abs_of_pos (pow_pos hs0 4), div_le_iff₀ (pow_pos hs0 4)]
+    calc lamS s 0 * |Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2|
+        ≤ (s ^ 2 / 2) * (a0 ^ 3 * s ^ 3) := mul_le_mul hL1 hX2 (abs_nonneg _) (by positivity)
+      _ = a0 ^ 3 / 2 * s * s ^ 4 := by ring
+  have bB : |t1S s * (Real.exp (-a0 * s) * (a0 * s + 1) - 1) / s ^ 3| ≤ 3 * a0 ^ 2 / 2 * s := by
+    rw [abs_div, abs_mul, abs_of_nonneg hT0, abs_of_pos (pow_pos hs0 3), div_le_iff₀ (pow_pos hs0 3)]
+    calc t1S s * |Real.exp (-a0 * s) * (a0 * s + 1) - 1|
+        ≤ (s ^ 2 / 2) * (3 * a0 ^ 2 * s ^ 2) := mul_le_mul hT1 hX1 (abs_nonneg _) (by positivity)
+      _ = 3 * a0 ^ 2 / 2 * s * s ^ 3 := by ring
+  have p2 : |e2F s| ≤ 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2) * s := by
+    have hAB := (abs_add_le _ _).trans (add_le_add bA bB)
+    unfold e2F
+    rw [abs_mul, abs_mul, abs_of_pos hQp, abs_of_pos (by norm_num : (0 : ℝ) < 24)]
+    calc 24 * qF s * |lamS s 0 * (Real.exp (-a0 * s) * ((a0 * s) * (a0 * s) + 2 * (a0 * s) + 2) - 2) / s ^ 4
+          + t1S s * (Real.exp (-a0 * s) * (a0 * s + 1) - 1) / s ^ 3|
+        ≤ 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 * s + 3 * a0 ^ 2 / 2 * s) :=
+          mul_le_mul (by linarith) hAB (abs_nonneg _) (by positivity)
+      _ = 24 * (2 + zN 3 + zeta5) * (a0 ^ 3 / 2 + 3 * a0 ^ 2 / 2) * s := by ring
+  have p1 : |3 / 5 * s * qF s * (Real.exp (-a0 * s) * mellM 3 5 s - 120 / s ^ 6)|
+      ≤ 3 / 5 * (2 + zN 3 + zeta5) * |C1| * s := by
+    have hc := (hC1 s hs0 hs1).trans (le_abs_self C1)
+    rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 3 / 5 * s * qF s)]
+    calc 3 / 5 * s * qF s * |Real.exp (-a0 * s) * mellM 3 5 s - 120 / s ^ 6|
+        ≤ 3 / 5 * s * (2 + zN 3 + zeta5) * |C1| :=
+          mul_le_mul (mul_le_mul_of_nonneg_left hQm (by positivity)) hc (abs_nonneg _) (by positivity)
+      _ = 3 / 5 * (2 + zN 3 + zeta5) * |C1| * s := by ring
+  have p3 : |jS s * (hH s - hM s)| ≤ (2 + zN 3 + zeta5) * |K| * s := by
+    have hj := jS_pos hs0 (by linarith)
+    have hR : s * jS s ≤ 2 + zN 3 + zeta5 := by
+      rw [← qF_mul_exp]
+      have he : Real.exp (-a0 * s) ≤ 1 := Real.exp_le_one_iff.2 (by linarith)
+      calc qF s * Real.exp (-a0 * s) ≤ qF s * 1 := mul_le_mul_of_nonneg_left he hQp.le
+        _ = qF s := mul_one _
+        _ ≤ 2 + zN 3 + zeta5 := hQm
+    have hD := (hK s hs0 hs1).trans (mul_le_mul_of_nonneg_right (le_abs_self K) (sq_nonneg s))
+    rw [abs_mul, abs_of_pos hj]
+    calc jS s * |hH s - hM s| ≤ jS s * (|K| * s ^ 2) := mul_le_mul_of_nonneg_left hD hj.le
+      _ = (s * jS s) * |K| * s := by ring
+      _ ≤ (2 + zN 3 + zeta5) * |K| * s :=
+          mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hR (abs_nonneg _)) hs0.le
+  have q1 := abs_le.1 p1
+  have q2 := abs_le.1 p2
+  have q3 := abs_le.1 p3
+  rw [sub_zero, abs_le]
+  unfold errF
+  constructor <;> linarith [q1.1, q1.2, q2.1, q2.2, q3.1, q3.2]
+
+/-- **RungBP**: `pairS(s) - 72/s⁵ → R₆₂/2 + (3/20) ζ(5)` as `s → 0⁺`. -/
+theorem rungBP : RungBP := by
+  obtain ⟨CE, hE⟩ := errF_bound
+  have hz3 := zN_nonneg 3
+  have hz5 : 0 ≤ zeta5 := by rw [← zN_five]; exact zN_nonneg 5
   -- the limits
   have hQlim : Tendsto qF (𝓝[>] 0) (𝓝 1) := by
     refine tendsto_of_abs_sub_le (C := zN 3 / 12 + zeta5 / 80 + 1) (fun s hs0 hs1 => ?_)
-    have h := (hQ s hs0 hs1).2.2
+    have h := (qF_bounds hs0 hs1).2.2
     have h3 : s ^ 3 ≤ s := by
       have := pow_le_pow_of_le_one hs0.le hs1 (show 1 ≤ 3 by norm_num)
       rwa [pow_one] at this
@@ -331,7 +345,8 @@ theorem rungBP : RungBP := by
     rw [show (1 : ℝ) / 2 * R62 = R62 / 2 by ring] at h
     exact h.congr (fun s => by ring)
   have t1 := hR.mul hP
-  have t2 : Tendsto b2F (𝓝[>] 0) (𝓝 (-(3 / 5 * zeta5))) := tendsto_of_abs_sub_le hB2
+  have t2 : Tendsto b2F (𝓝[>] 0) (𝓝 (-(3 / 5 * zeta5))) :=
+    tendsto_of_abs_sub_le (fun s hs0 hs1 => b2F_bound hs0 hs1)
   have t3 : Tendsto b3F (𝓝[>] 0) (𝓝 (24 * 1 * (zN 5 / 32))) :=
     ((tendsto_const_nhds : Tendsto (fun _ : ℝ => (24 : ℝ)) (𝓝[>] 0) (𝓝 24)).mul hQlim).mul tendsto_eS_div
   have t4 : Tendsto errF (𝓝[>] 0) (𝓝 0) := tendsto_of_abs_sub_le hE

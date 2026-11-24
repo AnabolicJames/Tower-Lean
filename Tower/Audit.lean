@@ -1239,3 +1239,6 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.pairS_decomp
 #print axioms Tower.RV6.rungBP
 #print axioms Tower.RV6.rv6
+#print axioms Tower.RV6.qF_bounds
+#print axioms Tower.RV6.b2F_bound
+#print axioms Tower.RV6.errF_bound
