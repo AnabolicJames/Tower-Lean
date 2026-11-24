@@ -102,6 +102,7 @@ import Tower.RV6.BPLam
 import Tower.RV6.BPMellin
 import Tower.RV6.BPLamPhi
 import Tower.RV6.BPModel
+import Tower.RV6.BPFubini
 
 /-!
 # Axiom audit
@@ -1118,3 +1119,21 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.thG1_model
 #print axioms Tower.RV6.abs_thF2_le_log
 #print axioms Tower.RV6.abs_thG1_le_log
+#print axioms Tower.RV6.kerH
+#print axioms Tower.RV6.hS_nonneg_le_one
+#print axioms Tower.RV6.kerH_eq_le
+#print axioms Tower.RV6.kerH_symm
+#print axioms Tower.RV6.kerH_nonneg
+#print axioms Tower.RV6.kerS_nonneg
+#print axioms Tower.RV6.kerS_eq_kerH
+#print axioms Tower.RV6.min_rpow_le
+#print axioms Tower.RV6.min_rpow_sub_kerH_nonneg
+#print axioms Tower.RV6.Eb_le_rpow
+#print axioms Tower.RV6.continuousOn_Eb
+#print axioms Tower.RV6.integrableOn_Eb_pow_rpow
+#print axioms Tower.RV6.integrableOn_F2_rpow
+#print axioms Tower.RV6.integrableOn_G_rpow
+#print axioms Tower.RV6.kerS_le_rpow
+#print axioms Tower.RV6.integrableOn_kerS_integrand
+#print axioms Tower.RV6.fubPhi
+#print axioms Tower.RV6.pairS_eq_fubini
