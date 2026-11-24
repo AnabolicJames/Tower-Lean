@@ -100,6 +100,7 @@ import Tower.RV6.BPQexp
 import Tower.RV6.BPPhi
 import Tower.RV6.BPLam
 import Tower.RV6.BPMellin
+import Tower.RV6.BPLamPhi
 
 /-!
 # Axiom audit
@@ -1089,3 +1090,8 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.mellin_kerS_left
 #print axioms Tower.RV6.mellin_kerS_right
 #print axioms Tower.RV6.jS_mul_jS
+#print axioms Tower.RV6.sjS_eq_exp
+#print axioms Tower.RV6.jS_pos
+#print axioms Tower.RV6.exp_w_sub_one
+#print axioms Tower.RV6.lamS_zero_add_neg
+#print axioms Tower.RV6.two_lamS_zero
