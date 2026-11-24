@@ -120,4 +120,5 @@ import Tower.RV6.BPMin
 import Tower.RV6.BPH
 import Tower.RV6.BPHm
 import Tower.RV6.BPD
+import Tower.RV6.BPAsm
 import Tower.Audit

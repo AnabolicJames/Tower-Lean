@@ -107,6 +107,7 @@ import Tower.RV6.BPMin
 import Tower.RV6.BPH
 import Tower.RV6.BPHm
 import Tower.RV6.BPD
+import Tower.RV6.BPAsm
 
 /-!
 # Axiom audit
@@ -1223,3 +1224,18 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integrableOn_gL_IM
 #print axioms Tower.RV6.hM_eq_outer
 #print axioms Tower.RV6.hH_sub_hM_le
+#print axioms Tower.RV6.lamS_zero_le
+#print axioms Tower.RV6.t1S_le
+#print axioms Tower.RV6.abs_exp_neg_lin_sub_le
+#print axioms Tower.RV6.abs_exp_neg_quad_sub_le
+#print axioms Tower.RV6.a0_lt_one
+#print axioms Tower.RV6.tendsto_of_abs_sub_le
+#print axioms Tower.RV6.qF
+#print axioms Tower.RV6.b2F
+#print axioms Tower.RV6.b3F
+#print axioms Tower.RV6.e2F
+#print axioms Tower.RV6.errF
+#print axioms Tower.RV6.qF_mul_exp
+#print axioms Tower.RV6.pairS_decomp
+#print axioms Tower.RV6.rungBP
+#print axioms Tower.RV6.rv6
