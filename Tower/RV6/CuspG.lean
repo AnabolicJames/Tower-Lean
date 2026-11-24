@@ -292,6 +292,8 @@ theorem cusp_ab {a b : ℝ} (hab : ∀ y : ℝ, 0 < y → vG0 (xm y) = (a + b * 
     filter_upwards [eventually_gt_atTop (0 : ℝ)] with w hw
     have hi := cusp_identity hab hw
     have hZ := Zax_pos hw
+    show (π / 4 * Pax w * AJ thG2 (Xc w)
+      + 2 * π * (48 * a * (w ^ 2 * Eax w) + 8 * b * (w * Eax w)) * Zax w) / Zax w = 8 * b + 96 * a * w + 0 * w ^ 2
     rw [div_eq_iff hZ.ne']
     linear_combination hi
   obtain ⟨-, h1, h2⟩ := quad_tendsto hQ
