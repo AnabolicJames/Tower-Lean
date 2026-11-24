@@ -96,6 +96,7 @@ import Tower.RV6.BPGauss
 import Tower.RV6.BPRclosed
 import Tower.RV6.BPEuler
 import Tower.RV6.BPGammaRatio
+import Tower.RV6.BPQexp
 
 /-!
 # Axiom audit
@@ -1032,3 +1033,15 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.log_gamma_ratio
 #print axioms Tower.RV6.ellQ
 #print axioms Tower.RV6.expQ_eq
+#print axioms Tower.RV6.abs_log_ratio_sub_le7
+#print axioms Tower.RV6.abs_phiK_sub_le
+#print axioms Tower.RV6.zN
+#print axioms Tower.RV6.summable_zN
+#print axioms Tower.RV6.zN_nonneg
+#print axioms Tower.RV6.zN_two
+#print axioms Tower.RV6.zN_five
+#print axioms Tower.RV6.zN_le_two
+#print axioms Tower.RV6.tsum_phiK_expansion
+#print axioms Tower.RV6.ellQ_expansion
+#print axioms Tower.RV6.expQ_expansion
+#print axioms Tower.RV6.qQ_expansion
