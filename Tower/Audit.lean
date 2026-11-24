@@ -86,6 +86,8 @@ import Tower.RV6.AJODEG
 import Tower.RV6.ZeroG
 import Tower.RV6.PullbackG
 import Tower.RV6.SmallG
+import Tower.RV6.CuspG
+import Tower.RV6.ZhouG
 
 /-!
 # Axiom audit
@@ -901,3 +903,23 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.abs_vG0_small
 #print axioms Tower.RV6.tendsto_vG0_div
 #print axioms Tower.RV6.vG0_c_zero
+#print axioms Tower.RV6.abs_thG3_small
+#print axioms Tower.RV6.abs_thG3_div_le
+#print axioms Tower.RV6.continuousOn_thG3_div
+#print axioms Tower.RV6.integrableOn_thG3_div
+#print axioms Tower.RV6.tendsto_kG0_mul_zero
+#print axioms Tower.RV6.tendsto_pB1_zero
+#print axioms Tower.RV6.tendsto_thG2_zero
+#print axioms Tower.RV6.tendsto_thG2_atTop
+#print axioms Tower.RV6.AJ_thG2_eq
+#print axioms Tower.RV6.tendsto_AJ_thG2
+#print axioms Tower.RV6.Xc_sq_vG0
+#print axioms Tower.RV6.hasDerivAt_negAJ1_Xc
+#print axioms Tower.RV6.cusp_identity
+#print axioms Tower.RV6.cusp_ab
+#print axioms Tower.RV6.vG0_eq
+#print axioms Tower.RV6.hasDerivAt_ajG_xm
+#print axioms Tower.RV6.integrableOn_mul_g4
+#print axioms Tower.RV6.tendsto_ajG_xm
+#print axioms Tower.RV6.zhouG
+#print axioms Tower.RV6.rv6_of_rungBP

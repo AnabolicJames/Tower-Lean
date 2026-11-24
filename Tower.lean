@@ -99,4 +99,6 @@ import Tower.RV6.AJODEG
 import Tower.RV6.ZeroG
 import Tower.RV6.PullbackG
 import Tower.RV6.SmallG
+import Tower.RV6.CuspG
+import Tower.RV6.ZhouG
 import Tower.Audit
