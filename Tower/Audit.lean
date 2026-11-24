@@ -99,6 +99,7 @@ import Tower.RV6.BPGammaRatio
 import Tower.RV6.BPQexp
 import Tower.RV6.BPPhi
 import Tower.RV6.BPLam
+import Tower.RV6.BPMellin
 
 /-!
 # Axiom audit
@@ -1072,3 +1073,19 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.eS_eq_tsum
 #print axioms Tower.RV6.tendsto_bk_div_sq
 #print axioms Tower.RV6.tendsto_eS_div
+#print axioms Tower.RV6.continuous_angM_one
+#print axioms Tower.RV6.continuous_hS
+#print axioms Tower.RV6.angM_one_eq_hS
+#print axioms Tower.RV6.angM_one_eq_hS_inv
+#print axioms Tower.RV6.integral_rpow_Ioo01
+#print axioms Tower.RV6.integral_rpow_Ioc01
+#print axioms Tower.RV6.integrableOn_rpow_Ioc01
+#print axioms Tower.RV6.integral_hS_rpow
+#print axioms Tower.RV6.integral_hS_inv_rpow
+#print axioms Tower.RV6.integrableOn_hS_sq
+#print axioms Tower.RV6.integrableOn_hS_inv
+#print axioms Tower.RV6.mellG
+#print axioms Tower.RV6.mellG_nonneg
+#print axioms Tower.RV6.mellin_kerS_left
+#print axioms Tower.RV6.mellin_kerS_right
+#print axioms Tower.RV6.jS_mul_jS
