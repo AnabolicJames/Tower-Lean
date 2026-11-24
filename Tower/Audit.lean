@@ -94,6 +94,8 @@ import Tower.RV6.BPKernel
 import Tower.RV6.BPHs
 import Tower.RV6.BPGauss
 import Tower.RV6.BPRclosed
+import Tower.RV6.BPEuler
+import Tower.RV6.BPGammaRatio
 
 /-!
 # Axiom audit
@@ -1007,3 +1009,26 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.polar_phiR
 #print axioms Tower.RV6.integral_phiR_polar
 #print axioms Tower.RV6.jS_closed
+#print axioms Tower.RV6.integrableOn_mul_exp_neg
+#print axioms Tower.RV6.log_mul_exp_neg_le
+#print axioms Tower.RV6.integrableOn_log_mul_exp_Ioi_one
+#print axioms Tower.RV6.integrableOn_exp_neg_div_Ioi_one
+#print axioms Tower.RV6.integral_log_mul_exp_Ioi_one
+#print axioms Tower.RV6.abs_one_sub_exp_neg_le
+#print axioms Tower.RV6.integral_log_mul_exp_zero_one
+#print axioms Tower.RV6.eulerW_eq
+#print axioms Tower.RV6.a0_eq_gamma
+#print axioms Tower.RV6.phiK
+#print axioms Tower.RV6.abs_log_ratio_sub_le
+#print axioms Tower.RV6.phiK_eq
+#print axioms Tower.RV6.abs_phiK_le_gen
+#print axioms Tower.RV6.abs_phiK_le
+#print axioms Tower.RV6.summable_inv_succ_cube
+#print axioms Tower.RV6.summable_phiK
+#print axioms Tower.RV6.div_aux_gamma
+#print axioms Tower.RV6.harmonic_cast_eq
+#print axioms Tower.RV6.gammaSeq_ratio
+#print axioms Tower.RV6.gamma_ratio_eq_exp
+#print axioms Tower.RV6.log_gamma_ratio
+#print axioms Tower.RV6.ellQ
+#print axioms Tower.RV6.expQ_eq

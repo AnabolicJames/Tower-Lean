@@ -107,4 +107,6 @@ import Tower.RV6.BPKernel
 import Tower.RV6.BPHs
 import Tower.RV6.BPGauss
 import Tower.RV6.BPRclosed
+import Tower.RV6.BPEuler
+import Tower.RV6.BPGammaRatio
 import Tower.Audit
