@@ -103,6 +103,7 @@ import Tower.RV6.BPMellin
 import Tower.RV6.BPLamPhi
 import Tower.RV6.BPModel
 import Tower.RV6.BPFubini
+import Tower.RV6.BPMin
 
 /-!
 # Axiom audit
@@ -1137,3 +1138,28 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integrableOn_kerS_integrand
 #print axioms Tower.RV6.fubPhi
 #print axioms Tower.RV6.pairS_eq_fubini
+#print axioms Tower.RV6.bB
+#print axioms Tower.RV6.gamG
+#print axioms Tower.RV6.mellU_eq_integral
+#print axioms Tower.RV6.thF1_mul_thG0
+#print axioms Tower.RV6.bB_eq_mell
+#print axioms Tower.RV6.bB_eq
+#print axioms Tower.RV6.abs_thF1_le_log
+#print axioms Tower.RV6.abs_thG0_le_log
+#print axioms Tower.RV6.integrableOn_Ioi0_split
+#print axioms Tower.RV6.continuousOn_rpow_Ioi
+#print axioms Tower.RV6.pdom_far_le
+#print axioms Tower.RV6.integrableOn_thG0_rpow
+#print axioms Tower.RV6.integrableOn_thG1_rpow
+#print axioms Tower.RV6.integrableOn_thF1_thG0
+#print axioms Tower.RV6.tendsto_thG0_atTop
+#print axioms Tower.RV6.Eb_pow_le_rpow
+#print axioms Tower.RV6.inner_min_integral
+#print axioms Tower.RV6.hasDerivAt_gamG
+#print axioms Tower.RV6.abs_gamG_le_tot
+#print axioms Tower.RV6.abs_gamG_le_small
+#print axioms Tower.RV6.continuousOn_gamG
+#print axioms Tower.RV6.abs_gamG_le_const
+#print axioms Tower.RV6.abs_gamG_le_rpow
+#print axioms Tower.RV6.outer_min_integral
+#print axioms Tower.RV6.fubini_min

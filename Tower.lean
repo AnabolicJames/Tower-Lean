@@ -116,4 +116,5 @@ import Tower.RV6.BPMellin
 import Tower.RV6.BPLamPhi
 import Tower.RV6.BPModel
 import Tower.RV6.BPFubini
+import Tower.RV6.BPMin
 import Tower.Audit
