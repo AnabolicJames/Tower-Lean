@@ -94,7 +94,7 @@ theorem abs_thF1_le_log : ∃ C : ℝ, ∀ t : ℝ, 0 < t → t ≤ 1 → |thF1 
     abs_mul_le_of (abs_mul_le_of (ity_besselI0.2.1 t ht ht1) hK2) (abs_mul_besselK1_le_one ht)
   have hE3 : Eb t ^ 2 ≤ Eb t ^ 3 := pow_le_pow_right₀ hE (by norm_num)
   have hB := Bser_one_nonneg
-  have s1 := mul_le_mul_of_nonneg_left ht1 (mul_nonneg hB (pow_nonneg (by linarith) 3))
+  have s1 := mul_le_mul_of_nonneg_left ht1 (mul_nonneg hB (pow_nonneg (by linarith : (0 : ℝ) ≤ Eb t) 3))
   have s2 := mul_le_mul_of_nonneg_left hE3 (Real.exp_pos 1).le
   show |(t * besselI1 t) * besselK0 t ^ 3 + (-3) * (besselI0 t * besselK0 t ^ 2 * (t * besselK1 t))|
     ≤ (Bser 1 + 3 * Real.exp 1) * Eb t ^ 3
@@ -399,7 +399,7 @@ theorem abs_gamG_le_tot {s τ : ℝ} (hs0 : 0 < s) (hs2 : s < 2) (hτ : 0 ≤ τ
       ≤ ∫ y in Ioc (0 : ℝ) τ, |thG0 y * y ^ (s - 1)| := abs_integral_le_integral_abs
     _ ≤ ∫ y in Ioi (0 : ℝ), |thG0 y * y ^ (s - 1)| :=
         setIntegral_mono_set iG0.abs (Eventually.of_forall fun y => abs_nonneg _)
-          (Ioc_subset_Ioi_self.eventuallyLE)
+          Ioc_subset_Ioi_self.eventuallySubset
 
 theorem abs_gamG_le_small {s : ℝ} (hs0 : 0 < s) (hs2 : s < 2) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ τ : ℝ, 0 < τ → τ ≤ 1 → |gamG s τ| ≤ K * τ ^ (s / 2) := by
@@ -448,7 +448,7 @@ theorem abs_gamG_le_rpow {s : ℝ} (hs0 : 0 < s) (hs2 : s < 2) :
   obtain ⟨T, hT0, hTb⟩ := abs_gamG_le_const hs0 hs2
   refine ⟨K + T, add_nonneg hK hT0, fun τ hτ => ?_⟩
   have hp : 0 < τ ^ (s / 2) := Real.rpow_pos_of_pos hτ _
-  rcases le_or_lt τ 1 with hτ1 | hτ1
+  rcases le_or_gt τ 1 with hτ1 | hτ1
   · have h := hKb τ hτ hτ1
     nlinarith
   · have h := hTb τ hτ.le
