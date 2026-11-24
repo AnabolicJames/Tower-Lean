@@ -91,6 +91,7 @@ import Tower.RV6.ZhouG
 import Tower.RV6.BPIbp
 import Tower.RV6.BPProd
 import Tower.RV6.BPKernel
+import Tower.RV6.BPHs
 
 /-!
 # Axiom audit
@@ -952,3 +953,32 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.norm_smul_add_cexpR
 #print axioms Tower.RV6.besselJ0_mul_scale
 #print axioms Tower.RV6.kerS_eq
+#print axioms Tower.RV6.bk
+#print axioms Tower.RV6.choose_succ_real
+#print axioms Tower.RV6.bk_zero
+#print axioms Tower.RV6.bk_one
+#print axioms Tower.RV6.bk_succ
+#print axioms Tower.RV6.abs_bk_le_one
+#print axioms Tower.RV6.abs_bk_le
+#print axioms Tower.RV6.conj_cexpR
+#print axioms Tower.RV6.cexpR_pow
+#print axioms Tower.RV6.integral_cexpR_int
+#print axioms Tower.RV6.integral_pow_conj_pow
+#print axioms Tower.RV6.parG
+#print axioms Tower.RV6.continuous_cexpR_two_pi
+#print axioms Tower.RV6.integral_norm_sq_tsum
+#print axioms Tower.RV6.hasSum_binomial
+#print axioms Tower.RV6.rpow_rhoN_one_eq
+#print axioms Tower.RV6.summable_abs_bk_mul
+#print axioms Tower.RV6.angM_one_eq_tsum
+#print axioms Tower.RV6.hS
+#print axioms Tower.RV6.summable_bk_sq
+#print axioms Tower.RV6.hS_eq_tsum
+#print axioms Tower.RV6.hS_nonneg
+#print axioms Tower.RV6.hS_le
+#print axioms Tower.RV6.rhoN_homog
+#print axioms Tower.RV6.angM_homog
+#print axioms Tower.RV6.cexpR_two_pi_add_one
+#print axioms Tower.RV6.rhoN_add_one
+#print axioms Tower.RV6.rhoN_swap
+#print axioms Tower.RV6.angM_symm
