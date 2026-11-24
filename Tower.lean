@@ -110,4 +110,5 @@ import Tower.RV6.BPRclosed
 import Tower.RV6.BPEuler
 import Tower.RV6.BPGammaRatio
 import Tower.RV6.BPQexp
+import Tower.RV6.BPPhi
 import Tower.Audit
