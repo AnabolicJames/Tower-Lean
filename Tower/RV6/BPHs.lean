@@ -184,8 +184,11 @@ theorem integral_norm_sq_tsum {c : ℕ → ℝ} (hc : Summable fun n => |c n|) :
     have h2 : Continuous fun θ : ℝ => (c p.2 : ℂ) * cexpR (2 * π * θ) ^ p.2 :=
       continuous_const.mul (he.pow p.2)
     exact h1.mul (Complex.continuous_conj.comp h2)
+  have hcn : Summable fun n : ℕ => ‖|c n|‖ := by
+    refine hc.congr (fun n => ?_)
+    rw [Real.norm_eq_abs, abs_abs]
   have hsumG : Summable fun p : ℕ × ℕ => |c p.1| * |c p.2| :=
-    Summable.mul_of_nonneg hc hc (fun n => abs_nonneg (c n)) (fun n => abs_nonneg (c n))
+    summable_mul_of_summable_norm (f := fun n : ℕ => |c n|) (g := fun n : ℕ => |c n|) hcn hcn
   have hcont : Continuous fun θ : ℝ => ∑' p, parG c p θ :=
     continuous_tsum hGc hsumG (fun p θ => (hGn p θ).le)
   have hintS : Integrable (fun θ : ℝ => ∑' p, parG c p θ)
