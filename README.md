@@ -36,7 +36,7 @@ chain is proved.
 Not formalised: that `F = 0` is the tangency condition; the passage from non-torsion differences
 to "not a congruence modular surface" (Manin–Drinfeld).
 
-## The six-step Mahler measure (proved from one hypothesis, `RungBP`: `rv6_of_rungBP`)
+## The six-step Mahler measure (proved, no hypotheses: `Tower.RV6.rv6`)
 
 `m(1 + x₁ + x₂ + x₃ + x₄ + x₅) = (648 / π⁶) L(f, 5)`, `f = (η(τ) η(2τ) η(3τ) η(6τ))²`
 (the six-step conjecture of Rodriguez-Villegas; proof: J. Anderson-Joyce, *Logarithmic Hankel
@@ -107,10 +107,19 @@ pairings, the six-step Mahler measure, and sunset endpoint periods*, 2026).
 | `Tower/RV6/CuspG.lean` | **`cusp_ab`**, **`vG0_eq`**: the cusp `x → ∞`, `ajG′(x)/x` along `xm` is `(π/4) y Zax y` |
 | `Tower/RV6/ZhouG.lean` | **`zhouG`**: `ajG(xm y) = (π²/2) 𝒜₁(y)`; **`rv6_of_rungBP`**: the six-step theorem from `RungBP` alone |
 | `Tower/RV6/LadderB.lean` | the last rung cut into two evaluations of one pairing: `hjF x = ∫₀^∞ J₀(xt) I₀K₀³ t dt`, `ajG x = x ∫₀^∞ J₁(xt) I₀²K₀² dt`, `pairS s = ∫₀^∞ hjF · ajG · x^{1-s} dx`; the sub-rungs `RungBP` (`pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)`) and `RungBM` (`pairS s - 72/s⁵ → (π⁵/16) D₀₁`); **`rungB_of_PM`**, **`rv6_of_PM`**: the two sub-rungs imply `RungB` and `μ₆ = (648/π⁶) L(f, 5)` |
+| `Tower/RV6/BPIbp.lean`, `BPProd.lean` | `x² hjF x = ∫ F₂(t)(1 - J₀(xt)) dt`, `ajG x = ∫ G(t)(1 - J₀(xt)) dt` (`F₂ = θ²f/t`, `G = -θg/t`); the product formula `J₀(a)J₀(b) = ∫₀¹ J₀(\|a + b e(θ)\|) dθ` |
+| `Tower/RV6/BPKernel.lean`, `BPHs.lean` | `j(s) = ∫₀^∞ (1 - J₀(y)) y^{-1-s} dy`; `k_s(τ,t) = ∫₀^∞ (1 - J₀(xτ))(1 - J₀(xt)) x^{-1-s} dx = j(s)(τ^s + t^s - M_s(τ,t))`; `h_s(w) = Σ b_k² w^k`, `b_k = binom(s/2, k)`, `0 ≤ h_s(w) ≤ (s²/2) w` |
+| `Tower/RV6/BPGauss.lean`, `BPRclosed.lean`, `BPEuler.lean`, `BPGammaRatio.lean`, `BPQexp.lean` | `s j(s) = 2^{-s} Γ(1 - s/2)/Γ(1 + s/2)`; `Q(s) = e^{a₀ s} s j(s) = exp(ℓ(s))` and `\|Q - 1 - ζ(3)s³/12 - ζ(5)s⁵/80\| ≤ s⁶` (`a₀ = log 2 - γ`) |
+| `Tower/RV6/BPPhi.lean`, `BPLam.lean`, `BPMellin.lean`, `BPLamPhi.lean` | `ℓ′ = Φ` and its expansion; `Λ(v) = Σ b_k²/(2k + v)`, `T₁`, `E(s) = Λ(-s) - Λ(0) - sT₁` with `E/s⁴ → ζ(5)/32`; the Mellin identity `j(u)j(s-u) = j(s)[s/(u(s-u)) - Λ(-u) - Λ(u-s)]`, hence `Λ(0) + Λ(-s) = Φ(s)` |
+| `Tower/RV6/BPModel.lean`, `BPFubini.lean`, `BPMin.lean`, `BPH.lean` | the model `\|θ²f - 6 log(c/t)\| ≤ C t E³`, `\|θg + 2 log(c/t)\| ≤ C t E²` near `0`; Fubini: `pairS(s) = j(s)(s B(s) - H(s))`, `B = (4/5) P + (3/5) s M₃₅`, `H = ∫∫ F₂ G k_H` |
+| `Tower/RV6/BPHm.lean`, `BPD.lean` | the model integral `H_m(s) = 24[Λ(0)(a₀²/s + 2a₀/s² + 2/s³) + T₁(a₀/s + 1/s²)]` in closed form; `\|H(s) - H_m(s)\| ≤ K s²` |
+| `Tower/RV6/BPAsm.lean` | **`rungBP : RungBP`**: `pairS s - 72/s⁵ → R₆,₂/2 + (3/20) ζ(5)`; **`rv6 : mu6 = 648 / π ^ 6 * Lf5`**, with no hypotheses |
 | `Tower/RV6/BesselAlgebra.lean`, `Swap.lean`, `Lambert.lean` | pieces proved on the way: the sixth-power identity and the Wronskian derivative identity of the Bessel side; a substitution identity; convergence of the Lambert series of the definitions |
 | `tools/gen_modaxis.py`, `tools/gen_interchange.py`, `tools/gen_rungc1.py`, `tools/gen_level6.py`, `tools/gen_runga2p.py`, `tools/gen_runga2m.py`, `tools/gen_runga2n.py`, `tools/gen_cjseries.py`, `tools/gen_gpoly.py`, `tools/gen_rotrect.py`, `tools/gen_rotsides.py`, `tools/gen_runga2r.py`, `tools/gen_besselL5.py`, `tools/gen_hankeldomf.py`, `tools/gen_hankelrelf.py`, `tools/gen_domg.py`, `tools/gen_ajodeg.py`, `tools/gen_pullbackg.py` | generators of the generated files (most only substitute repeated expressions; `gen_level6.py` writes the relations, the matrix and the cofactors, `gen_gpoly.py` the two cofactors modulo `i² + 1`, and `gen_besselL5.py` the ladder, the θ-chain and its `linear_combination` cofactors, all computed in exact arithmetic; Lean checks them) |
 
-**Status: this is not yet a Lean proof of the theorem.**  One rung is left, stated as two hypotheses.
+**Status: proved.**  **`Tower.RV6.rv6 : mu6 = 648 / π ^ 6 * Lf5`** holds with no hypotheses (wave 65,
+`BPAsm.lean`); its line in the axiom audit is `[propext, Classical.choice, Quot.sound]`.  The rest of
+this section is the history of how the last rung was cut down and closed.
 
 Proved with no hypotheses:
 
@@ -151,11 +160,15 @@ with `∫₀^∞ t I₀(t)K₀(t)³ dt = π²/16` (`integral_t_I0_K0_cube`) on t
 takes `RungBP` and `ZhouG` only.  Waves 39 to 43 put `ZhouG` on the same road: `uG_eq` (`AJODEG.lean`)
 is the dual equation of `ajG` up to one constant, and `uG_zero` (`ZeroG.lean`) sets it to `0`; `vG0_xm_quad` (`PullbackG.lean`) pulls it back to `y`.  **Waves 46 and 47 fixed
 the three constants at the two cusps and proved `ZhouG`** (`zhouG`, `ZhouG.lean`), so **`rv6_of_rungBP`**
-takes `RungBP` and nothing else.  `ROADMAP.md` has the plan and the state by rung.
+takes `RungBP` and nothing else.  **Waves 48 to 65 proved `RungBP`** (`rungBP`, `BPAsm.lean`), on the
+Bessel side and with real variables only: two integrations by parts and the product formula of `J₀`
+turn `pairS` into `j(s) ∫∫ F₂(τ) G(t) (min^s - k_H)`; the `min^s` part is `s B(s)` with
+`B = (4/5) P + (3/5) s M₃₅`; the remainder `H(s)` equals the closed-form model `H_m(s)` up to `K s²`;
+and `ζ(5)` enters through `s j(s) = 2^{-s} Γ(1 - s/2)/Γ(1 + s/2)` and the identity
+`Λ(0) + Λ(-s) = Φ(s)`.  So **`rv6`** has no hypotheses.  `ROADMAP.md` has the plan and the history by rung.
 
 ## Not here yet
 
-* a proof of `RungBP` (`ROADMAP.md`);
 * the finite census of genus-0 subgroups of `PSL₂(ℤ/15)` and `PSL₂(ℤ/30)`.
 
 ## Building
