@@ -200,7 +200,9 @@ theorem phiS_expansion {s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
     calc 2 * (s / 2) ^ 6 / (((k : ℝ) + 1) ^ 5 * (((k : ℝ) + 1 + s / 2) * ((k : ℝ) + 1 - s / 2)))
           / 2 ≤ 8 / 3 * (s / 2) ^ 6 * (1 / ((k : ℝ) + 1) ^ 7) / 2 := by linarith
       _ = 8 / 3 * (s / 2) ^ 6 / 2 * (1 / ((k : ℝ) + 1) ^ 7) := by ring
-  have hR0 := tsum_nonneg (fun k => div_nonneg (hr k).1 (by norm_num : (0 : ℝ) ≤ 2))
+  have hR0 : 0 ≤ ∑' k : ℕ, 2 * (s / 2) ^ 6
+      / (((k : ℝ) + 1) ^ 5 * (((k : ℝ) + 1 + s / 2) * ((k : ℝ) + 1 - s / 2))) / 2 :=
+    tsum_nonneg (fun k => div_nonneg (hr k).1 (by norm_num : (0 : ℝ) ≤ 2))
   rw [hsum]
   constructor
   · nlinarith [hR0]
