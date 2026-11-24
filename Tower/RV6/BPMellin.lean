@@ -148,7 +148,8 @@ theorem integrableOn_hS_sq {s v : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hv0 : -1
       Ioo_subset_Ioc_self).const_mul _
   refine Integrable.mono' hb ?_ ?_
   · exact (((continuous_hS hs0).comp (continuous_pow 2)).continuousOn.mul
-      (ContinuousOn.rpow_const continuousOn_id (fun r hr => Or.inl hr.1.ne'))).aestronglyMeasurable
+      (ContinuousOn.rpow_const (continuousOn_id (s := Ioo (0 : ℝ) 1))
+        (fun r hr => Or.inl (show (0 : ℝ) < r from hr.1).ne'))).aestronglyMeasurable
       measurableSet_Ioo
   · refine (ae_restrict_iff' measurableSet_Ioo).2 (Eventually.of_forall fun r hr => ?_)
     have hr0 : (0 : ℝ) < r := hr.1
@@ -173,7 +174,7 @@ theorem integrableOn_hS_inv {s v : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hv1 : v
     (integrableOn_Ioi_rpow_of_lt (by linarith : -v - 3 < -1) one_pos).const_mul _
   refine Integrable.mono' hb ?_ ?_
   · refine ContinuousOn.aestronglyMeasurable ?_ measurableSet_Ioi
-    refine ContinuousOn.mul ?_ (ContinuousOn.rpow_const continuousOn_id
+    refine ContinuousOn.mul ?_ (ContinuousOn.rpow_const (continuousOn_id (s := Ioi (1 : ℝ)))
       (fun t ht => Or.inl (show (0 : ℝ) < t from lt_trans one_pos ht).ne'))
     exact (continuous_hS hs0).comp_continuousOn
       ((continuousOn_pow 2).inv₀ (fun t ht =>
