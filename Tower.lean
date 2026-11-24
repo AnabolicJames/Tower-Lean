@@ -105,4 +105,5 @@ import Tower.RV6.BPIbp
 import Tower.RV6.BPProd
 import Tower.RV6.BPKernel
 import Tower.RV6.BPHs
+import Tower.RV6.BPGauss
 import Tower.Audit
