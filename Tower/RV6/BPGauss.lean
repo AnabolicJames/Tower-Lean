@@ -183,7 +183,9 @@ theorem integral_rpow_one_sub_exp {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1) :
     have hl : Tendsto (fun u : ℝ => u ^ (1 - a) / a) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
       have hc : ContinuousAt (fun u : ℝ => u ^ (1 - a)) 0 :=
         Real.continuousAt_rpow_const 0 (1 - a) (Or.inr (by linarith))
-      have h := (hc.tendsto.div_const a).mono_left nhdsWithin_le_nhds
+      have h : Tendsto (fun u : ℝ => u ^ (1 - a) / a) (nhdsWithin 0 (Set.Ioi 0))
+          (nhds ((0 : ℝ) ^ (1 - a) / a)) :=
+        (hc.tendsto.div_const a).mono_left nhdsWithin_le_nhds
       rwa [Real.zero_rpow (by linarith : (1 - a) ≠ 0), zero_div] at h
     refine squeeze_zero_norm' ?_ hl
     filter_upwards [self_mem_nhdsWithin] with u hu
@@ -231,8 +233,9 @@ theorem integral_rpow_one_sub_exp {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1) :
   have e0 : (1 - a - 1 : ℝ) = -a := by ring
   rw [e0] at hG
   have i2 : IntegrableOn (fun u : ℝ => (-(u ^ (-a)) / a) * Real.exp (-u)) (Set.Ioi 0) := by
-    have h := hG.const_mul (-(1 / a))
-    refine h.congr_fun (fun u _ => ?_) measurableSet_Ioi
+    have h : IntegrableOn (fun x : ℝ => -(1 / a) * (Real.exp (-x) * x ^ (-a))) (Set.Ioi 0) :=
+      Integrable.const_mul hG _
+    refine IntegrableOn.congr_fun h (fun u _ => ?_) measurableSet_Ioi
     show -(1 / a) * (Real.exp (-u) * u ^ (-a)) = -(u ^ (-a)) / a * Real.exp (-u)
     ring
   have hint : IntegrableOn (fun u : ℝ => u ^ (-1 - a) * (1 - Real.exp (-u))
@@ -248,7 +251,7 @@ theorem integral_rpow_one_sub_exp {a : ℝ} (ha0 : 0 < a) (ha1 : a < 1) :
     show -(u ^ (-a)) / a * Real.exp (-u) = -(1 / a) * (Real.exp (-u) * u ^ (-a))
     ring
   rw [← hΓ] at a2
-  have hz' : ∫ u in Set.Ioi (0 : ℝ), u ^ (-1 - a) * (1 - Real.exp (-u))
+  have hz' : (∫ u in Set.Ioi (0 : ℝ), u ^ (-1 - a) * (1 - Real.exp (-u)))
       + -(1 / a) * Real.Gamma (1 - a) = 0 := by
     rw [← a2, ← a1]
     exact hz
