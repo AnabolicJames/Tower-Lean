@@ -66,6 +66,7 @@ theorem rpow_neg_log_facts {c : ℝ} (hc : 0 < c) :
     have h := (Real.hasDerivAt_rpow_const (p := c) (Or.inl hx0)).mul
       (((Real.hasDerivAt_log hx0).neg.div_const c).add_const (1 / c ^ 2))
     convert h using 1
+    simp only [Pi.neg_apply]
     rw [Real.rpow_sub_one hx0]
     field_simp
     all_goals ring
@@ -124,6 +125,7 @@ theorem rpow_log_sq_facts {c : ℝ} (hc : 0 < c) :
     have h := (Real.hasDerivAt_rpow_const (p := c) (Or.inl hx0)).mul
       ((((hl.mul hl).div_const c).sub ((hl.const_mul 2).div_const (c ^ 2))).add_const (2 / c ^ 3))
     convert h using 1
+    simp only [Pi.sub_apply, Pi.mul_apply]
     rw [Real.rpow_sub_one hx0]
     field_simp
     all_goals ring
@@ -152,8 +154,8 @@ theorem integrableOn_hS_log {s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
   refine Integrable.mono' hb ?_ (ae_restrict_of_forall_mem measurableSet_Ioc (fun r hr => ?_))
   · refine ContinuousOn.aestronglyMeasurable ?_ measurableSet_Ioc
     exact ((continuous_hS hs0).comp (continuous_pow 2)).continuousOn.mul
-      ((Real.continuousOn_log.mono (fun r hr => (show (0 : ℝ) < r from hr.1).ne')).neg.div
-        continuousOn_id (fun r hr => (show (0 : ℝ) < r from hr.1).ne'))
+      ((Real.continuousOn_log.mono (fun r (hr : r ∈ Ioc (0 : ℝ) 1) => (show (0 : ℝ) < r from hr.1).ne')).neg.div
+        continuousOn_id (fun r (hr : r ∈ Ioc (0 : ℝ) 1) => (show (0 : ℝ) < r from hr.1).ne'))
   · have hr0 : (0 : ℝ) < r := hr.1
     have hr0' : r ≠ 0 := hr0.ne'
     have hr1 : r ≤ 1 := hr.2
@@ -340,7 +342,8 @@ theorem psiM_nonneg {s τ t : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hτ : τ ∈
 theorem psiM_inner {s t : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (ht0 : 0 < t) (ht1 : t ≤ 1) :
     IntegrableOn (fun τ : ℝ => psiM s τ t) (Ioc 0 1) ∧
       ∫ τ in Ioc (0 : ℝ) 1, psiM s τ t = 6 * gL t * t ^ s * (Lc t * lamS s 0 + t1S s) := by
-  have hreg := (integrableOn_region hs0 hs1 ht0 ht1).const_mul (3 * gL t)
+  have hreg : IntegrableOn (fun τ : ℝ => 3 * gL t * (gL τ * kerH s t τ)) (Ioc 0 t) :=
+    (integrableOn_region hs0 hs1 ht0 ht1).const_mul (3 * gL t)
   have eA : EqOn (fun τ : ℝ => psiM s τ t) (fun τ : ℝ => 3 * gL t * (gL τ * kerH s t τ)) (Ioo 0 t) := by
     intro τ hτ
     show psiM s τ t = 3 * gL t * (gL τ * kerH s t τ)
@@ -398,15 +401,17 @@ theorem hM_eq {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) :
     have hD : Disjoint (Ioc (0 : ℝ) τ) (Ioc τ 1) :=
       Set.disjoint_left.2 (fun x hx hx' => lt_irrefl _ (hx'.1.trans_le hx.2))
     have hc : ContinuousOn (fun t : ℝ => 3 * gL τ * gL t * kerH s τ t) (Icc τ 1) := by
-      have h := (continuousOn_mul_kerH (τ := τ) hs0.le continuousOn_gL).const_smul (3 * gL τ)
-      refine (h.mono (fun t ht => lt_of_lt_of_le hτ0 ht.1)).congr (fun t _ => ?_)
-      simp only [smul_eq_mul]
+      have h := (continuous_const : Continuous fun _ : ℝ => 3 * gL τ).continuousOn.mul
+        (continuousOn_mul_kerH (τ := τ) hs0.le continuousOn_gL)
+      refine (h.mono (fun t (ht : t ∈ Icc τ 1) => lt_of_lt_of_le hτ0 ht.1)).congr (fun t _ => ?_)
+      show 3 * gL τ * gL t * kerH s τ t = 3 * gL τ * (gL t * kerH s τ t)
       ring
     have iB : IntegrableOn (fun t : ℝ => 3 * gL τ * gL t * kerH s τ t) (Ioc τ 1) :=
       (hc.integrableOn_Icc).mono_set Ioc_subset_Icc_self
     have iA : IntegrableOn (fun t : ℝ => 3 * gL τ * gL t * kerH s τ t) (Ioc 0 τ) := by
-      refine ((integrableOn_region hs0.le hs1 hτ0 hτ1).const_mul (3 * gL τ)).congr_fun
-        (fun t _ => ?_) measurableSet_Ioc
+      have h0 : IntegrableOn (fun t : ℝ => 3 * gL τ * (gL t * kerH s τ t)) (Ioc 0 τ) :=
+        (integrableOn_region hs0.le hs1 hτ0 hτ1).const_mul (3 * gL τ)
+      refine h0.congr_fun (fun t _ => ?_) measurableSet_Ioc
       show 3 * gL τ * (gL t * kerH s τ t) = 3 * gL τ * gL t * kerH s τ t
       ring
     have eA : EqOn (fun t : ℝ => psiM s τ t) (fun _ : ℝ => (0 : ℝ)) (Ioc 0 τ) := by
