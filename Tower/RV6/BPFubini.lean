@@ -246,8 +246,8 @@ theorem integrableOn_kerS_integrand {s τ t : ℝ} (hs0 : 0 < s) (hs2 : s < 2) (
   have h := (integrableOn_one_sub_scale hs0 hs2 hτ).const_mul 2
   refine Integrable.mono' h ?_ (ae_restrict_of_forall_mem measurableSet_Ioi (fun x hx => ?_))
   · refine ContinuousOn.aestronglyMeasurable ?_ measurableSet_Ioi
-    exact ((continuous_const.sub (continuous_besselJ0.comp (continuous_mul_right τ))).mul
-      (continuous_const.sub (continuous_besselJ0.comp (continuous_mul_right t)))).continuousOn.mul
+    exact ((continuous_const.sub (continuous_besselJ0.comp (continuous_mul_const τ))).mul
+      (continuous_const.sub (continuous_besselJ0.comp (continuous_mul_const t)))).continuousOn.mul
       (ContinuousOn.rpow_const (continuousOn_id (s := Ioi (0 : ℝ)))
         (fun x hx => Or.inl (show (0 : ℝ) < x from hx).ne'))
   · have hx0 : (0 : ℝ) < x := hx
@@ -396,7 +396,7 @@ theorem pairS_eq_fubini {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) :
     _ = ∫ x in Ioi (0 : ℝ), ∫ p, fubPhi s x p ∂(((volume : Measure ℝ).restrict (Ioi (0 : ℝ))).prod
           ((volume : Measure ℝ).restrict (Ioi (0 : ℝ)))) :=
         setIntegral_congr_fun measurableSet_Ioi h1
-    _ = ∫ p, ∫ x in Ioi (0 : ℝ), fubPhi s x p ∂(((volume : Measure ℝ).restrict (Ioi (0 : ℝ))).prod
+    _ = ∫ p, (∫ x in Ioi (0 : ℝ), fubPhi s x p) ∂(((volume : Measure ℝ).restrict (Ioi (0 : ℝ))).prod
           ((volume : Measure ℝ).restrict (Ioi (0 : ℝ)))) := integral_integral_swap hint
     _ = ∫ p, jS s * (thF2 p.1 / p.1 * (-thG1 p.2 / p.2) * (min p.1 p.2 ^ s - kerH s p.1 p.2))
           ∂(((volume : Measure ℝ).restrict (Ioi (0 : ℝ))).prod
