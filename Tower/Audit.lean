@@ -93,6 +93,7 @@ import Tower.RV6.BPProd
 import Tower.RV6.BPKernel
 import Tower.RV6.BPHs
 import Tower.RV6.BPGauss
+import Tower.RV6.BPRclosed
 
 /-!
 # Axiom audit
@@ -992,3 +993,17 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.integral_rpow_one_sub_exp_quarter
 #print axioms Tower.RV6.integral_t_one_sub_exp
 #print axioms Tower.RV6.rpow_eq_gamma_integral
+#print axioms Tower.RV6.phiR
+#print axioms Tower.RV6.kerG
+#print axioms Tower.RV6.one_sub_cos_nonneg
+#print axioms Tower.RV6.integrable_one_sub_cos_gauss
+#print axioms Tower.RV6.kerG_nonneg
+#print axioms Tower.RV6.integral_kerG_p
+#print axioms Tower.RV6.integrableOn_t_one_sub_exp
+#print axioms Tower.RV6.integrable_kerG
+#print axioms Tower.RV6.phiR_eq_integral
+#print axioms Tower.RV6.integral_phiR_gauss
+#print axioms Tower.RV6.integral_cos_cos_two_pi
+#print axioms Tower.RV6.polar_phiR
+#print axioms Tower.RV6.integral_phiR_polar
+#print axioms Tower.RV6.jS_closed
