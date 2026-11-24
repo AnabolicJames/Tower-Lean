@@ -58,7 +58,7 @@ theorem phiK_eq (u : ℝ) (k : ℕ) :
   rw [phiK, one_add_div hk, one_sub_div hk, div_div_div_cancel_right₀ hk, mul_div_assoc]
 
 theorem abs_phiK_le_gen {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) (k : ℕ) :
-    |phiK u k| ≤ 2 * u ^ 3 / ((1 - u) * ((k : ℝ) + 1) ^ 3) := by
+    |phiK u k| ≤ 2 * u ^ 3 / (1 - u) * (1 / ((k : ℝ) + 1) ^ 3) := by
   have hk1 : (1 : ℝ) ≤ (k : ℝ) + 1 := by
     have := (Nat.cast_nonneg k : (0 : ℝ) ≤ k)
     linarith
@@ -74,7 +74,9 @@ theorem abs_phiK_le_gen {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) (k : ℕ) :
     div_le_div_of_nonneg_left (pow_nonneg hx0 3) (by linarith) (by linarith)
   calc 2 * ((u / ((k : ℝ) + 1)) ^ 3 / (1 - u / ((k : ℝ) + 1)))
       ≤ 2 * ((u / ((k : ℝ) + 1)) ^ 3 / (1 - u)) := by linarith
-    _ = 2 * u ^ 3 / ((1 - u) * ((k : ℝ) + 1) ^ 3) := by ring
+    _ = 2 * u ^ 3 / (1 - u) * (1 / ((k : ℝ) + 1) ^ 3) := by
+      rw [div_pow]
+      ring
 
 /-- For `k ≥ 1`: `|φ_k(u)| ≤ 4u³/(k + 1)³`. -/
 theorem abs_phiK_le {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) {k : ℕ} (hk : 1 ≤ k) :
@@ -96,7 +98,9 @@ theorem abs_phiK_le {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) {k : ℕ} (hk : 1 �
     div_le_div_of_nonneg_left (pow_nonneg hx0 3) (by norm_num) (by linarith)
   calc 2 * ((u / ((k : ℝ) + 1)) ^ 3 / (1 - u / ((k : ℝ) + 1)))
       ≤ 2 * ((u / ((k : ℝ) + 1)) ^ 3 / (1 / 2)) := by linarith
-    _ = 4 * u ^ 3 / ((k : ℝ) + 1) ^ 3 := by ring
+    _ = 4 * u ^ 3 / ((k : ℝ) + 1) ^ 3 := by
+      rw [div_pow]
+      ring
 
 theorem summable_inv_succ_cube : Summable (fun k : ℕ => 1 / ((k : ℝ) + 1) ^ 3) := by
   have h := (summable_nat_add_iff 1).2 (Real.summable_one_div_nat_pow.2 (by norm_num : 1 < 3))
@@ -107,9 +111,7 @@ theorem summable_phiK {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) : Summable (phiK u
   refine Summable.of_norm_bounded (summable_inv_succ_cube.mul_left (2 * u ^ 3 / (1 - u)))
     fun k => ?_
   rw [Real.norm_eq_abs]
-  refine (abs_phiK_le_gen hu0 hu1 k).trans (le_of_eq ?_)
-  show 2 * u ^ 3 / ((1 - u) * ((k : ℝ) + 1) ^ 3) = 2 * u ^ 3 / (1 - u) * (1 / ((k : ℝ) + 1) ^ 3)
-  ring
+  exact abs_phiK_le_gen hu0 hu1 k
 
 theorem div_aux_gamma {A B F P Q : ℝ} (hF : F ≠ 0) :
     (A * F / P) / (B * F / Q) = Q / P * (A / B) := by
@@ -118,8 +120,8 @@ theorem div_aux_gamma {A B F P Q : ℝ} (hF : F ≠ 0) :
 
 theorem harmonic_cast_eq (n : ℕ) :
     ((harmonic n : ℚ) : ℝ) = ∑ k ∈ Finset.range n, 1 / ((k : ℝ) + 1) := by
-  simp only [harmonic, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast, Nat.cast_add, Nat.cast_one,
-    one_div]
+  simp only [harmonic, Rat.cast_sum, Rat.cast_inv, Rat.cast_add, Rat.cast_natCast, Rat.cast_one,
+    Nat.cast_add, Nat.cast_one, one_div]
 
 /-- The ratio of Euler's sequences at `1 - u` and `1 + u`. -/
 theorem gammaSeq_ratio {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u < 1) {n : ℕ} (hn : 1 ≤ n) :
