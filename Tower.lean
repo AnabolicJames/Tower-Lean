@@ -103,4 +103,5 @@ import Tower.RV6.CuspG
 import Tower.RV6.ZhouG
 import Tower.RV6.BPIbp
 import Tower.RV6.BPProd
+import Tower.RV6.BPKernel
 import Tower.Audit

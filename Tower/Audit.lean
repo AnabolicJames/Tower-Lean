@@ -90,6 +90,7 @@ import Tower.RV6.CuspG
 import Tower.RV6.ZhouG
 import Tower.RV6.BPIbp
 import Tower.RV6.BPProd
+import Tower.RV6.BPKernel
 
 /-!
 # Axiom audit
@@ -937,3 +938,17 @@ depends on.  The standard for this repository is that only `propext`, `Classical
 #print axioms Tower.RV6.besselJ0_norm_add
 #print axioms Tower.RV6.integral_cos_add_shift
 #print axioms Tower.RV6.besselJ0_mul_besselJ0
+#print axioms Tower.RV6.jS
+#print axioms Tower.RV6.rhoN
+#print axioms Tower.RV6.angM
+#print axioms Tower.RV6.kerS
+#print axioms Tower.RV6.integrableOn_rpow_of_bounds
+#print axioms Tower.RV6.integrableOn_one_sub_scale
+#print axioms Tower.RV6.jS_scale
+#print axioms Tower.RV6.norm_cexpR
+#print axioms Tower.RV6.rhoN_nonneg
+#print axioms Tower.RV6.rhoN_le
+#print axioms Tower.RV6.continuous_rhoN
+#print axioms Tower.RV6.norm_smul_add_cexpR
+#print axioms Tower.RV6.besselJ0_mul_scale
+#print axioms Tower.RV6.kerS_eq
