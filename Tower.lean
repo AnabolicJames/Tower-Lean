@@ -98,4 +98,5 @@ import Tower.RV6.DomG
 import Tower.RV6.AJODEG
 import Tower.RV6.ZeroG
 import Tower.RV6.PullbackG
+import Tower.RV6.SmallG
 import Tower.Audit
